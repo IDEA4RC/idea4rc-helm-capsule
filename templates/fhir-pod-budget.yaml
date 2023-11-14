@@ -1,0 +1,18 @@
+---
+#FHIR Pod disruption budget
+{{- if .Values.fhir.pod_disruption_budget.enabled }}
+kind: PodDisruptionBudget
+apiVersion: policy/v1
+metadata:
+  name: {{ .Values.fhir.server.name }}
+spec:
+  {{- if .Values.fhir.pod_disruption_budget.minAvailable }}
+  minAvailable: {{ .Values.fhir.pod_disruption_budget.minAvailable }}
+  {{- end }}
+  {{- if .Values.fhir.pod_disruption_budget.maxUnavailable }}
+  maxUnavailable: {{ .Values.fhir.pod_disruption_budget.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fhir.server.name }}
+{{- end }}

@@ -1,0 +1,25 @@
+{{- if .Values.auth_enable -}}
+{{- range $key, $value := .Values.auth_policies }}
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ $value.policy_name }}
+  namespace: {{ $value.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: fhir-server
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    to:
+    - operation:
+        methods: [{{ $value.methods }}]
+    when:
+    - key: request.auth.claims[realm_access][roles]
+      values: [{{ $value.roles }}]
+{{- end }}
+{{- end }}

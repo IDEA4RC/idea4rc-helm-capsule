@@ -1,0 +1,134 @@
+prometheus_enable:  True
+kiali_enable:  True
+
+postgres_user: YWRtaW4=
+postgres_password: YWRtaW4=
+
+idea_gw_hosts: "*"
+mtls_mode: STRICT
+
+istio_injection: enabled
+istio_gateway_name: idea-gateway
+
+#Auth
+#enable/disable Auth configuration
+#e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth_enable=False
+auth_enable: True
+
+jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
+jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+
+#roles for authentication can be declared here
+auth_policies:
+  medic:
+    policy_name: require-jwt-medic
+    methods: "POST"
+    roles: "Medic"
+    namespace: datamesh
+  patient:
+    policy_name: require-jwt
+    methods: "GET"
+    roles: "Patient"
+    namespace: datamesh
+
+#FHIR server configuration
+fhir:
+  service:
+    name: fhir-service
+    type: ClusterIP
+    port: 8080
+    target_port: 8080
+  metrics:
+    serviceMonitor:
+      enabled: false
+    additionalLabels: {}
+    service:
+      port: 8081
+  pod_disruption_budget:
+    enabled: false
+    minAvailable: 1
+    maxUnavailable: ""
+  server:
+    name: fhir-server
+    namespace: datamesh
+    replicas: 1
+    pod_annotations: {}
+    image_pull_secrets: []
+    pod_security_context: {}
+    security_context:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 65532
+      runAsGroup: 65532
+      privileged: false
+      seccompProfile:
+        type: RuntimeDefault
+    container_name: fhir-server
+    image:
+      registry: docker.io
+      repository: hapiproject/hapi
+      tag: "v6.8.3@sha256:6195f1116ebabfb0a608addde043b3e524c456c4d4f35b3d25025afd7dcd2e27"
+      pull_policy: IfNotPresent
+    startup_probe:
+      httpGet:
+        path: /readyz
+        port: http
+      failureThreshold: 10
+      initialDelaySeconds: 30
+      periodSeconds: 30
+      successThreshold: 1
+      timeoutSeconds: 30
+    liveness_probe:
+      httpGet:
+        path: /livez
+        port: http
+      failureThreshold: 5
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      timeoutSeconds: 30
+    readiness_probe:
+      httpGet:
+        path: /readyz
+        port: http
+      failureThreshold: 5
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      timeoutSeconds: 20
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    spring:
+      spring_data_source_url: jdbc:postgresql://postgres-db.datamesh.svc.cluster.local:5432/idea4rc
+      spring_data_source_username:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: POSTGRES_USER
+      spring_data_source_password:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: POSTGRES_PASSWORD
+      spring_pgsql_driver: org.postgresql.Driver
+      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      #the following params are manually set due to parsing issues with helm
+      #use_apache_addr_strategy: "true"
+      #probe_add_paths: "true"
+      #mgmt_srv_port: "8081"
+      extra_config: ""
+      extra_env: ""
+    node_selector: {}
+    affinity: {}
+    tolerations: []
+    topology_spread_constraints: []

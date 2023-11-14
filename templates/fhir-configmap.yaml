@@ -1,0 +1,11 @@
+---
+#FHIR ConfigMap
+{{- if .Values.fhir.server.extra_config -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.fhir.server.name }} 
+data:
+  application-extra.yaml: |-
+    {{ .Values.fhir.server.extra_config | nindent 4 }}
+{{- end }}
