@@ -51,3 +51,4 @@ helm install --debug --dry-run idea4rc-capsule idea4rc-helm-capsule/ --set auth_
 
 ## License
 This software is currently licensed under GPLv2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
+The Kiali and Prometheus templates maintain their original Apache v2 license, as it is code derivated from existing projects. See the files themselves for more info.
