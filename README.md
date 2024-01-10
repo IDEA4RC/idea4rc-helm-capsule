@@ -14,6 +14,9 @@ This helm chart contains the following IDEA4RC capsule core components:
 - FHIR server
 - Postgres instance
 - Istio configurations for Ingress Gateway and mTLS enforcing
+- ETL 
+- Aerospike, key/value store used by the ETL
+- Kiali and Prometheus, can be enable/disable at deployment time
 
 ## Requirements
 In order to deploy this instance, the following will be required:
@@ -42,7 +45,7 @@ Run the install command:
 helm install idea4rc-capsule idea4rc-helm-capsule
 ```
 
-Dry run with Auth, Kiali and Prometheus disabled, dump the generated yaml files to dry-run.log:
+Example: dry run with Auth, Kiali and Prometheus disabled, dump the generated yaml files to dry-run.log:
 ```
 helm install --debug --dry-run idea4rc-capsule idea4rc-helm-capsule/ --set auth_enable=False | tee dry-run.log
 ```
