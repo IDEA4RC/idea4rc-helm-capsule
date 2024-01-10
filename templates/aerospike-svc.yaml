@@ -1,0 +1,16 @@
+#Aerospike service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.aerospike.service.name }}
+  namespace: {{ .Values.aerospike.namespace }}
+spec:
+  type: {{ .Values.etl.service.type }}
+  ports:
+    - port: {{ .Values.aerospike.service.port }}
+      targetPort: {{ .Values.aerospike.service.target_port }}
+      protocol: TCP
+      appProtocol: tcp
+      name: http
+  selector:
+    app: {{ .Values.aerospike.name }}

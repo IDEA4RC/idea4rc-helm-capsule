@@ -34,7 +34,7 @@ auth_policies:
 #FHIR server configuration
 fhir:
   service:
-    name: fhir-service
+    name: fhir-svc
     type: ClusterIP
     port: 8080
     target_port: 8080
@@ -132,3 +132,47 @@ fhir:
     affinity: {}
     tolerations: []
     topology_spread_constraints: []
+etl:
+  namespace: datamesh
+  server:
+    name: eng-etl
+    #image: "etl-registry-217.172.12.193.sslip.io/eng/idea4rc/etl:latest"
+    image: "ghcr.io/idea4rc/etl:latest"
+    port: 4001
+    #proxy: "false"
+    server_dns: "https://"
+    hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
+    spring_datasource: "jdbc:postgresql://postgres-db.datamesh.svc.cluster.local:5432/etl?autoReconnect=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8"
+    spring_data_source_username:
+      valueFrom:
+        secretKeyRef:
+          name: postgres-secret
+          key: POSTGRES_USER
+      spring_data_source_password:
+        valueFrom:
+          secretKeyRef:
+            name: postgres-secret
+            key: POSTGRES_PASSWORD
+    etl_pgsql_user: etl
+    etl_pgsql_password: 9GNlI0dh
+    db_name: etl
+    spring_driver: org.postgresql.Driver
+    aerospike_host: aerospike-svc.datamesh.svc.cluster.local
+  service:
+    name: etl-svc
+    type: ClusterIP
+    port: 4001
+    target_port: 4001
+aerospike:
+  name: aerospike
+  namespace: datamesh
+  server:
+    keystore_namespace: idea4rc
+    image: "aerospike/aerospike-server:latest"
+    port: 3000
+    mtls_mode: PERMISSIVE
+  service:
+    name: aerospike-svc
+    type: ClusterIP
+    port: 3000
+    target_port: 3000

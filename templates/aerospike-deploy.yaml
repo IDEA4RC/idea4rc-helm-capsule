@@ -1,0 +1,29 @@
+#ETL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.aerospike.name }}
+  namespace: {{ .Values.aerospike.namespace }}  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.aerospike.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.aerospike.name }}
+    spec:
+      containers:
+        - name: {{ .Values.aerospike.name }}
+          image: {{ .Values.aerospike.server.image }}
+          env:
+            - name: NAMSPACE
+              value: {{ .Values.aerospike.server.keystore_namespace }}
+          ports:
+            - containerPort: {{ .Values.aerospike.server.port }}
+          volumeMounts:
+            - mountPath: /opt/aerospike/data
+              name: aerospike-data
+      volumes:
+        - name: aerospike-data

@@ -1,3 +1,7 @@
+### this template has been derived from the official Kiali Helm Chart
+### source: https://github.com/kiali/helm-charts
+### licensed under  Apache-2.0 license
+
 {{- if .Values.kiali_enable -}}
 ---
 # Source: kiali-server/templates/serviceaccount.yaml
