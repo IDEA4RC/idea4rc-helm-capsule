@@ -1,0 +1,16 @@
+---
+#Data Extraction Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.dataextraction.service.name }}
+  namespace: {{ .Values.dataextraction.namespace }}
+spec:
+  type: {{ .Values.dataextraction.service.type }}
+  ports:
+    - port: {{ .Values.dataextraction.service.port }}
+      targetPort: {{ .Values.dataextraction.service.target_port }}
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.dataextraction.name }}

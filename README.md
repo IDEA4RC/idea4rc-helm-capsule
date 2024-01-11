@@ -14,7 +14,8 @@ This helm chart contains the following IDEA4RC capsule core components:
 - FHIR server
 - Postgres instance
 - Istio configurations for Ingress Gateway and mTLS enforcing
-- ETL 
+- ETL instance
+- Data Extraction instance 
 - Aerospike, key/value store used by the ETL
 - Kiali and Prometheus, can be enable/disable at deployment time
 
@@ -34,7 +35,10 @@ The main configuration file is the ```values.yaml``` at the root of the chart. T
 
 Another way to alter the chart configuration is by overriding values when executing the install command by leveraging the ```--set``` switch. Multiple values can be overridden by passing multiple switches.
 
+:warning: **remeber to change the default passwords in the values.yaml!**
+
 ## How to Deploy
+
 Either clone or download the sources from this repo:
 ```
 git clone https://gitlab.lst.tfo.upm.es/idea4rc/idea4rc-helm-capsule.git

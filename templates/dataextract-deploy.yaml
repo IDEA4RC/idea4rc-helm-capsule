@@ -1,0 +1,34 @@
+#Data Extraction Jobs Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.dataextraction.name }}
+  namespace: {{ .Values.dataextraction.namespace }}  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.dataextraction.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.dataextraction.name }}
+    spec:
+      containers:
+        - name: {{ .Values.dataextraction.name }}
+          image: {{ .Values.dataextraction.server.image }}
+          env:
+            - name: CAPSULEFHIR_URL
+              value: {{ .Values.dataextraction.server.fhir_url }}
+            - name: POSTGRES_USER
+              value: {{ .Values.dataextraction.server.dataext_pgsql_user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.dataextraction.server.dataext_pgsql_pwd }}
+            - name: POSTGRES_DB
+              value: {{ .Values.dataextraction.server.dataext_pgsql_db }}
+            - name: POSTGRES_HOST
+              value: {{ .Values.dataextraction.server.pgsql_host }}
+            - name: POSTGRES_PORT
+              value: "{{ .Values.dataextraction.server.pgsql_port }}"
+          ports:
+            - containerPort: {{ .Values.dataextraction.server.port }}

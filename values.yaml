@@ -176,3 +176,21 @@ aerospike:
     type: ClusterIP
     port: 3000
     target_port: 3000
+dataextraction:
+  name: dataextraction
+  namespace: datamesh
+  server:
+    image: "etl-registry-217.172.12.193.sslip.io/idea4rc_ai_dataextractionjobs:latest"
+    #fhir_url: "https://hapi.fhir.org/baseR4"
+    fhir_url: "fhir-svc.datamesh.svc.cluster.local:8080/baseR4"
+    port: 5000
+    pgsql_host: postgres-db.datamesh.svc.cluster.local
+    pgsql_port: 5432
+    dataext_pgsql_user: dataextractor
+    dataext_pgsql_pwd: th0PxAlO
+    dataext_pgsql_db: mad
+  service:
+    name: dataextract-svc
+    type: ClusterIP
+    port: 5000
+    target_port: 5000
