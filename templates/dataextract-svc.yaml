@@ -12,5 +12,9 @@ spec:
       targetPort: {{ .Values.dataextraction.service.target_port }}
       protocol: TCP
       name: http
+    - port: {{ .Values.dataextraction.service.swagger_port }}
+      targetPort: {{ .Values.dataextraction.service.swagger_target_port }}
+      protocol: TCP
+      name: swagger
   selector:
     app: {{ .Values.dataextraction.name }}

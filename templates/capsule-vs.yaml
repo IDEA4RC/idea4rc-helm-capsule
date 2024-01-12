@@ -13,7 +13,17 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /dataextraction
+        prefix: /dataextdocs/
+    rewrite:
+        uri: "/"
+    route:
+    - destination:
+        host: {{ .Values.dataextraction.service.name }}.{{ .Values.dataextraction.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.dataextraction.service.swagger_port }}
+  - match:
+    - uri:
+        prefix: /dataext/
     rewrite:
         uri: "/"
     route:
@@ -23,7 +33,7 @@ spec:
           number: {{ .Values.dataextraction.service.port }}
   - match:
     - uri:
-        prefix: /etl
+        prefix: /etl/
     rewrite:
         uri: "/"
     route:

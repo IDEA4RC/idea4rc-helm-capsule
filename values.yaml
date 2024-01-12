@@ -122,7 +122,7 @@ fhir:
             key: POSTGRES_PASSWORD
       spring_pgsql_driver: org.postgresql.Driver
       fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
-      #the following params are manually set due to parsing issues with helm
+      #the following params are manually set in the corresponding template due to parsing issues with helm
       #use_apache_addr_strategy: "true"
       #probe_add_paths: "true"
       #mgmt_srv_port: "8081"
@@ -189,8 +189,11 @@ dataextraction:
     dataext_pgsql_user: dataextractor
     dataext_pgsql_pwd: th0PxAlO
     dataext_pgsql_db: mad
+    swagger_port: 8000
   service:
     name: dataextract-svc
     type: ClusterIP
     port: 5000
     target_port: 5000
+    swagger_port: 8000
+    swagger_target_port: 8000

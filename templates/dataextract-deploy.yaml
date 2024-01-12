@@ -32,3 +32,4 @@ spec:
               value: "{{ .Values.dataextraction.server.pgsql_port }}"
           ports:
             - containerPort: {{ .Values.dataextraction.server.port }}
+            - containerPort: {{ .Values.dataextraction.server.swagger_port }}
