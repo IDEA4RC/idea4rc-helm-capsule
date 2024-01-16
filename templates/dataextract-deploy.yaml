@@ -30,6 +30,8 @@ spec:
               value: {{ .Values.dataextraction.server.pgsql_host }}
             - name: POSTGRES_PORT
               value: "{{ .Values.dataextraction.server.pgsql_port }}"
+            - name: SWAGGER_URL
+              value: "{{ .Values.dataextraction.server.swagger_url }}"
           ports:
             - containerPort: {{ .Values.dataextraction.server.port }}
             - containerPort: {{ .Values.dataextraction.server.swagger_port }}
