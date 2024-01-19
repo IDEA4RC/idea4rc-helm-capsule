@@ -13,14 +13,18 @@ spec:
       labels:
         app: postgres-db
     spec:
+      #volumes:
+      #- persistentVolumeClaim: 
+      #    claimName: postgres-pv-claim
+      #  name: postgres-pv
       containers:
         - name: postgres-db
           image: postgres:latest
-          ports:
-            - containerPort: 5432
           #volumeMounts:
           #- mountPath: /var/lib/postgresql/data
-          #  name: postgres-pv-claim
+          #  name: postgres-pv
+          ports:
+            - containerPort: 5432
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -34,6 +38,4 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: idea4rc
-      #volumeMounts:
-      #  - mountPath: /var/lib/postgresql/data
-      #    name: postgres-pv-claim
+        

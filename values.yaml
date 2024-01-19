@@ -189,6 +189,7 @@ dataextraction:
     dataext_pgsql_user: dataextractor
     dataext_pgsql_pwd: th0PxAlO
     dataext_pgsql_db: mad
+    dropdb: "False"
     swagger_port: 8000
     swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
   service:
