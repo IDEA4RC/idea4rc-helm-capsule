@@ -199,3 +199,26 @@ dataextraction:
     target_port: 5000
     swagger_port: 8000
     swagger_target_port: 8000
+omop:
+  namespace: datamesh
+  app: omop-postgres
+  cdm:
+    name: omop-cdm-deployment
+    replicas: "1"
+    image: "ghcr.io/idea4rc/omop-deploy:latest"
+    pullpolicy: IfNotPresent
+    port: "5432"
+  vocab:
+    name: populate-db-job
+    ttl: 120
+    image: "ghcr.io/idea4rc/omop-vocab-uploader:latest"
+    pullpolicy: IfNotPresent
+  db:
+    name: omopdb
+    user: postgres
+    schema: omopcdm
+  service:
+    name: omop-postgres-service
+    port: 5432
+    targetport: 5432
+    type: ClusterIP

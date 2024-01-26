@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.omop.cdm.name }}
+  namespace: {{ .Values.omop.namespace }}
+spec:
+  replicas: {{ .Values.omop.cdm.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.omop.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.omop.app }}
+    spec:
+      containers:
+        - name: {{ .Values.omop.app }}
+          image: {{ .Values.omop.cdm.image }}
+          imagePullPolicy: {{ .Values.omop.cdm.pullpolicy }}
+          ports:
+            - containerPort: {{ .Values.omop.cdm.port }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.omop.db.user }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: {{ .Values.omop.db.name }}

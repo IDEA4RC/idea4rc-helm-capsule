@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.etl.server.name }}
+      #annotations:
+      #  sidecar.istio.io/inject: "false"
     spec:
       containers:
       - name: etl-createdb-job

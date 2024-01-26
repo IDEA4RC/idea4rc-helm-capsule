@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.dataextraction.name }}
+      #annotations:
+      #  sidecar.istio.io/inject: "false"
     spec:
       containers:
       - name: dataextract-createdb-job
