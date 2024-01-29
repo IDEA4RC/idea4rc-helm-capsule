@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fhir.db.name }}
+  namespace: {{ .Values.fhir.server.namespace }}
+spec:
+  replicas: {{ .Values.fhir.db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fhir.db.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fhir.db.name }}
+    spec:
+      #volumes:
+      #- persistentVolumeClaim: 
+      #    claimName: postgres-pv-claim
+      #  name: postgres-pv
+      containers:
+        - name: {{ .Values.fhir.db.name }}
+          image: {{ .Values.fhir.db.image }}
+          #volumeMounts:
+          #- mountPath: /var/lib/postgresql/data
+          #  name: postgres-pv
+          ports:
+            - containerPort: {{ .Values.fhir.db.port }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: {{ .Values.fhir.db.db_name }}
+        

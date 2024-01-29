@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.fhir.db.service.name }}
+  namespace: {{ .Values.fhir.server.namespace }}
+spec:
+  selector:
+    app:  {{ .Values.fhir.db.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.fhir.db.service.port }}
+      targetPort: {{ .Values.fhir.db.service.target_port }} 
+  type: {{ .Values.fhir.db.service.type }}
+  # type: ExternalName
+  # externalName: my.database.example.com

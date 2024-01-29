@@ -1,0 +1,39 @@
+#---
+#kind: PersistentVolume
+#apiVersion: v1
+#metadata:
+#  name: postgres-pv
+#  labels:
+#    type: local
+#    app: postgres-db
+#    namespace: {{ .Values.fhir.server.namespace }}
+##  annotations:
+##    helm.sh/resource-policy: "keep"
+#spec:
+##  persistentVolumeReclaimPolicy: Retain
+#  #storageClassName: manual
+#  capacity:
+#    storage: 200M
+#  accessModes:
+#    - ReadWriteOnce
+#  hostPath:
+#    path: "/mnt/pgpvol"
+#
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: postgres-pv-claim
+#  namespace: {{ .Values.fhir.server.namespace }}
+##annotations:
+##  helm.sh/resource-policy: "keep"
+#spec:
+#  selector:
+#    matchLabels:
+#      app: postgres-db
+#  #storageClassName: manual
+#  accessModes:
+#  - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 200M

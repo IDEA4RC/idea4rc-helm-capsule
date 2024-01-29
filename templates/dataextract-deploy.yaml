@@ -3,9 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.dataextraction.name }}
-  namespace: {{ .Values.dataextraction.namespace }}  
+  namespace: {{ .Values.dataextraction.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.dataextraction.server.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.dataextraction.name }}
@@ -19,17 +19,24 @@ spec:
           image: {{ .Values.dataextraction.server.image }}
           env:
             - name: CAPSULEFHIR_URL
-              value: {{ .Values.dataextraction.server.fhir_url }}
+              value: "{{ .Values.fhir.service.name }}.{{ .Values.fhir.server.namespace }}.cluster.local:8080/baseR4"
             - name: POSTGRES_USER
-              value: {{ .Values.dataextraction.server.dataext_pgsql_user }}
+              valueFrom:
+                secretKeyRef:
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_USER
             - name: POSTGRES_PASSWORD
-              value: {{ .Values.dataextraction.server.dataext_pgsql_pwd }}
+              valueFrom:
+                secretKeyRef:
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.dataextraction.server.dataext_pgsql_db }}
+              value: {{ .Values.dataextraction.db.db_name }}
             - name: POSTGRES_HOST
               value: {{ .Values.dataextraction.server.pgsql_host }}
+              value: "{{ .Values.dataextraction.db.name }}.{{ .Values.dataextraction.namespace }}.cluster.local:8080"
             - name: POSTGRES_PORT
-              value: "{{ .Values.dataextraction.server.pgsql_port }}"
+              value: "{{ .Values.dataextraction.db.port }}"
             - name: SWAGGER_URL
               value: "{{ .Values.dataextraction.server.swagger_url }}"
             - name: DROP_DB

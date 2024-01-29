@@ -1,8 +1,8 @@
 prometheus_enable:  True
 kiali_enable:  True
 
-postgres_user: YWRtaW4=
-postgres_password: YWRtaW4=
+#postgres_user: YWRtaW4=
+#postgres_password: YWRtaW4=
 
 idea_gw_hosts: "*"
 mtls_mode: STRICT
@@ -132,6 +132,17 @@ fhir:
     affinity: {}
     tolerations: []
     topology_spread_constraints: []
+  db:
+    name: postgres-db
+    replicas: 1
+    image: postgres:latest
+    port: 5432
+    db_name: idea4rc
+    service:
+      name: postgres-db
+      port: 5432
+      target_port: 5432
+      type: ClusterIP
 etl:
   namespace: datamesh
   server:
@@ -181,14 +192,11 @@ dataextraction:
   namespace: datamesh
   server:
     image: "etl-registry-217.172.12.193.sslip.io/idea4rc_ai_dataextractionjobs:latest"
-    #fhir_url: "https://hapi.fhir.org/baseR4"
-    fhir_url: "fhir-svc.datamesh.svc.cluster.local:8080/baseR4"
+    replicas: 1
+    #fhir_url: "fhir-svc.datamesh.svc.cluster.local:8080/baseR4"
     port: 5000
-    pgsql_host: postgres-db.datamesh.svc.cluster.local
-    pgsql_port: 5432
-    dataext_pgsql_user: dataextractor
-    dataext_pgsql_pwd: th0PxAlO
-    dataext_pgsql_db: mad
+    #pgsql_host: postgres-db.datamesh.svc.cluster.local
+    #pgsql_port: 5432
     dropdb: "False"
     swagger_port: 8000
     swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
@@ -199,6 +207,17 @@ dataextraction:
     target_port: 5000
     swagger_port: 8000
     swagger_target_port: 8000
+  db:
+    name: dataextract-postgres-db
+    replicas: 1
+    image: postgres:latest
+    port: 5432
+    db_name: mad
+    service:
+      name: dataextract-postgres-db
+      port: 5432
+      target_port: 5432
+      type: ClusterIP
 omop:
   namespace: datamesh
   app: omop-postgres
@@ -207,7 +226,7 @@ omop:
     replicas: "1"
     image: "ghcr.io/idea4rc/omop-deploy:latest"
     pullpolicy: IfNotPresent
-    port: "5432"
+    port: 5432
   vocab:
     name: populate-db-job
     ttl: 120
@@ -220,5 +239,5 @@ omop:
   service:
     name: omop-postgres-service
     port: 5432
-    targetport: 5432
+    target_port: 5432
     type: ClusterIP

@@ -5,14 +5,17 @@ metadata:
 data:
   OMOP_DBMS: "postgresql"
   OMOP_SERVER: "host.docker.internal"
-  OMOP_PORT: {{ .Values.omop.cdm.port }}
+  OMOP_PORT: "{{ .Values.omop.cdm.port }}"
   OMOP_USER: {{ .Values.omop.db.user }}
-  #OMOP_PASSWORD: "mysecretpassword"
-  OMOP_PASSWORD:
-    valueFrom:
-      secretKeyRef:
-        name: omop-secrets
-        key: POSTGRES_PASSWORD
+
+  ## This needs fixing! can't use secret inside configmap.
+  #OMOP_PASSWORD:
+  #  valueFrom:
+  #    secretKeyRef:
+  #      name: omop-secrets
+  #      key: POSTGRES_PASSWORD
+  OMOP_PASSWORD: mysecretpassword
+
   OMOP_DATABASE: {{ .Values.omop.db.name }}
   OMOP_SCHEMA: {{ .Values.omop.db.schema }}
   CELERY_BROKER_URL: "amqp://guest:guest@rabbitmq:5672/"

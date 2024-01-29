@@ -1,70 +1,70 @@
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: dataextract-createdb-job
-  namespace: {{ .Values.dataextraction.namespace }}
-  labels:
-    app: {{ .Values.dataextraction.name }}
-spec:
-  ttlSecondsAfterFinished: 5
-  template:
-    metadata:
-      labels:
-        app: {{ .Values.dataextraction.name }}
-      #annotations:
-      #  sidecar.istio.io/inject: "false"
-    spec:
-      containers:
-      - name: dataextract-createdb-job
-        image: postgres:11-alpine
-        command:
-          - sh
-          - -c
-          - >
-              while ! pg_isready -U postgres -h $ACCESS_SVC_CONNSTR; do sleep 1; done;
-              echo "${SQLCOMMAND}" | psql --file=- --echo-queries -d "$DBNAME" -h "${ACCESS_SVC_CONNSTR}" \
-                --set ON_ERROR_STOP=1 --set dbname="${DBNAME}";
-              echo "${SQLCOMAND2}"| PGPASSWORD=$DATAEXTRACT_PGSQL_PASSWORD psql -U $DATAEXTRACT_PGSQL_USER -d $DATAEXTRACT_DB_NAME \
-                --file=- --echo-queries -h "${ACCESS_SVC_CONNSTR}";
-        env:
-        - name: DBNAME
-          value: idea4rc
-        - name: ACCESS_SVC_CONNSTR
-          value: postgres-db.datamesh.svc.cluster.local
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_PASSWORD
-        - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: POSTGRES_USER
-        - name: DATAEXTRACT_PGSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: dataextract-secret
-              key: DATAEXTRACT_PGSQL_USER
-        - name: DATAEXTRACT_PGSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: dataextract-secret
-              key: DATAEXTRACT_PGSQL_PASSWORD
-        - name: DATAEXTRACT_DB_NAME
-          value: {{ .Values.dataextraction.server.dataext_pgsql_db}}
-        - name: SQLCOMMAND
-          value: |
-            CREATE USER "{{ .Values.dataextraction.server.dataext_pgsql_user }}" WITH PASSWORD '{{ .Values.dataextraction.server.dataext_pgsql_pwd }}';
-            CREATE DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}";
-            GRANT ALL PRIVILEGES ON DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}" TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
-            ALTER DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}" OWNER TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
-            \gexec
-        - name: SQLCOMMAND2
-          value: |
-            GRANT ALL ON SCHEMA "public" TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
-            \gexec
-      restartPolicy: OnFailure
-      #activeDeadlineSeconds: 30
-  backoffLimit: 5
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: dataextract-createdb-job
+#  namespace: {{ .Values.dataextraction.namespace }}
+#  labels:
+#    app: {{ .Values.dataextraction.name }}
+#spec:
+#  ttlSecondsAfterFinished: 5
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ .Values.dataextraction.name }}
+#      #annotations:
+#      #  sidecar.istio.io/inject: "false"
+#    spec:
+#      containers:
+#      - name: dataextract-createdb-job
+#        image: postgres:11-alpine
+#        command:
+#          - sh
+#          - -c
+#          - >
+#              while ! pg_isready -U postgres -h $ACCESS_SVC_CONNSTR; do sleep 1; done;
+#              echo "${SQLCOMMAND}" | psql --file=- --echo-queries -d "$DBNAME" -h "${ACCESS_SVC_CONNSTR}" \
+#                --set ON_ERROR_STOP=1 --set dbname="${DBNAME}";
+#              echo "${SQLCOMAND2}"| PGPASSWORD=$DATAEXTRACT_PGSQL_PASSWORD psql -U $DATAEXTRACT_PGSQL_USER -d $DATAEXTRACT_DB_NAME \
+#                --file=- --echo-queries -h "${ACCESS_SVC_CONNSTR}";
+#        env:
+#        - name: DBNAME
+#          value: idea4rc
+#        - name: ACCESS_SVC_CONNSTR
+#          value: postgres-db.datamesh.svc.cluster.local
+#        - name: PGPASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: postgres-secret
+#              key: POSTGRES_PASSWORD
+#        - name: PGUSER
+#          valueFrom:
+#            secretKeyRef:
+#              name: postgres-secret
+#              key: POSTGRES_USER
+#        - name: DATAEXTRACT_PGSQL_USER
+#          valueFrom:
+#            secretKeyRef:
+#              name: dataextract-secret
+#              key: DATAEXTRACT_PGSQL_USER
+#        - name: DATAEXTRACT_PGSQL_PASSWORD
+#          valueFrom:
+#            secretKeyRef:
+#              name: dataextract-secret
+#              key: DATAEXTRACT_PGSQL_PASSWORD
+#        - name: DATAEXTRACT_DB_NAME
+#          value: {{ .Values.dataextraction.server.dataext_pgsql_db}}
+#        - name: SQLCOMMAND
+#          value: |
+#            CREATE USER "{{ .Values.dataextraction.server.dataext_pgsql_user }}" WITH PASSWORD '{{ .Values.dataextraction.server.dataext_pgsql_pwd }}';
+#            CREATE DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}";
+#            GRANT ALL PRIVILEGES ON DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}" TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
+#            ALTER DATABASE "{{ .Values.dataextraction.server.dataext_pgsql_db }}" OWNER TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
+#            \gexec
+#        - name: SQLCOMMAND2
+#          value: |
+#            GRANT ALL ON SCHEMA "public" TO "{{ .Values.dataextraction.server.dataext_pgsql_user }}";
+#            \gexec
+#      restartPolicy: OnFailure
+#      #activeDeadlineSeconds: 30
+#  backoffLimit: 5

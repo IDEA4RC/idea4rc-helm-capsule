@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-db
-  namespace: {{ .Values.fhir.server.namespace }}
+  name: {{ .Values.dataextraction.db.name }}
+  namespace: {{ .Values.dataextraction.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.dataextraction.db.replicas }}
   selector:
     matchLabels:
-      app: postgres-db
+      app:  {{ .Values.dataextraction.db.name }}
   template:
     metadata:
       labels:
-        app: postgres-db
+        app:  {{ .Values.dataextraction.db.name }}
     spec:
       #volumes:
       #- persistentVolumeClaim: 
@@ -19,23 +19,23 @@ spec:
       #  name: postgres-pv
       containers:
         - name: postgres-db
-          image: postgres:latest
+          image: {{ .Values.dataextraction.db.image }}
           #volumeMounts:
           #- mountPath: /var/lib/postgresql/data
           #  name: postgres-pv
           ports:
-            - containerPort: 5432
+            - containerPort: {{ .Values.dataextraction.db.port }}
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_USER
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_PASSWORD
             - name: POSTGRES_DB
-              value: idea4rc
+              value: {{ .Values.dataextraction.db.db_name }}
         
