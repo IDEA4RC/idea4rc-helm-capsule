@@ -140,6 +140,7 @@ fhir:
       port: 5432
       target_port: 5432
       type: ClusterIP
+
 etl:
   namespace: datamesh
   server:
@@ -167,6 +168,7 @@ etl:
     type: ClusterIP
     port: 4001
     target_port: 4001
+
 aerospike:
   name: aerospike
   namespace: datamesh
@@ -180,6 +182,7 @@ aerospike:
     type: Clus  terIP
     port: 3000
     target_port: 3000
+
 dataextraction:
   name: dataextraction
   namespace: datamesh
@@ -208,6 +211,7 @@ dataextraction:
       port: 5432
       target_port: 5432
       type: ClusterIP
+
 omop:
   namespace: datamesh
   app: omop-postgres
@@ -230,4 +234,17 @@ omop:
     name: omop-postgres-service
     port: 5432
     target_port: 5432
+    type: ClusterIP
+
+workbench:
+  name: capsule-workbench
+  namespace: datamesh
+  replicas: 1
+  #image: ghcr.io/idea4rc/capsule-workbench:latest
+  image: etl-registry-217.172.12.193.sslip.io/eng/idea4rc/capsule-workbench:latest
+  port: 80
+  service:
+    name: workbench-svc
+    port: 80
+    target_port: 80
     type: ClusterIP
