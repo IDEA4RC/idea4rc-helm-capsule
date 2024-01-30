@@ -19,7 +19,7 @@ spec:
           image: {{ .Values.dataextraction.server.image }}
           env:
             - name: CAPSULEFHIR_URL
-              value: "{{ .Values.fhir.service.name }}.{{ .Values.fhir.server.namespace }}.cluster.local:8080/baseR4"
+              value: "{{ .Values.fhir.service.name }}.{{ .Values.fhir.server.namespace }}.svc.cluster.local:8080/baseR4"
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
@@ -33,8 +33,7 @@ spec:
             - name: POSTGRES_DB
               value: {{ .Values.dataextraction.db.db_name }}
             - name: POSTGRES_HOST
-              value: {{ .Values.dataextraction.server.pgsql_host }}
-              value: "{{ .Values.dataextraction.db.name }}.{{ .Values.dataextraction.namespace }}.cluster.local:8080"
+              value: "{{ .Values.dataextraction.db.service.name }}.{{ .Values.dataextraction.namespace }}.svc.cluster.local"
             - name: POSTGRES_PORT
               value: "{{ .Values.dataextraction.db.port }}"
             - name: SWAGGER_URL

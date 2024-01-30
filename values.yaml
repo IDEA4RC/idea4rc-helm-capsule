@@ -1,9 +1,6 @@
 prometheus_enable:  True
 kiali_enable:  True
 
-#postgres_user: YWRtaW4=
-#postgres_password: YWRtaW4=
-
 idea_gw_hosts: "*"
 mtls_mode: STRICT
 
@@ -18,7 +15,7 @@ auth_enable: True
 jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
 jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
 
-#roles for authentication can be declared here
+#multiple roles for authentication can be declared here
 auth_policies:
   medic:
     policy_name: require-jwt-medic
@@ -180,7 +177,7 @@ aerospike:
     mtls_mode: PERMISSIVE
   service:
     name: aerospike-svc
-    type: ClusterIP
+    type: Clus  terIP
     port: 3000
     target_port: 3000
 dataextraction:
