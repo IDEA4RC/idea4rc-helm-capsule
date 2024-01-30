@@ -153,22 +153,18 @@ etl:
     #proxy: "false"
     server_dns: "https://"
     hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
-    spring_datasource: "jdbc:postgresql://postgres-db.datamesh.svc.cluster.local:5432/etl?autoReconnect=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8"
-    spring_data_source_username:
-      valueFrom:
-        secretKeyRef:
-          name: postgres-secret
-          key: POSTGRES_USER
-      spring_data_source_password:
-        valueFrom:
-          secretKeyRef:
-            name: postgres-secret
-            key: POSTGRES_PASSWORD
-    etl_pgsql_user: etl
-    etl_pgsql_password: 9GNlI0dh
-    db_name: etl
     spring_driver: org.postgresql.Driver
-    aerospike_host: aerospike-svc.datamesh.svc.cluster.local
+  db:
+    name: etl
+    replicas: 1
+    image: postgres:latest
+    port: 5432
+    db_name: mad
+    service:
+      name: etl-postgres-db
+      port: 5432
+      target_port: 5432
+      type: ClusterIP
   service:
     name: etl-svc
     type: ClusterIP
@@ -193,10 +189,7 @@ dataextraction:
   server:
     image: "etl-registry-217.172.12.193.sslip.io/idea4rc_ai_dataextractionjobs:latest"
     replicas: 1
-    #fhir_url: "fhir-svc.datamesh.svc.cluster.local:8080/baseR4"
     port: 5000
-    #pgsql_host: postgres-db.datamesh.svc.cluster.local
-    #pgsql_port: 5432
     dropdb: "False"
     swagger_port: 8000
     swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"

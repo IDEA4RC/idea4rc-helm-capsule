@@ -18,15 +18,6 @@ spec:
         - name: {{ .Values.etl.server.name }}
           image: {{ .Values.etl.server.image }}
           env:
-            - name: DB_DEFAULT_USER
-              value: (( .Values.postgres_user ))
-            - name: DB_PASSWORD
-              value: (( .Values.postgres_password ))
-            - name: DB_DEFAULT
-              value: postgres
-            - name: SERVER_PROXY
-              value: "false"
-              #value: {{ .Values.etl.server.proxy }}
             - name: ETL_PGSQL_USER
               valueFrom:
                 secretKeyRef:
@@ -37,20 +28,24 @@ spec:
                 secretKeyRef:
                   name: etl-secret
                   key: ETL_PGSQL_PASSWORD
-            - name: ETL_DB_NAME
-              value: {{ .Values.etl.server.dbname}}            
+            - name: SERVER_PROXY
+              value: "false"
             - name: SERVER_DNS
               value: {{ .Values.etl.server.server_dns }}
+            - name: AEROSPIKE_HOST
+              value: {{ .Values.aerospike.service.name }}.{{ .Values.aerospike.namespace }}.svc.cluster.local
+            - name: SPRING_DATA_SOURCE
+              value: "jdbc:postgresql://{{ .Values.etl.db.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local:{{ .Values.etl.db.service.port }}/etl?autoReconnect=true&amp;useSSL=false&amp;createDatabaseIfNotExist=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8"
             - name: SPRING_APPLICATION_JSON
               value: 
                 "{
                 \"spring.jpa.properties.hibernate.dialect\":\"{{ .Values.etl.server.hibernate_dialect }}\",
-                \"spring.datasource.url\":\"{{ .Values.etl.server.spring_datasource }}\",
-                \"spring.datasource.username\":\"{{ .Values.etl.server.etl_pgsql_user }}\",
-                \"spring.datasource.password\":\"{{ .Values.etl.server.etl_pgsql_password }}\",
+                \"spring.datasource.url\":\"${SPRING_DATA_SOURCE}\",
+                \"spring.datasource.username\":\"${ETL_PGSQL_USER}\",
+                \"spring.datasource.password\":\"${ETL_PGSQL_PASSWORD}\",
                 \"spring.datasource.driver-class-name\":\"{{ .Values.etl.server.spring_driver }}\",
                 \"server.port\":\"{{ .Values.etl.server.port }}\",
-                \"spring.aerospike.hosts\":\"{{ .Values.etl.server.aerospike_host }}\",
+                \"spring.aerospike.hosts\":\"${AEROSPIKE_HOST}\",
                 \"spring.data.aerospike.namespace\":\"{{ .Values.aerospike.server.keystore_namespace }}\"
                 }"
                 #\"management.endpoints.web.exposure.include\":\"restart\"
