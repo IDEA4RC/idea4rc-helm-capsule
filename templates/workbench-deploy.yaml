@@ -1,4 +1,4 @@
-#Data Extraction Jobs Deployment
+#Capsule Workbench Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +19,6 @@ spec:
           image: {{ .Values.workbench.image }}
           env:
             - name: BACK_END_BASE_PATH
-              value: "http://{{ .Values.etl.service.name }}.{{ .Values.etl.service.namespace }}.svc.cluster.local:{{ .Values.etl.service.port }}/"
+              value: "http://{{ .Values.etl.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local:{{ .Values.etl.service.port }}/"
           ports:
             - containerPort: {{ .Values.workbench.port }}

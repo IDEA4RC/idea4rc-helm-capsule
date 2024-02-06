@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.revproxy.server.name}}
+  namespace: {{ .Values.revproxy.namespace}}
+spec:
+  replicas: {{ .Values.revproxy.server.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.revproxy.app}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.revproxy.app}}
+    spec:
+      containers:
+        - name: {{ .Values.revproxy.server.name }}
+          image: {{ .Values.revproxy.server.image }}
+          ports:
+            - containerPort: {{ .Values.revproxy.server.port }}
+          volumeMounts:
+            - name: workbench-virtualhost
+              mountPath: /usr/local/apache2/conf/extra/workbench.conf
+              #readOnly: true
+              subPath: workbench.conf
+            - name: httpd-config
+              mountPath: /usr/local/apache2/conf/httpd.conf
+              #readOnly: true
+              subPath: httpd.conf
+      volumes:
+        - name: workbench-virtualhost
+          configMap: 
+            name: workbench-virtualhost
+            items:
+              - key: workbench.conf
+                path: workbench.conf
+        - name: httpd-config
+          configMap: 
+            name: httpd-config
+            items:
+              - key: httpd.conf
+                path: httpd.conf

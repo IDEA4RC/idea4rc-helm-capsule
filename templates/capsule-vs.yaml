@@ -45,10 +45,10 @@ spec:
     - uri:
         prefix: /workbench/
     rewrite:
-        uri: "/"
+        uri: "/workbench/"
     route:
     - destination:
-        host: {{ .Values.workbench.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local
+        host: {{ .Values.revproxy.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local
         port:
           number: {{ .Values.workbench.service.port }}
   - match:

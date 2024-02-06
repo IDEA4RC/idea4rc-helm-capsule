@@ -1,3 +1,5 @@
+
+
 prometheus_enable:  True
 kiali_enable:  True
 
@@ -245,6 +247,21 @@ workbench:
   port: 80
   service:
     name: workbench-svc
+    port: 80
+    target_port: 80
+    type: ClusterIP
+
+revproxy:
+  namespace: datamesh
+  app: revproxy
+  server:
+    name: revproxy
+    replicas: 1
+    image: httpd:latest
+    port: 80
+    capsule_public_host: "192.168.1.102"
+  service:
+    name: revproxy-svc
     port: 80
     target_port: 80
     type: ClusterIP

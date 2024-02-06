@@ -1,0 +1,26 @@
+---
+#Apache capsule workbench virtualhost
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workbench-virtualhost
+  namespace: {{ .Values.revproxy.namespace }}
+data:
+  workbench.conf: |-
+    <VirtualHost *:80>
+      ServerName {{ .Values.revproxy.server.capsule_public_host }}
+      ProxyRequests Off
+      ProxyHTMLEnable On
+
+      ProxyPass /workbench/  http://{{ .Values.workbench.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local:80/
+      ProxyPassReverse /workbench/  http://{{ .Values.workbench.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local:80/
+
+      <Location "/workbench/">
+    	  
+        ProxyHTMLURLMap / /workbench/
+        
+        AddOutputFilterByType SUBSTITUTE text/jscript application/x-javascript application/javascript text/x-javascript
+        Substitute "s|assets|workbench/assets|ni"
+
+      </Location>
+    </VirtualHost>

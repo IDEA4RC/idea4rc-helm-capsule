@@ -1,5 +1,7 @@
 ---
 #FHIR deployment
+# add custom application to
+# target: /app/config/application.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
