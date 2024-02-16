@@ -65,6 +65,9 @@ spec:
               value: {{ .Values.fhir.server.spring.spring_pgsql_driver }}
             - name: spring.jpa.properties.hibernate.dialect
               value: {{ .Values.fhir.server.spring.fhir_hibernate_dialect }}
+            #SPRING_CONFIG_LOCATION Doesn't work, see: https://github.com/hapifhir/hapi-fhir/issues/5147
+            #- name: SPRING_CONFIG_LOCATION
+            #  value: {{ .Values.fhir.server.customConfigPath }}/{{ .Values.fhir.server.customConfigName }}
             - name: HAPI_FHIR_USE_APACHE_ADDRESS_STRATEGY
               #value: {{ .Values.fhir.server.spring.use_apache_addr_strategy }}
               value: "true"
@@ -82,16 +85,20 @@ spec:
             {{ toYaml .Values.fhir.server.extra_env | nindent 12 }}
             {{- end }}
           volumeMounts:
+            - name: custom-fhir-application
+              mountPath: {{ .Values.fhir.server.customConfigPath }}/{{ .Values.fhir.server.customConfigName }}
+              readOnly: true
+              subPath: {{ .Values.fhir.server.customConfigName }}
             - mountPath: /tmp
               name: tmp-volume
             - mountPath: /app/target
               name: lucenefiles-volume
-          {{- if .Values.extraConfig }}
-            - name: application-extra-config
-              mountPath: /app/config/application-extra.yaml
-              readOnly: true
-              subPath: application-extra.yaml
-          {{- end }}
+          #{{- if .Values.extraConfig }}
+          #  - name: application-extra-config
+          #    mountPath: /app/config/application-extra.yaml
+          #    readOnly: true
+          #    subPath: application-extra.yaml
+          #{{- end }}
       {{- with .Values.fhir.server.node_selector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -113,3 +120,9 @@ spec:
           emptyDir: {}
         - name: lucenefiles-volume
           emptyDir: {}
+        - name: custom-fhir-application
+          configMap: 
+            name: custom-fhir-application
+            #items:
+            #  - key: {{ .Values.fhir.server.customConfigName }}
+            #    path: {{ .Values.fhir.server.customConfigName }}
