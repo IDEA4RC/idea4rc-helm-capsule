@@ -13,11 +13,14 @@ spec:
           imagePullPolicy: {{ .Values.omop.vocab.pullpolicy }}
           env:
             - name: VOCAB_PG_HOST
-              value: {{ .Values.omop.service.name }}
+              value: {{ .Values.omop.service.name }}.{{ .Values.omop.namespace }}.svc.cluster.local
             - name: VOCAB_PG_DATABASE
               value: {{ .Values.omop.db.name }}
             - name: VOCAB_PG_USER
-              value: {{ .Values.omop.db.user }}
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secrets
+                  key: POSTGRES_USER
             - name: VOCAB_PG_PASSWORD
               valueFrom:
                 secretKeyRef:

@@ -232,7 +232,6 @@ omop:
     pullpolicy: IfNotPresent
   db:
     name: omopdb
-    user: postgres
     schema: omopcdm
   service:
     name: omop-postgres-service
