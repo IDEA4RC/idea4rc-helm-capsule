@@ -35,11 +35,12 @@ The main configuration file is the ```values.yaml``` at the root of the chart. T
 
 Another way to alter the chart configuration is by overriding values when executing the install command by leveraging the ```--set``` switch. Multiple values can be overridden by passing multiple switches.
 
-:warning: **remeber to change the default user/passwords in the following "secret" files:
+:warning: remeber to change the default user/passwords in the following "secret" files before installing:
   - dataextract-postgres-secret.yaml 
   - etl-postgres-secret.yaml 
   - fhir-postgres-secret.yaml 
-  - omop-secrets.yaml **
+  - omop-secrets.yaml
+  - celery-secrets.yaml
 
 ## How to Deploy
 

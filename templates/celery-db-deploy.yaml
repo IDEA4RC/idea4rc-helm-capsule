@@ -1,0 +1,58 @@
+#Celery DB deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.celery.db.name }}
+  namespace: {{ .Values.celery.namespace }}
+spec:
+  replicas: {{ .Values.celery.db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.celery.db.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.celery.db.name }}
+    spec:
+      containers:
+      - name: {{ .Values.celery.db.name }}
+        image: {{ .Values.celery.db.image }}
+        ports:
+          - containerPort:  {{ .Values.celery.db.port }}
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: celery-secrets
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: celery-secrets
+                key: POSTGRES_USER
+          - name: POSTGRES_DB
+            value: {{ .Values.celery.db.database }}
+          - name: CELERY_BROKER_URL
+            value: "amqp://guest:guest@{{ .Values.rabbitmq.service.name }}.{{ .Values.rabbitmq.namespace }}.svc.cluster.local:{{ .Values.rabbitmq.service.rabbit_port }}/"
+          - name: CELERY_RESULT_BACKEND
+            value: "db+postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ .Values.celery.service.name }}.{{ .Values.celery.namespace }}.svc.cluster.local:{{ .Values.celery.service.target_port}}/{{ .Values.celery.db.database }}"
+          - name: OMOP_DBMS
+            values: postgres
+          - name: OMOP_SERVER
+            value: {{ .Values.omop.service.name }}.{{ .Values.omop.namespace }}.svc.cluster.local
+          - name: OMOP_PORT
+            value: {{ .Values.omop.service.port }}
+          - name: OMOP_USER
+            valueFrom:
+              secretKeyRef:
+                name: omop-secrets
+                key: POSTGRES_USER
+          - name: OMOP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: omop-secrets
+                key: POSTGRES_PASSWORD
+          - name: OMOP_DATABASE
+            value: {{ .Values.omop.db.name }}
+          - name: OMOP_CDM_SCHEMA
+            value: {{ .Values.omop.db.schema }}

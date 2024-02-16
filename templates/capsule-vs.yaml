@@ -1,4 +1,3 @@
----
 #Capsule virtual service
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -11,6 +10,16 @@ spec:
   gateways:
   - {{ .Values.istio_gateway_name }}
   http:
+  - match:
+    - uri:
+        prefix: /ohdsi-api/
+    rewrite:
+        uri: "/"
+    route:
+    - destination:
+        host: {{ .Values.ohdsi.service.name }}.{{ .Values.ohdsi.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.ohdsi.service.port }}
   - match:
     - uri:
         prefix: /dataextdocs/
