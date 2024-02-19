@@ -7,4 +7,4 @@ description: Helm Chart for IDEA4RC Capsule deployment
 
 type: application
 version: 24.02.19
-appVersion: "0.7.3"
+appVersion: "0.7.4"

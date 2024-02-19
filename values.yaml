@@ -281,7 +281,7 @@ rabbitmq:
 ohdsi:
   name: ohdsi-api
   namespace: datamesh
-  replicas: 1
+  replicas: "1"
   image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
   imagePullPolicy: IfNotPresent
   port: 8080

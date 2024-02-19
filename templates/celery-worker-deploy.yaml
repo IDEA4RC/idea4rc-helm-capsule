@@ -40,7 +40,7 @@ spec:
           - name: OMOP_SERVER
             value: {{ .Values.omop.service.name }}.{{ .Values.omop.namespace }}.svc.cluster.local
           - name: OMOP_PORT
-            value: {{ .Values.omop.service.port }}
+            value: "{{ .Values.omop.service.port }}"
           - name: OMOP_USER
             valueFrom:
               secretKeyRef:
