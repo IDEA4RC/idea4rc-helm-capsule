@@ -271,11 +271,11 @@ rabbitmq:
   replicas: 1
   image: rabbitmq:3-management
   port:
-    rabbit_port: 5454
+    rabbit_port: 5672
     management_port: 15672
   service:
     name: rabbitmq-service
-    rabbit_port: 5454
+    rabbit_port: 5672
     management_port: 15672
 
 ohdsi:

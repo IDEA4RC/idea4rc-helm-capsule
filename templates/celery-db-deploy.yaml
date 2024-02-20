@@ -35,9 +35,9 @@ spec:
           - name: CELERY_BROKER_URL
             value: "amqp://guest:guest@{{ .Values.rabbitmq.service.name }}.{{ .Values.rabbitmq.namespace }}.svc.cluster.local:{{ .Values.rabbitmq.service.rabbit_port }}/"
           - name: CELERY_RESULT_BACKEND
-            value: "db+postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ .Values.celery.service.name }}.{{ .Values.celery.namespace }}.svc.cluster.local:{{ .Values.celery.service.port}}/{{ .Values.celery.db.database }}"
+            value: "db+postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@{{ .Values.celery.service.name }}.{{ .Values.celery.namespace }}.svc.cluster.local:{{ .Values.celery.service.port}}/{{ .Values.celery.db.database }}"
           - name: OMOP_DBMS
-            values: postgres
+            value: postgres
           - name: OMOP_SERVER
             value: {{ .Values.omop.service.name }}.{{ .Values.omop.namespace }}.svc.cluster.local
           - name: OMOP_PORT
