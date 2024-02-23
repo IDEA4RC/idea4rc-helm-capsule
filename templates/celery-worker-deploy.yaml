@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.celery.worker.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/celery-secrets.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.celery.worker.name }}

@@ -49,7 +49,6 @@ fhir:
     name: fhir-server
     namespace: datamesh
     replicas: 1
-    pod_annotations: {}
     image_pull_secrets: []
     pod_security_context: {}
     security_context:
@@ -108,17 +107,6 @@ fhir:
       #   cpu: 100m
       #   memory: 128Mi
     spring:
-      spring_data_source_url: jdbc:postgresql://postgres-db.datamesh.svc.cluster.local:5432/idea4rc
-      spring_data_source_username:
-        valueFrom:
-          secretKeyRef:
-            name: postgres-secret
-            key: POSTGRES_USER
-      spring_data_source_password:
-        valueFrom:
-          secretKeyRef:
-            name: postgres-secret
-            key: POSTGRES_PASSWORD
       spring_pgsql_driver: org.postgresql.Driver
       fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
       #the following params are manually set in the corresponding template due to parsing issues with helm

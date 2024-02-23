@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.omop.app }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/omop-secrets.yaml") . | sha256sum }}
     spec:
       containers:
         - name: {{ .Values.omop.app }}
@@ -21,7 +23,10 @@ spec:
             - containerPort: {{ .Values.omop.cdm.port }}
           env:
             - name: POSTGRES_USER
-              value: {{ .Values.omop.db.user }}
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secrets
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

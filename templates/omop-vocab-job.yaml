@@ -6,6 +6,9 @@ metadata:
 spec:
   ttlSecondsAfterFinished: {{ .Values.omop.vocab.ttl }}
   template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/omop-secrets.yaml") . | sha256sum }}
     spec:
       containers:
         - name: populate-omop-db

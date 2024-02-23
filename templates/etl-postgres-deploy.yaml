@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app:  {{ .Values.etl.db.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/etl-postgres-secret.yaml") . | sha256sum }}
     spec:
       #volumes:
       #- persistentVolumeClaim: 

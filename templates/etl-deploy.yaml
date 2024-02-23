@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.etl.server.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/etl-postgres-secret.yaml") . | sha256sum }}
     spec:
       containers:
         - name: {{ .Values.etl.server.name }}

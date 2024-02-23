@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app:  {{ .Values.dataextraction.db.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/dataextract-postgres-secret.yaml") . | sha256sum }}
     spec:
       #volumes:
       #- persistentVolumeClaim: 

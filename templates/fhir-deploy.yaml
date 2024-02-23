@@ -1,7 +1,5 @@
 ---
 #FHIR deployment
-# add custom application to
-# target: /app/config/application.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,10 +14,9 @@ spec:
     metadata:
       labels:
         app: {{ .Values.fhir.server.name }}
-      {{- with .Values.fhir.server.pod_annotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir-application-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir-postgres-secret.yaml") . | sha256sum }}
     spec:
       {{- with .Values.fhir.server.image_pull_secrets }}
       imagePullSecrets:
@@ -56,11 +53,17 @@ spec:
             {{- toYaml .Values.fhir.server.resources | nindent 12 }}
           env:
             - name: SPRING_DATASOURCE_URL
-              value: {{ .Values.fhir.server.spring.spring_data_source_url }}
+              value: "jdbc:postgresql://{{ .Values.fhir.db.service.name }}.{{ .Values.fhir.server.namespace }}.svc.cluster.local:{{ .Values.fhir.db.service.port }}/{{ .Values.fhir.db.db_name}}"
             - name: SPRING_DATASOURCE_USERNAME
-              {{- toYaml .Values.fhir.server.spring.spring_data_source_username | nindent 14 }}
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
             - name: SPRING_DATASOURCE_PASSWORD
-              {{- toYaml .Values.fhir.server.spring.spring_data_source_password | nindent 14 }}
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
             - name: SPRING_DATASOURCE_DRIVERCLASSNAME
               value: {{ .Values.fhir.server.spring.spring_pgsql_driver }}
             - name: spring.jpa.properties.hibernate.dialect
