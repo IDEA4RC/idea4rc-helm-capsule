@@ -28,6 +28,17 @@ auth_policies:
     roles: "Patient"
     namespace: datamesh
 
+#Custom storage class for k8s. 
+#if enabled, it will retain used volumes instead of deleting them when deleting a deployed capsule.
+#This volumes WILL NOT be reused when re-installing the capsule after deleting it - new volume will be used instead. This 
+idea4rc_sc:
+  enabled: True
+  is_default: "true"
+  name: idea4rc-hostpath
+  provisioner: microk8s.io/hostpath
+  reclaimpolicy: Retain
+  volumebindingmode: Immediate
+
 #FHIR server configuration
 fhir:
   service:
