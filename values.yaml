@@ -303,5 +303,5 @@ celery:
     image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
   service:
     name: celery-db-service
-    port: 5454
+    port: 5432
     target_port: 5432
