@@ -9,6 +9,12 @@ For a quick start, download this repo and run the following command on your Kube
 helm install idea4rc-capsule idea4rc-helm-capsule
 ```
 
+Or, if you're deploying the capsule following the microk8s-playbook, then run specifying the VM's public IP in "revproxy.capsule_public_host" and enabling/disabling keystone authentincation with auth_enable:
+
+```
+microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set auth_enable=False --set revproxy.capsule_public_host="217.172.12.216" --set prometheus_enable=False --set kiali_enable=False
+```
+
 ## Capsule components
 This helm chart contains the following IDEA4RC capsule core components:
 - FHIR server

@@ -257,7 +257,7 @@ revproxy:
     replicas: 1
     image: httpd:latest
     port: 80
-    capsule_public_host: "192.168.1.102"
+    capsule_public_host: "127.0.0.1"
   service:
     name: revproxy-svc
     port: 80
@@ -283,7 +283,7 @@ ohdsi:
   replicas: "1"
   image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
   imagePullPolicy: IfNotPresent
-  port: 8080
+  port: 8000
   service:
     name: ohdsi-api
     port: 8000

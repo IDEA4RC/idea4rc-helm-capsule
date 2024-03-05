@@ -1,0 +1,19 @@
+{{- if .Values.idea4rc_sc.enabled -}}
+{{- if not (lookup "storage.k8s.io/v1" "StorageClass" "" .Values.idea4rc_sc.name) -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    helm.sh/resource-policy: keep
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"{{ .Values.idea4rc_sc.is_default }}"},"name":"{{ .Values.idea4rc_sc.name }}"},"provisioner":"{{ .Values.idea4rc_sc.provisioner }}","reclaimPolicy":" {{ .Values.idea4rc_sc.reclaimpolicy }}","volumeBindingMode":"Immediate"}
+    storageclass.kubernetes.io/is-default-class: "true"
+  creationTimestamp: "2024-02-21T11:44:56Z"
+  name: {{ .Values.idea4rc_sc.name}}
+  resourceVersion: "2439960"
+  uid: 053fae2f-d8d7-49b9-8224-a1ca9427f936
+provisioner: {{ .Values.idea4rc_sc.provisioner}}
+reclaimPolicy:  {{ .Values.idea4rc_sc.reclaimpolicy}}
+volumeBindingMode: {{ .Values.idea4rc_sc.volumebindingmode }}
+{{- end -}}
+{{- end -}}

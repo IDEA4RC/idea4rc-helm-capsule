@@ -12,16 +12,6 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /ohdsi-api/
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.ohdsi.service.name }}.{{ .Values.ohdsi.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.ohdsi.service.port }}
-  - match:
-    - uri:
         prefix: /dataextdocs/
     rewrite:
         uri: "/"
@@ -50,6 +40,16 @@ spec:
         host: {{ .Values.etl.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local
         port:
           number: {{ .Values.etl.service.port }}
+  - match:
+    - uri:
+        prefix: /ohdsi-api/
+    rewrite:
+        uri: "/"
+    route:
+    - destination:
+        host: {{ .Values.ohdsi.service.name }}.{{ .Values.ohdsi.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.ohdsi.service.port }}
   - match:
     - uri:
         prefix: /workbench/
