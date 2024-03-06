@@ -193,6 +193,7 @@ dataextraction:
     port: 5000
     dropdb: "False"
     swagger_port: 8000
+    #this swagger_url is nasty and needs a rework
     swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
   service:
     name: dataextract-svc
