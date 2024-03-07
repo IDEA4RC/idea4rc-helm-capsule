@@ -180,7 +180,7 @@ aerospike:
     mtls_mode: PERMISSIVE
   service:
     name: aerospike-svc
-    type: Clus  terIP
+    type: ClusterIP
     port: 3000
     target_port: 3000
 
@@ -291,18 +291,27 @@ ohdsi:
     type: ClusterIP
 
 celery:
-  namespace: datamesh  
+  namespace: datamesh
   db:
     name: celery-db
     database: ohdsi
     replicas: 1
     image: postgres:latest
     port: 5432
+    #DB usr/pwd specified here as a workaround for helm being 
+    #unable to provide a clear tool to use a secret inside a 
+    #string. The lookup works only if a secret is already deployed.
+    dbuser: ohdsiuser
+    dbpasswd: ZGppb2FzamRvaXpue
+    service:
+      name: celery-db-svc
+      port: 5432
+      target_port: 5432
   worker:
     name: celery-worker
     replicas: 1
     image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
-  service:
-    name: celery-db-service
-    port: 5432
-    target_port: 5432
+    service:
+      name: celery-svc
+      port: 5672
+      target_port: 5672
