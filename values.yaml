@@ -194,7 +194,7 @@ dataextraction:
     dropdb: "False"
     swagger_port: 8000
     #this swagger_url is nasty and needs a rework
-    swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
+    #swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
   service:
     name: dataextract-svc
     type: ClusterIP
@@ -299,8 +299,9 @@ celery:
     image: postgres:latest
     port: 5432
     #DB usr/pwd specified here as a workaround for helm being 
-    #unable to provide a clear tool to use a secret inside a 
-    #string. The lookup works only if a secret is already deployed.
+    #unable to provide a way  to use a secret inside a string.
+    #The lookup technique used proviously works only if a 
+    #secret is already deployed.
     dbuser: ohdsiuser
     dbpasswd: ZGppb2FzamRvaXpue
     service:
