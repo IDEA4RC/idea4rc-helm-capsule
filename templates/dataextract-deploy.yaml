@@ -39,7 +39,7 @@ spec:
             - name: POSTGRES_PORT
               value: "{{ .Values.dataextraction.db.port }}"
             - name: SWAGGER_URL
-              value: ""http://{{ .Values.revproxy.capsule_public_host }}/dataext/api/doc/swagger.json"
+              value: "http://{{ .Values.revproxy.capsule_public_host }}/dataext/api/doc/swagger.json"
               #value: "{{ .Values.dataextraction.server.swagger_url }}"
             - name: DROP_DB
               value: "{{ .Values.dataextraction.server.dropdb }}"
