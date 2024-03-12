@@ -47,7 +47,7 @@ Another way to alter the chart configuration is by overriding values when execut
 
 Either clone or download the sources from this repo:
 ```
-git clone https://gitlab.lst.tfo.upm.es/idea4rc/idea4rc-helm-capsule.git
+git clone https://github.com/IDEA4RC/idea4rc-helm-capsule
 ```
 
 Run the install command:
