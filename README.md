@@ -17,7 +17,7 @@ This helm chart contains the following IDEA4RC capsule core components:
 - OHDSI API & dependencies
 - ETL instance
 - Data Extraction instance
-- Capsule Workbenh
+- Capsule Workbench
 - Interal Reverse Proxy for Web Applications
 - Kiali & Prometheus
 
@@ -44,6 +44,13 @@ Another way to alter the chart configuration is by overriding values when execut
 >   - fhir-postgres-secret.yaml 
 >   - omop-secrets.yaml
 >   - celery-secrets.yaml
+
+## Endpoints
+Once the capsule has been deployed, the internal services will be available at the endpoints sepcified in the chart's [virtual services template](templates/capsule-vs.yaml). Looking at the virtual services, we can see that access to services is mapped via virtualhosts, for eg. the OHDSI API service will be reached calling the PUBLIC_IP/ohdsi-api/ URL. Currently, all the endpoints will be published by default, but this is not the definitive approach. Once capsule development moves forward, only specific endpoints will be required - if any. Users that want to disable specific endpoints can do so either manipulating the virtual service template or by editing the virtualservice one the capsule has been already deployed. Once edited, kubernetes will take care of automatically update it. It is enough to comment out the unwanted virtualhosts with the classic hash tag "#" at the begging of a line. Live editing of any kubernets object can be achieved with access via kubectl, so, for eg., editing the virtual services of an already deployed capsule can be achieved vie the following command:
+
+```
+microk8s.kubectl edit vs -n datamesh idea4rc-vs
+```
 
 ## How to Deploy
 
