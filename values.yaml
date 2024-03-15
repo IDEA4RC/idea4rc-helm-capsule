@@ -10,23 +10,22 @@ istio_gateway_name: idea-gateway
 #Auth
 #enable/disable Auth configuration
 #e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth_enable=False
-auth_enable: True
-
-jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
-jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
-
-#multiple roles for authentication can be declared here
-auth_policies:
-  medic:
-    policy_name: require-jwt-medic
-    methods: "POST"
-    roles: "Medic"
-    namespace: datamesh
-  patient:
-    policy_name: require-jwt
-    methods: "GET"
-    roles: "Patient"
-    namespace: datamesh
+auth_enable: False
+#jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
+#jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+#
+##multiple roles for authentication can be declared here
+#auth_policies:
+#  medic:
+#    policy_name: require-jwt-medic
+#    methods: "POST"
+#    roles: "Medic"
+#    namespace: datamesh
+#  patient:
+#    policy_name: require-jwt
+#    methods: "GET"
+#    roles: "Patient"
+#    namespace: datamesh
 
 #Custom storage class for k8s. 
 #if enabled, it will retain used volumes instead of deleting them when deleting a deployed capsule.

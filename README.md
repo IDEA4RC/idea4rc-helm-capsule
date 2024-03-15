@@ -70,7 +70,7 @@ helm install idea4rc-capsule idea4rc-helm-capsule
 > If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsule_public_host", we're disabling keystone authentication with auth_enable=False and we're not deploying istio and kiali since that step has already been done via microk8s-playbook.yaml:
 > 
 > ```
-> microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set auth_enable=False --set revproxy.capsule_public_host=$(curl -s checkip.amazonaws.com) --set prometheus_enable=False --set kiali_enable=False | tee install.log
+> microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$(curl -s checkip.amazonaws.com) --set prometheus_enable=False --set kiali_enable=False | tee install.log
 > ```
 
 ## How to upgrade
