@@ -77,7 +77,7 @@ fhir:
     image:
       registry: docker.io
       repository: hapiproject/hapi
-      tag: "v6.8.3@sha256:6195f1116ebabfb0a608addde043b3e524c456c4d4f35b3d25025afd7dcd2e27"
+      tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
       pull_policy: IfNotPresent
     startup_probe:
       httpGet:
@@ -132,7 +132,7 @@ fhir:
   db:
     name: postgres-db
     replicas: 1
-    image: postgres:latest
+    image: postgres:13-alpine
     port: 5432
     db_name: idea4rc
     service:
@@ -186,6 +186,7 @@ dataextraction:
   name: dataextraction
   namespace: datamesh
   server:
+    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
     image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
     replicas: 1
     port: 5000
