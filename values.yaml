@@ -187,7 +187,6 @@ dataextraction:
   namespace: datamesh
   server:
     image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
-    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
     replicas: 1
     port: 5000
     dropdb: "False"
