@@ -145,7 +145,6 @@ etl:
   namespace: datamesh
   server:
     name: eng-etl
-    #image: "etl-registry-217.172.12.193.sslip.io/eng/idea4rc/etl:latest"
     image: "ghcr.io/idea4rc/etl:latest"
     port: 4001
     #proxy: "false"
@@ -187,7 +186,7 @@ dataextraction:
   name: dataextraction
   namespace: datamesh
   server:
-    image: "etl-registry-217.172.12.193.sslip.io/idea4rc_ai_dataextractionjobs:latest"
+    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
     replicas: 1
     port: 5000
     dropdb: "False"
@@ -240,8 +239,7 @@ workbench:
   name: capsule-workbench
   namespace: datamesh
   replicas: 1
-  #image: ghcr.io/idea4rc/capsule-workbench:latest
-  image: etl-registry-217.172.12.193.sslip.io/eng/idea4rc/capsule-workbench:latest
+  image: ghcr.io/idea4rc/capsule-workbench:latest
   port: 80
   service:
     name: workbench-svc
@@ -298,7 +296,7 @@ celery:
     image: postgres:latest
     port: 5432
     #DB usr/pwd specified here as a workaround for helm being 
-    #unable to provide a way  to use a secret inside a string.
+    #unable to provide a way to use a secret inside a string.
     #The lookup technique used proviously works only if a 
     #secret is already deployed.
     dbuser: ohdsiuser
@@ -315,3 +313,23 @@ celery:
       name: celery-svc
       port: 5672
       target_port: 5672
+
+ideadb:
+  namespace: datamesh
+  server:
+    name: ideadb
+    image: bitnami/mariadb:latest
+    imagePullPolicy: IfNotPresent
+    config: ""
+    persistence:
+      enabled: false
+      storageClass: generic
+      accessMode: ReadWriteOnce
+      size: 8Gi
+  db:
+    name: ideadb
+    port: 3306
+  service:
+    name: ideadb-svc
+    port: 3306
+    target_port: mysql

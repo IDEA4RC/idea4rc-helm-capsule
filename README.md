@@ -44,6 +44,7 @@ Another way to alter the chart configuration is by overriding values when execut
 >   - fhir-postgres-secret.yaml 
 >   - omop-secrets.yaml
 >   - celery-secrets.yaml
+>   - ideadb-secrets.yaml
 
 ## Endpoints
 Once the capsule has been deployed, the internal services will be available at the endpoints sepcified in the chart's [virtual services template](templates/capsule-vs.yaml). Looking at the virtual services, we can see that access to services is mapped via virtualhosts, for eg. the OHDSI API service will be reached calling the PUBLIC_IP/ohdsi-api/ URL. Currently, all the endpoints will be published by default, but this is not the definitive approach. Once capsule development moves forward, only specific endpoints will be required - if any. 

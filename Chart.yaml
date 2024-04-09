@@ -6,5 +6,5 @@ name: idea4rc-capsule
 description: Helm Chart for IDEA4RC Capsule deployment
 
 type: application
-version: 24.03.15-1341
-appVersion: "24.03.15-1341"
+version: 24.04.09-1751
+appVersion: "24.04.09-1751"
