@@ -84,7 +84,7 @@ git pull https://github.com/IDEA4RC/idea4rc-helm-capsule
 
 Run the Helm upgrade command. Using the debug option to dump the contents of the generated templates into a file called upgrade.log:
 ```
-helm idea4rc-capsule idea4rc-helm-capsule/
+helm upgrade idea4rc-capsule idea4rc-helm-capsule/
 ```
 
 ***
