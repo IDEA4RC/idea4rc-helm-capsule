@@ -18,7 +18,7 @@ This helm chart contains the following IDEA4RC capsule core components:
 - ETL instance
 - Data Extraction instance
 - Capsule Workbench
-- Interal Reverse Proxy for Web Applications
+- Internal Reverse Proxy for Web Applications
 - Kiali & Prometheus
 
 ## Requirements
@@ -84,7 +84,7 @@ git pull https://github.com/IDEA4RC/idea4rc-helm-capsule
 
 Run the Helm upgrade command. Using the debug option to dump the contents of the generated templates into a file called upgrade.log:
 ```
-microk8s.helm upgrade --debug idea4rc-capsule idea4rc-helm-capsule/
+helm idea4rc-capsule idea4rc-helm-capsule/
 ```
 
 ***
