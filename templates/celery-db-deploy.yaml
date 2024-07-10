@@ -18,9 +18,16 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/celery-secrets.yaml") . | sha256sum }}
         checksum/config: {{ include (print $.Template.BasePath "/omop-secrets.yaml") . | sha256sum }}
     spec:
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: celery-pv-claim
+        name: celery-pv
       containers:
       - name: {{ .Values.celery.db.name }}
         image: {{ .Values.celery.db.image }}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: celery-pv
         ports:
           - containerPort:  {{ .Values.celery.db.port }}
         env:

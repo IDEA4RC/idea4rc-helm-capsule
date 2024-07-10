@@ -1,0 +1,13 @@
+#Celery DB persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: celery-pv-claim
+  namespace: {{ .Values.celery.namespace }}
+spec:
+  storageClassName: {{ .Values.idea4rc_sc.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500M
