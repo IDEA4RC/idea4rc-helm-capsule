@@ -16,16 +16,16 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/fhir-application-configmap.yaml") . | sha256sum }}
         checksum/config: {{ include (print $.Template.BasePath "/fhir-postgres-secret.yaml") . | sha256sum }}
     spec:
-      #volumes:
-      #- persistentVolumeClaim: 
-      #    claimName: postgres-pv-claim
-      #  name: postgres-pv
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: fhir-pv-claim
+        name: fhir-pv
       containers:
         - name: {{ .Values.fhir.db.name }}
           image: {{ .Values.fhir.db.image }}
-          #volumeMounts:
-          #- mountPath: /var/lib/postgresql/data
-          #  name: postgres-pv
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: fhir-pv
           ports:
             - containerPort: {{ .Values.fhir.db.port }}
           env:
