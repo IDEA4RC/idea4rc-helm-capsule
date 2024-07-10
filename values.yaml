@@ -156,7 +156,7 @@ etl:
     replicas: 1
     image: postgres:latest
     port: 5432
-    db_name: mad
+    #db_name: mad
     service:
       name: etl-postgres-db
       port: 5432

@@ -1,0 +1,13 @@
+#ETL persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: etl-pv-claim
+  namespace: {{ .Values.etl.namespace }}
+spec:
+  storageClassName: {{ .Values.idea4rc_sc.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500M
