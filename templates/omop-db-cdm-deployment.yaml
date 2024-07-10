@@ -15,12 +15,19 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/omop-secrets.yaml") . | sha256sum }}
     spec:
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: omopdb-pv-claim
+        name: omop-pv
       containers:
         - name: {{ .Values.omop.app }}
           image: {{ .Values.omop.cdm.image }}
           imagePullPolicy: {{ .Values.omop.cdm.pullpolicy }}
           ports:
             - containerPort: {{ .Values.omop.cdm.port }}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: omop-pv
           env:
             - name: POSTGRES_USER
               valueFrom:

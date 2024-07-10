@@ -130,13 +130,13 @@ fhir:
     tolerations: []
     topology_spread_constraints: []
   db:
-    name: postgres-db
+    name: fhir-postgres-db
     replicas: 1
     image: postgres:13-alpine
     port: 5432
     db_name: idea4rc
     service:
-      name: postgres-db
+      name: fhir-postgres-db
       port: 5432
       target_port: 5432
       type: ClusterIP
