@@ -15,16 +15,16 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/dataextract-postgres-secret.yaml") . | sha256sum }}
     spec:
-      #volumes:
-      #- persistentVolumeClaim: 
-      #    claimName: postgres-pv-claim
-      #  name: postgres-pv
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: dataextract-pv-claim
+        name: dataextract-pv
       containers:
         - name: postgres-db
           image: {{ .Values.dataextraction.db.image }}
-          #volumeMounts:
-          #- mountPath: /var/lib/postgresql/data
-          #  name: postgres-pv
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: dataextract-pv
           ports:
             - containerPort: {{ .Values.dataextraction.db.port }}
           env:

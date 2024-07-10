@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: fhir-pv-claim
-  namespace: {{ .Values.omop.namespace }}
+  namespace: {{ .Values.fhir.server.namespace }}
 spec:
   storageClassName: {{ .Values.idea4rc_sc.name }}
   accessModes:
