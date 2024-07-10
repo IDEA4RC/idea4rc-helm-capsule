@@ -1,0 +1,13 @@
+#OMOP DB persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: omopdb-pv-claim
+  namespace: {{ .Values.omop.namespace }}
+spec:
+  storageClassName: {{ .Values.idea4rc_sc.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5G
