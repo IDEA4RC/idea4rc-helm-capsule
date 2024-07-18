@@ -7,10 +7,10 @@ spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:      
-      number: 80      
-      name: http      
-      protocol: HTTP    
-    hosts:    
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
     #- 127.0.0.1 # for local testing purposes
     - "{{ .Values.idea_gw_hosts }}"

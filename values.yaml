@@ -145,7 +145,7 @@ etl:
   namespace: datamesh
   server:
     name: eng-etl
-    image: "ghcr.io/idea4rc/etl:latest"
+    image: "ghcr.io/idea4rc/etl@sha256:c96078fcc959644319aa6a0839a78a0e273ccbe5a4131269f383b133c8ca9183"
     port: 4001
     #proxy: "false"
     server_dns: "https://"
@@ -154,7 +154,7 @@ etl:
   db:
     name: etl
     replicas: 1
-    image: postgres:latest
+    image: postgres:16.3-bullseye
     port: 5432
     #db_name: mad
     service:
@@ -173,7 +173,7 @@ aerospike:
   namespace: datamesh
   server:
     keystore_namespace: idea4rc
-    image: "aerospike/aerospike-server:latest"
+    image: "aerospike/aerospike-server:7.1"
     port: 3000
     mtls_mode: PERMISSIVE
   service:
@@ -186,7 +186,7 @@ dataextraction:
   name: dataextraction
   namespace: datamesh
   server:
-    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:latest
+    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs@sha256:aebb2989b5ab2348410d235926bb78508e14844037b00ae7e7430bc76720cd60
     replicas: 1
     port: 5000
     dropdb: "False"
@@ -203,7 +203,7 @@ dataextraction:
   db:
     name: dataextract-postgres-db
     replicas: 1
-    image: postgres:latest
+    image: postgres:16.3-bullseye
     port: 5432
     db_name: mad
     service:
@@ -218,13 +218,13 @@ omop:
   cdm:
     name: omop-cdm-deployment
     replicas: "1"
-    image: "ghcr.io/idea4rc/omop-deploy:latest"
+    image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
     pullpolicy: IfNotPresent
     port: 5432
   vocab:
     name: populate-db-job
     ttl: 120
-    image: "ghcr.io/idea4rc/omop-vocab-uploader:latest"
+    image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:9c38c4a3e95c08933c63f1e3afe9cd41f300352a223c7fed04db87fd0d078900
     pullpolicy: IfNotPresent
   db:
     name: omopdb
@@ -239,7 +239,7 @@ workbench:
   name: capsule-workbench
   namespace: datamesh
   replicas: 1
-  image: ghcr.io/idea4rc/capsule-workbench:latest
+  image: ghcr.io/idea4rc/capsule-workbench@sha256:5de9ca7610fd4497b26ebef08a82e6b42545303ffc81fa4dccc5bbfcfa4a9f86
   port: 80
   service:
     name: workbench-svc
@@ -253,7 +253,7 @@ revproxy:
   server:
     name: revproxy
     replicas: 1
-    image: httpd:latest
+    image: httpd:2.4.61
     port: 80
     capsule_public_host: "127.0.0.1"
   service:
@@ -279,7 +279,7 @@ ohdsi:
   name: ohdsi-api
   namespace: datamesh
   replicas: "1"
-  image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
+  image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
   imagePullPolicy: IfNotPresent
   port: 8000
   service:
@@ -293,7 +293,7 @@ celery:
     name: celery-db
     database: ohdsi
     replicas: 1
-    image: postgres:latest
+    image: postgres:16.3-bullseye
     port: 5432
     #DB usr/pwd specified here as a workaround for helm being 
     #unable to provide a way to use a secret inside a string.
@@ -308,7 +308,7 @@ celery:
   worker:
     name: celery-worker
     replicas: 1
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:latest
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
     service:
       name: celery-svc
       port: 5672
@@ -318,7 +318,7 @@ ideadb:
   namespace: datamesh
   server:
     name: ideadb
-    image: bitnami/mariadb:latest
+    image: bitnami/mariadb:11.4.2
     imagePullPolicy: IfNotPresent
     config: ""
     persistence:
