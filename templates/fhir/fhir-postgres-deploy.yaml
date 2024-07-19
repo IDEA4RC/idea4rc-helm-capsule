@@ -13,8 +13,8 @@ spec:
       labels:
         app: {{ .Values.fhir.db.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/fhir-application-configmap.yaml") . | sha256sum }}
-        checksum/config: {{ include (print $.Template.BasePath "/fhir-postgres-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-application-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-postgres-secret.yaml") . | sha256sum }}
     spec:
       volumes:
       - persistentVolumeClaim: 

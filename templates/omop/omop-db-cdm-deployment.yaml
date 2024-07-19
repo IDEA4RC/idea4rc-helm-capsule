@@ -13,7 +13,7 @@ spec:
       labels:
         app: {{ .Values.omop.app }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/omop-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secrets.yaml") . | sha256sum }}
     spec:
       volumes:
       - persistentVolumeClaim: 

@@ -14,7 +14,7 @@ spec:
       labels:
         app: {{ .Values.ideadb.server.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/ideadb-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/ideadb/ideadb-secrets.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.ideadb.server.name }}

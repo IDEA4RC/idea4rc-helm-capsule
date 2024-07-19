@@ -15,8 +15,8 @@ spec:
       labels:
         app: {{ .Values.fhir.server.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/fhir-application-configmap.yaml") . | sha256sum }}
-        checksum/config: {{ include (print $.Template.BasePath "/fhir-postgres-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-application-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-postgres-secret.yaml") . | sha256sum }}
     spec:
       {{- with .Values.fhir.server.image_pull_secrets }}
       imagePullSecrets:
