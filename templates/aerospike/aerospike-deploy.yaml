@@ -18,7 +18,7 @@ spec:
         - name: {{ .Values.aerospike.name }}
           image: {{ .Values.aerospike.server.image }}
           env:
-            - name: NAMSPACE
+            - name: NAMESPACE
               value: {{ .Values.aerospike.server.keystore_namespace }}
           ports:
             - containerPort: {{ .Values.aerospike.server.port }}

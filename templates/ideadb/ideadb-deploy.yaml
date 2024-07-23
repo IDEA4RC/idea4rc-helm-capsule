@@ -14,7 +14,7 @@ spec:
       labels:
         app: {{ .Values.ideadb.server.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/ideadb/ideadb-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/ideadb/ideadb-secret.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.ideadb.server.name }}
@@ -24,23 +24,23 @@ spec:
         - name: MARIADB_ROOT_USER
           valueFrom:
             secretKeyRef:
-              name: ideadb-secrets
-              key: mariadb-root-user
+              name: ideadb-secret
+              key: mariadbRootUser
         - name: MARIADB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ideadb-secrets
-              key: mariadb-root-password
+              name: ideadb-secret
+              key: mariadbRootPassword
         - name: MARIADB_USER
           valueFrom:
             secretKeyRef:
-              name: ideadb-secrets
-              key: mariadb-user
+              name: ideadb-secret
+              key: mariadbUser
         - name: MARIADB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ideadb-secrets
-              key: mariadb-password
+              name: ideadb-secret
+              key: mariadbPassword
         - name: MARIADB_DATABASE
           value: {{ .Values.ideadb.db.name }}
         ports:

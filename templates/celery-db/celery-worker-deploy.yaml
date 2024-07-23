@@ -1,5 +1,5 @@
 #Celery Worker Deployment
-#{{ $secret := ( lookup "v1" "Secret" .Values.celery.namespace "celery-secrets" ) }}
+#{{ $secret := ( lookup "v1" "Secret" .Values.celery.namespace "celery-secret" ) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,7 +15,7 @@ spec:
       labels:
         app: {{ .Values.celery.worker.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secret.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.celery.worker.name }}
@@ -25,12 +25,12 @@ spec:
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: celery-secrets
+                name: celery-secret
                 key: POSTGRES_PASSWORD
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: celery-secrets
+                name: celery-secret
                 key: POSTGRES_USER
           - name: POSTGRES_DB
             value: {{ .Values.celery.db.database }}
@@ -47,12 +47,12 @@ spec:
           - name: OMOP_USER
             valueFrom:
               secretKeyRef:
-                name: omop-secrets
+                name: omop-secret
                 key: POSTGRES_USER
           - name: OMOP_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: omop-secrets
+                name: omop-secret
                 key: POSTGRES_PASSWORD
           - name: OMOP_DATABASE
             value: {{ .Values.omop.db.name }}

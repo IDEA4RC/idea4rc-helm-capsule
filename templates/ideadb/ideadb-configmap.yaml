@@ -1,3 +1,4 @@
+{{- if .Values.ideadb.server.config }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,9 +6,7 @@ metadata:
   namespace: {{ .Values.ideadb.namespace }}
   labels:
     app: {{ .Values.ideadb.server.name }}
-
 data:
   my.cnf: |-
-{{- if .Values.ideadb.server.config }}
-{{ .Values.ideadb.server.config | indent 4 }}
+  {{ .Values.ideadb.server.config | indent 4 }}
 {{- end -}}

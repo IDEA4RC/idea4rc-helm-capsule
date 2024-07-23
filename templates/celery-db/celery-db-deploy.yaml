@@ -1,5 +1,5 @@
 #Celery DB deployment
-#{{ $secret := ( lookup "v1" "Secret" .Values.celery.namespace "celery-secrets" ) }}
+#{{ $secret := ( lookup "v1" "Secret" .Values.celery.namespace "celery-secret" ) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,8 +15,8 @@ spec:
       labels:
         app: {{ .Values.celery.db.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secrets.yaml") . | sha256sum }}
-        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secret.yaml") . | sha256sum }}
     spec:
       volumes:
       - persistentVolumeClaim: 
@@ -36,19 +36,19 @@ spec:
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: celery-secrets
+                name: celery-secret
                 key: POSTGRES_PASSWORD
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: celery-secrets
+                name: celery-secret
                 key: POSTGRES_USER
           - name: POSTGRES_DB
             value: {{ .Values.celery.db.database }}
           - name: CELERY_BROKER_URL
             value: "amqp://guest:guest@{{ .Values.rabbitmq.service.name }}.{{ .Values.rabbitmq.namespace }}.svc.cluster.local:{{ .Values.rabbitmq.service.rabbit_port }}/"
           - name: CELERY_RESULT_BACKEND
-            value: "db+postgresql://{{ .Values.celery.db.dbuser }}:{{ .Values.celery.db.dbpasswd }}@{{ .Values.celery.db.service.name }}.{{ .Values.celery.namespace }}.svc.cluster.local:{{ .Values.celery.db.service.port}}/{{ .Values.celery.db.database }}"
+            value: "db+postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@{{ .Values.celery.db.service.name }}.{{ .Values.celery.namespace }}.svc.cluster.local:{{ .Values.celery.db.service.port}}/{{ .Values.celery.db.database }}"
           - name: OMOP_DBMS
             value: postgresql
           - name: OMOP_SERVER
@@ -58,12 +58,12 @@ spec:
           - name: OMOP_USER
             valueFrom:
               secretKeyRef:
-                name: omop-secrets
+                name: omop-secret
                 key: POSTGRES_USER
           - name: OMOP_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: omop-secrets
+                name: omop-secret
                 key: POSTGRES_PASSWORD
           - name: OMOP_DATABASE
             value: {{ .Values.omop.db.name }}

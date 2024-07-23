@@ -227,6 +227,7 @@ omop:
   db:
     name: omopdb
     schema: omopcdm
+  vocabJob: true
   service:
     name: omop-postgres-service
     port: 5432
@@ -297,8 +298,8 @@ celery:
     #unable to provide a way to use a secret inside a string.
     #The lookup technique used proviously works only if a 
     #secret is already deployed.
-    dbuser: ohdsiuser
-    dbpasswd: ZGppb2FzamRvaXpue
+    #dbuser: ohdsiuser
+    #dbpasswd: hjds9a8d9h.dsa
     service:
       name: celery-db-svc
       port: 5432

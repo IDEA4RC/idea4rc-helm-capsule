@@ -1,3 +1,4 @@
+{{- if .Values.omop.vocabJob -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -8,7 +9,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secret.yaml") . | sha256sum }}
     spec:
       containers:
         - name: populate-omop-db
@@ -22,13 +23,14 @@ spec:
             - name: VOCAB_PG_USER
               valueFrom:
                 secretKeyRef:
-                  name: omop-secrets
+                  name: omop-secret
                   key: POSTGRES_USER
             - name: VOCAB_PG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: omop-secrets
+                  name: omop-secret
                   key: POSTGRES_PASSWORD
             - name: VOCAB_PG_SCHEMA
               value: {{ .Values.omop.db.schema }}
       restartPolicy: OnFailure
+{{- end }}

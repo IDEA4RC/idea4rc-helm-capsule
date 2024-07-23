@@ -13,7 +13,7 @@ spec:
       labels:
         app: {{ .Values.omop.app }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secrets.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secret.yaml") . | sha256sum }}
     spec:
       volumes:
       - persistentVolumeClaim: 
@@ -32,12 +32,12 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: omop-secrets
+                  name: omop-secret
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: omop-secrets
+                  name: omop-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: {{ .Values.omop.db.name }}
