@@ -36,10 +36,10 @@ idea4rc_sc:
   reclaimpolicy: Retain
   volumebindingmode: Immediate
 
-#FHIR server configuration
+#FHIR data server configuration
 fhir:
   service:
-    name: fhir-svc
+    name: fhir-data-svc
     type: ClusterIP
     port: 8080
     target_port: 8080
@@ -54,7 +54,7 @@ fhir:
     minAvailable: 1
     maxUnavailable: ""
   server:
-    name: fhir-server
+    name: fhir-data-server
     namespace: datamesh
     replicas: 1
     image_pull_secrets: []
@@ -71,11 +71,14 @@ fhir:
       privileged: false
       seccompProfile:
         type: RuntimeDefault
-    container_name: fhir-server
+    container_name: fhir-data-server
     image:
-      registry: docker.io
-      repository: hapiproject/hapi
-      tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
+      #registry: docker.io
+      #repository: hapiproject/hapi
+      #tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
+      registry: ghcr.io
+      repository: idea4rc/fhir-data-server
+      tag: "1.0"
       pull_policy: IfNotPresent
     startup_probe:
       httpGet:
@@ -128,13 +131,119 @@ fhir:
     tolerations: []
     topology_spread_constraints: []
   db:
-    name: fhir-postgres-db
+    name: fhir-data-postgres-db
     replicas: 1
     image: postgres:13-alpine
     port: 5432
     db_name: idea4rc
     service:
-      name: fhir-postgres-db
+      name: fhir-data-postgres-db
+      port: 5432
+      target_port: 5432
+      type: ClusterIP
+
+#FHIR dictionary server configuration
+fhirDictionary:
+  service:
+    name: fhir-dictionary-svc
+    type: ClusterIP
+    port: 8080
+    target_port: 8080
+  metrics:
+    serviceMonitor:
+      enabled: false
+    additionalLabels: {}
+    service:
+      port: 8081
+  pod_disruption_budget:
+    enabled: false
+    minAvailable: 1
+    maxUnavailable: ""
+  server:
+    name: fhir-dictionary-server
+    namespace: datamesh
+    replicas: 1
+    image_pull_secrets: []
+    pod_security_context: {}
+    security_context:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 65532
+      runAsGroup: 65532
+      privileged: false
+      seccompProfile:
+        type: RuntimeDefault
+    container_name: fhir-dictionary-server
+    image:
+      #registry: docker.io
+      #repository: hapiproject/hapi
+      #tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
+      registry: ghcr.io
+      repository: idea4rc/fhir-data-server
+      tag: "1.0"
+      pull_policy: IfNotPresent
+    startup_probe:
+      httpGet:
+        path: /readyz
+        port: http
+      failureThreshold: 10
+      initialDelaySeconds: 30
+      periodSeconds: 30
+      successThreshold: 1
+      timeoutSeconds: 30
+    liveness_probe:
+      httpGet:
+        path: /livez
+        port: http
+      failureThreshold: 5
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      timeoutSeconds: 30
+    readiness_probe:
+      httpGet:
+        path: /readyz
+        port: http
+      failureThreshold: 5
+      initialDelaySeconds: 30
+      periodSeconds: 20
+      successThreshold: 1
+      timeoutSeconds: 20
+    customConfigPath: /app/config
+    customConfigName: application-extra.yaml
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    spring:
+      spring_pgsql_driver: org.postgresql.Driver
+      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      #the following params are manually set in the corresponding template due to parsing issues with helm
+      #use_apache_addr_strategy: "true"
+      #probe_add_paths: "true"
+      #mgmt_srv_port: "8081"
+      extra_config: ""
+      extra_env: ""
+    node_selector: {}
+    affinity: {}
+    tolerations: []
+    topology_spread_constraints: []
+  db:
+    name: fhir-dictionary-postgres-db
+    replicas: 1
+    image: postgres:13-alpine
+    port: 5432
+    db_name: idea4rc
+    service:
+      name: fhir-dictionary-postgres-db
       port: 5432
       target_port: 5432
       type: ClusterIP
@@ -143,7 +252,7 @@ etl:
   namespace: datamesh
   server:
     name: eng-etl
-    image: "ghcr.io/idea4rc/etl@sha256:c96078fcc959644319aa6a0839a78a0e273ccbe5a4131269f383b133c8ca9183"
+    image: ghcr.io/idea4rc/etl:1.0
     port: 4001
     #proxy: "false"
     server_dns: "https://"

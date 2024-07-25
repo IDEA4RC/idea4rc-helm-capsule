@@ -1,0 +1,131 @@
+---
+#FHIR Dictionary deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fhirDictionary.server.name }}
+  namespace: {{ .Values.fhirDictionary.server.namespace }}
+spec:
+  replicas: {{ .Values.fhirDictionary.server.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fhirDictionary.server.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fhirDictionary.server.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-application-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-postgres-secret.yaml") . | sha256sum }}
+    spec:
+      {{- with .Values.fhirDictionary.server.image_pull_secrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.fhirDictionary.server.pod_security_context | nindent 8 }}
+      containers:
+        - name: {{ .Values.fhirDictionary.server.container_name }}
+          securityContext:
+            {{- toYaml .Values.fhirDictionary.server.security_context | nindent 12 }}
+          image: {{ .Values.fhirDictionary.server.image.registry }}/{{ .Values.fhirDictionary.server.image.repository }}:{{ .Values.fhirDictionary.server.image.tag }}
+          imagePullPolicy: {{ .Values.fhirDictionary.server.image.pull_policy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: http-metrics
+              containerPort: 8081
+              protocol: TCP
+          {{- with .Values.fhirDictionary.server.startup_probe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.liveness_probe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readiness_probe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.fhirDictionary.server.resources | nindent 12 }}
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://{{ .Values.fhirDictionary.db.service.name }}.{{ .Values.fhirDictionary.server.namespace }}.svc.cluster.local:{{ .Values.fhirDictionary.db.service.port }}/{{ .Values.fhirDictionary.db.db_name}}"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_DATASOURCE_DRIVERCLASSNAME
+              value: {{ .Values.fhirDictionary.server.spring.spring_pgsql_driver }}
+            - name: spring.jpa.properties.hibernate.dialect
+              value: {{ .Values.fhirDictionary.server.spring.fhir_hibernate_dialect }}
+            #SPRING_CONFIG_LOCATION Doesn't work, see: https://github.com/hapifhir/hapi-fhir/issues/5147
+            #- name: SPRING_CONFIG_LOCATION
+            #  value: {{ .Values.fhirDictionary.server.customConfigPath }}/{{ .Values.fhirDictionary.server.customConfigName }}
+            - name: HAPI_FHIR_USE_APACHE_ADDRESS_STRATEGY
+              #value: {{ .Values.fhirDictionary.server.spring.use_apache_addr_strategy }}
+              value: "true"
+            - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
+              #value: {{ .Values.fhirDictionary.server.spring.probe_add_paths }}
+              value: "true"
+            - name: MANAGEMENT_SERVER_PORT
+              #value: {{ .Values.fhirDictionary.server.spring.mgmt_srv_port }}
+              value: "8081"
+            {{- if .Values.fhirDictionary.server.spring.extra_config }}
+            - name: SPRING_CONFIG_IMPORT
+              {{- toYaml .Values.fhirDictionary.server.spring.extra_config | nindent 14 }}
+            {{- end }}
+            {{- if .Values.fhirDictionary.server.extra_env }}
+            {{ toYaml .Values.fhirDictionary.server.extra_env | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: custom-fhir-application
+              mountPath: {{ .Values.fhirDictionary.server.customConfigPath }}/{{ .Values.fhirDictionary.server.customConfigName }}
+              readOnly: true
+              subPath: {{ .Values.fhirDictionary.server.customConfigName }}
+            - mountPath: /tmp
+              name: tmp-volume
+            - mountPath: /app/target
+              name: lucenefiles-volume
+          #{{- if .Values.extraConfig }}
+          #  - name: application-extra-config
+          #    mountPath: /app/config/application-extra.yaml
+          #    readOnly: true
+          #    subPath: application-extra.yaml
+          #{{- end }}
+      {{- with .Values.fhirDictionary.server.node_selector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fhirDictionary.server.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fhirDictionary.server.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.fhirDictionary.server.topology_spread_constraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+        - name: lucenefiles-volume
+          emptyDir: {}
+        - name: custom-fhir-application
+          configMap: 
+            name: custom-fhir-application
+            #items:
+            #  - key: {{ .Values.fhirDictionary.server.customConfigName }}
+            #    path: {{ .Values.fhirDictionary.server.customConfigName }}

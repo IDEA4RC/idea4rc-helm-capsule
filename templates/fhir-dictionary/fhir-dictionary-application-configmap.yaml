@@ -1,10 +1,10 @@
 ---
-#FHIR application.yml
+#FHIR dictionary application.yml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: custom-fhir-application
-  namespace: {{ .Values.fhir.server.namespace }}
+  name: custom-fhir-dictionary-application
+  namespace: {{ .Values.fhirDictionary.server.namespace }}
 data:
   application-extra.yaml: |-
     #Adds the option to go to eg. http://localhost:8080/actuator/health for seeing the running configuration
