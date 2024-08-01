@@ -5,14 +5,14 @@ istio_injection: enabled
 tls:
   commonName: "127.0.0.1"
 
-#Auth
-#enable/disable Auth configuration
+## Auth
+# enable/disable Auth configuration
 #e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth_enable=False
 auth_enable: False
 #jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
 #jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
 
-##multiple roles for authentication can be declared here
+## multiple roles for authentication can be declared here
 #auth_policies:
 #  medic:
 #    policy_name: require-jwt-medic
@@ -25,9 +25,14 @@ auth_enable: False
 #    roles: "Patient"
 #    namespace: datamesh
 
-#Custom storage class for k8s. 
-#enables persistency for the various DB instances of the capsule across capsule upgrades
-#this can lead to data inconsistecy and other issues. Deleting the capsule will delete the volumes, too.
+# Hostpath-based custom storage class for k8s 
+# enables persistency for the various DB instances of the capsule across capsule upgrades
+# this is useful in certain cases where we want to avoid data loss, for eg.: across 
+# restarts of the guest machine or when restarting services
+# this can lead to data inconsistecy and other issues and it's not the inteded way of 
+# using the capsule, which should be recreated every time the source dataset changes 
+# or when upgrading. Please note that deleting the capsule using "helm delete" will 
+# delete the volumes, too.
 idea4rc_sc:
   enabled: True
   is_default: "true"
@@ -36,7 +41,7 @@ idea4rc_sc:
   reclaimpolicy: Retain
   volumebindingmode: Immediate
 
-#FHIR data server configuration
+## FHIR data server configuration
 fhir:
   service:
     name: fhir-data-svc
@@ -142,7 +147,7 @@ fhir:
       target_port: 5432
       type: ClusterIP
 
-#FHIR dictionary server configuration
+## FHIR dictionary server configuration
 fhirDictionary:
   service:
     name: fhir-dictionary-svc
@@ -248,6 +253,7 @@ fhirDictionary:
       target_port: 5432
       type: ClusterIP
 
+## ETL to FHIR
 etl:
   namespace: datamesh
   server:
@@ -263,7 +269,6 @@ etl:
     replicas: 1
     image: postgres:16.3-bullseye
     port: 5432
-    #db_name: mad
     service:
       name: etl-postgres-db
       port: 5432
@@ -275,6 +280,7 @@ etl:
     port: 4001
     target_port: 4001
 
+## Aerospike, used by the ETL to FHIR
 aerospike:
   name: aerospike
   namespace: datamesh
@@ -289,6 +295,7 @@ aerospike:
     port: 3000
     target_port: 3000
 
+## Data Extraction
 dataextraction:
   name: dataextraction
   namespace: datamesh
@@ -298,8 +305,6 @@ dataextraction:
     port: 5000
     dropdb: "False"
     swagger_port: 8000
-    #this swagger_url is nasty and needs a rework
-    #swagger_url: "http://217.172.12.141/dataext/api/doc/swagger.json"
   service:
     name: dataextract-svc
     type: ClusterIP
@@ -319,6 +324,7 @@ dataextraction:
       target_port: 5432
       type: ClusterIP
 
+## OMOP Database
 omop:
   namespace: datamesh
   app: omop-postgres
@@ -343,6 +349,7 @@ omop:
     target_port: 5432
     type: ClusterIP
 
+## Capsule Workbench
 workbench:
   name: capsule-workbench
   namespace: datamesh
@@ -355,6 +362,8 @@ workbench:
     target_port: 80
     type: ClusterIP
 
+## Apache Reverse Proxy for those WebApps that have issues with 
+## ISTIO's reverse proxy functionality
 revproxy:
   namespace: datamesh
   app: revproxy
@@ -370,6 +379,7 @@ revproxy:
     target_port: 80
     type: ClusterIP
 
+## RabbitMQ
 rabbitmq:
   name: rabbitmq
   namespace: datamesh
@@ -383,6 +393,7 @@ rabbitmq:
     rabbit_port: 5672
     management_port: 15672
 
+## OHDSI API, used by Vantage6 to retrieve data from the capsule
 ohdsi:
   name: ohdsi-api
   namespace: datamesh
@@ -395,6 +406,7 @@ ohdsi:
     port: 8000
     type: ClusterIP
 
+## Celery Worker & relative DB
 celery:
   namespace: datamesh
   db:
@@ -403,12 +415,6 @@ celery:
     replicas: 1
     image: postgres:16.3-bullseye
     port: 5432
-    #DB usr/pwd specified here as a workaround for helm being 
-    #unable to provide a way to use a secret inside a string.
-    #The lookup technique used proviously works only if a 
-    #secret is already deployed.
-    #dbuser: ohdsiuser
-    #dbpasswd: hjds9a8d9h.dsa
     service:
       name: celery-db-svc
       port: 5432
@@ -422,6 +428,7 @@ celery:
       port: 5672
       target_port: 5672
 
+## IdeaDB
 ideadb:
   namespace: datamesh
   server:
