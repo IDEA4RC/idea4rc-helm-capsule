@@ -1,0 +1,12 @@
+## Capsule Workbench
+workbench:
+  name: capsule-workbench
+  namespace: datamesh
+  replicas: 1
+  image: ghcr.io/idea4rc/capsule-workbench@sha256:5de9ca7610fd4497b26ebef08a82e6b42545303ffc81fa4dccc5bbfcfa4a9f86
+  port: 80
+  service:
+    name: workbench-svc
+    port: 80
+    target_port: 80
+    type: ClusterIP

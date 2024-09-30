@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.aerospike.service.name }}
   namespace: {{ .Values.aerospike.namespace }}
 spec:
-  type: {{ .Values.etl.service.type }}
+  type: {{ .Values.aerospike.service.type }}
   ports:
     - port: {{ .Values.aerospike.service.port }}
       targetPort: {{ .Values.aerospike.service.target_port }}

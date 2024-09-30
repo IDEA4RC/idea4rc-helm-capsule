@@ -5,7 +5,7 @@ metadata:
   name: etl-pv-claim
   namespace: {{ .Values.etl.namespace }}
 spec:
-  storageClassName: {{ .Values.idea4rc_sc.name }}
+  storageClassName: {{ .Values.etl.storageclass.name }}
   accessModes:
     - ReadWriteMany
   resources:

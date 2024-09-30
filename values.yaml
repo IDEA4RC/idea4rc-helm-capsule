@@ -254,31 +254,34 @@ fhirDictionary:
       type: ClusterIP
 
 ## ETL to FHIR
-etl:
-  namespace: datamesh
-  server:
-    name: eng-etl
-    image: ghcr.io/idea4rc/etl:1.0
-    port: 4001
-    #proxy: "false"
-    server_dns: "https://"
-    hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
-    spring_driver: org.postgresql.Driver
-  db:
-    name: etl
-    replicas: 1
-    image: postgres:16.3-bullseye
-    port: 5432
-    service:
-      name: etl-postgres-db
+etl-fhir:
+  etl:
+    namespace: datamesh
+    server:
+      name: eng-etl
+      image: ghcr.io/idea4rc/etl:1.0
+      port: 4001
+      #proxy: "false"
+      server_dns: "https://"
+      hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
+      spring_driver: org.postgresql.Driver
+    db:
+      name: etl
+      replicas: 1
+      image: postgres:16.3-bullseye
       port: 5432
-      target_port: 5432
+      service:
+        name: etl-postgres-db
+        port: 5432
+        target_port: 5432
+        type: ClusterIP
+    service:
+      name: etl-svc
       type: ClusterIP
-  service:
-    name: etl-svc
-    type: ClusterIP
-    port: 4001
-    target_port: 4001
+      port: 4001
+      target_port: 4001
+    storageclass:
+      name: idea4rc-hostpath
 
 ## Aerospike, used by the ETL to FHIR
 aerospike:
@@ -350,7 +353,7 @@ omop:
     type: ClusterIP
 
 ## Capsule Workbench
-workbench:
+idea4rc-workbench:
   name: capsule-workbench
   namespace: datamesh
   replicas: 1

@@ -4,7 +4,11 @@
 apiVersion: v2
 name: idea4rc-capsule
 description: Helm Chart for IDEA4RC Capsule deployment
+dependencies:
+  - name: etl-fhir
+    version: 23.09.24-1531
+    repository: file://./charts/etl-fhir
 
 type: application
-version: 01.08.24-1027
-appVersion: "01.08.24-1027"
+version: 23.09.24-1531
+appVersion: "23.09.24-1531"

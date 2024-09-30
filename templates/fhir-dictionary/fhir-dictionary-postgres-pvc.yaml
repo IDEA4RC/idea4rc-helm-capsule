@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: fhir-pv-claim
+  name: fhir-dictionary-pg-pv-claim
   namespace: {{ .Values.fhirDictionary.server.namespace }}
 spec:
   storageClassName: {{ .Values.idea4rc_sc.name }}

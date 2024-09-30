@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.aerospike.name }}
+  name: {{ .Values.aerospike.name }}  
   namespace: {{ .Values.aerospike.namespace }}  
 spec:
   replicas: 1
