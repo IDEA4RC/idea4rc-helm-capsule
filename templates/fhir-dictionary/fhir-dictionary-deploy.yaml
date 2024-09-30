@@ -53,7 +53,7 @@ spec:
             {{- toYaml .Values.fhirDictionary.server.resources | nindent 12 }}
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://{{ .Values.fhirDictionary.db.service.name }}.{{ .Values.fhirDictionary.server.namespace }}.svc.cluster.local:{{ .Values.fhirDictionary.db.service.port }}/{{ .Values.fhirDictionary.db.db_name}}"
+              value: "jdbc:postgresql://{{ .Values.fhirDictionary.db.service.name }}.{{ .Values.fhirDictionary.server.namespace }}.svc.cluster.local:{{ .Values.fhirDictionary.db.service.port }}/{{ .Values.fhirDictionary.db.dbName}}"
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -67,7 +67,7 @@ spec:
             - name: SPRING_DATASOURCE_DRIVERCLASSNAME
               value: {{ .Values.fhirDictionary.server.spring.spring_pgsql_driver }}
             - name: spring.jpa.properties.hibernate.dialect
-              value: {{ .Values.fhirDictionary.server.spring.fhir_hibernate_dialect }}
+              value: {{ .Values.fhirDictionary.server.spring.fhir_hibernateDialect }}
             #SPRING_CONFIG_LOCATION Doesn't work, see: https://github.com/hapifhir/hapi-fhir/issues/5147
             #- name: SPRING_CONFIG_LOCATION
             #  value: {{ .Values.fhirDictionary.server.customConfigPath }}/{{ .Values.fhirDictionary.server.customConfigName }}

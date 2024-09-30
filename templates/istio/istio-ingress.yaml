@@ -12,7 +12,7 @@ spec:
       name: https
       protocol: HTTPS
     hosts:
-    - "{{ .Values.idea_gw_hosts }}"
+    - "{{ .Values.ideaGwHosts }}"
     tls:
       mode: SIMPLE
       credentialName: "ingress-tls-secret"

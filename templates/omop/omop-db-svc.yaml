@@ -9,5 +9,5 @@ spec:
   ports:
     - protocol: TCP
       port: {{ .Values.omop.service.port }}
-      targetPort: {{ .Values.omop.service.target_port }}
+      targetPort: {{ .Values.omop.service.targetPort }}
   type: {{ .Values.omop.service.type }}

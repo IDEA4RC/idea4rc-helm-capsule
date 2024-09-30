@@ -11,9 +11,9 @@ spec:
   ports:
     - name : rabbitmq-port
       protocol: TCP
-      port:  {{ .Values.rabbitmq.service.rabbit_port }}
-      targetPort:  {{ .Values.rabbitmq.port.rabbit_port }}
+      port:  {{ .Values.rabbitmq.service.rabbitPort }}
+      targetPort:  {{ .Values.rabbitmq.port.rabbitPort }}
     - name : management-port
       protocol: TCP
-      port: {{ .Values.rabbitmq.service.management_port }}
-      targetPort: {{ .Values.rabbitmq.port.management_port }}
+      port: {{ .Values.rabbitmq.service.managementPort }}
+      targetPort: {{ .Values.rabbitmq.port.managementPort }}

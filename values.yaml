@@ -1,14 +1,16 @@
-idea_gw_hosts: "*"
-mtls_mode: STRICT
+ideaGwHosts: "*"
+mtlsMode: STRICT
 
-istio_injection: enabled
+istioInjection: enabled
 tls:
   commonName: "127.0.0.1"
 
+capsule:
+  deafultNamespace: datamesh
 ## Auth
 # enable/disable Auth configuration
-#e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth_enable=False
-auth_enable: False
+#e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set authEnable=False
+authEnable: False
 #jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
 #jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
 
@@ -33,9 +35,9 @@ auth_enable: False
 # using the capsule, which should be recreated every time the source dataset changes 
 # or when upgrading. Please note that deleting the capsule using "helm delete" will 
 # delete the volumes, too.
-idea4rc_sc:
+idea4rcStorageClass:
   enabled: True
-  is_default: "true"
+  isDefault: "true"
   name: idea4rc-hostpath
   provisioner: microk8s.io/hostpath
   reclaimpolicy: Retain
@@ -47,7 +49,7 @@ fhir:
     name: fhir-data-svc
     type: ClusterIP
     port: 8080
-    target_port: 8080
+    targetPort: 8080
   metrics:
     serviceMonitor:
       enabled: false
@@ -124,7 +126,7 @@ fhir:
       #   memory: 128Mi
     spring:
       spring_pgsql_driver: org.postgresql.Driver
-      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      fhir_hibernateDialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
       #the following params are manually set in the corresponding template due to parsing issues with helm
       #use_apache_addr_strategy: "true"
       #probe_add_paths: "true"
@@ -140,11 +142,11 @@ fhir:
     replicas: 1
     image: postgres:13-alpine
     port: 5432
-    db_name: idea4rc
+    dbName: idea4rc
     service:
       name: fhir-data-postgres-db
       port: 5432
-      target_port: 5432
+      targetPort: 5432
       type: ClusterIP
 
 ## FHIR dictionary server configuration
@@ -153,7 +155,7 @@ fhirDictionary:
     name: fhir-dictionary-svc
     type: ClusterIP
     port: 8080
-    target_port: 8080
+    targetPort: 8080
   metrics:
     serviceMonitor:
       enabled: false
@@ -230,7 +232,7 @@ fhirDictionary:
       #   memory: 128Mi
     spring:
       spring_pgsql_driver: org.postgresql.Driver
-      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
+      fhir_hibernateDialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
       #the following params are manually set in the corresponding template due to parsing issues with helm
       #use_apache_addr_strategy: "true"
       #probe_add_paths: "true"
@@ -246,57 +248,56 @@ fhirDictionary:
     replicas: 1
     image: postgres:13-alpine
     port: 5432
-    db_name: idea4rc
+    dbName: idea4rc
     service:
       name: fhir-dictionary-postgres-db
       port: 5432
-      target_port: 5432
+      targetPort: 5432
       type: ClusterIP
 
 ## ETL to FHIR
-etl-fhir:
+etl:
   etl:
     namespace: datamesh
     server:
-      name: eng-etl
+      name: etl
       image: ghcr.io/idea4rc/etl:1.0
       port: 4001
       #proxy: "false"
-      server_dns: "https://"
-      hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
-      spring_driver: org.postgresql.Driver
+      serverDns: "https://"
+      hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
+      springDriver: org.postgresql.Driver
     db:
-      name: etl
+      name: etl-db
       replicas: 1
       image: postgres:16.3-bullseye
       port: 5432
       service:
         name: etl-postgres-db
         port: 5432
-        target_port: 5432
+        targetPort: 5432
         type: ClusterIP
     service:
       name: etl-svc
       type: ClusterIP
       port: 4001
-      target_port: 4001
-    storageclass:
+      targetPort: 4001
+    storageClass:
       name: idea4rc-hostpath
-
-## Aerospike, used by the ETL to FHIR
-aerospike:
-  name: aerospike
-  namespace: datamesh
-  server:
-    keystore_namespace: idea4rc
-    image: "aerospike/aerospike-server:7.1"
-    port: 3000
-    mtls_mode: PERMISSIVE
-  service:
-    name: aerospike-svc
-    type: ClusterIP
-    port: 3000
-    target_port: 3000
+  ## Aerospike, used by the ETL to FHIR
+  aerospike:
+    name: aerospike
+    namespace: datamesh
+    server:
+      keystoreNamespace: idea4rc
+      image: "aerospike/aerospike-server:7.1"
+      port: 3000
+      mtlsMode: PERMISSIVE
+    service:
+      name: aerospike-svc
+      type: ClusterIP
+      port: 3000
+      targetPort: 3000
 
 ## Data Extraction
 dataextraction:
@@ -307,24 +308,24 @@ dataextraction:
     replicas: 1
     port: 5000
     dropdb: "False"
-    swagger_port: 8000
+    swaggerPort: 8000
   service:
     name: dataextract-svc
     type: ClusterIP
     port: 5000
-    target_port: 5000
-    swagger_port: 8000
-    swagger_target_port: 8000
+    targetPort: 5000
+    swaggerPort: 8000
+    swaggerTargetPort: 8000
   db:
     name: dataextract-postgres-db
     replicas: 1
     image: postgres:16.3-bullseye
     port: 5432
-    db_name: mad
+    dbName: mad
     service:
       name: dataextract-postgres-db
       port: 5432
-      target_port: 5432
+      targetPort: 5432
       type: ClusterIP
 
 ## OMOP Database
@@ -335,13 +336,13 @@ omop:
     name: omop-cdm-deployment
     replicas: "1"
     image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
-    pullpolicy: IfNotPresent
+    pullPolicy: IfNotPresent
     port: 5432
   vocab:
     name: populate-db-job
     ttl: 120
     image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:9c38c4a3e95c08933c63f1e3afe9cd41f300352a223c7fed04db87fd0d078900
-    pullpolicy: IfNotPresent
+    pullPolicy: IfNotPresent
   db:
     name: omopdb
     schema: omopcdm
@@ -349,11 +350,11 @@ omop:
   service:
     name: omop-postgres-service
     port: 5432
-    target_port: 5432
+    targetPort: 5432
     type: ClusterIP
 
 ## Capsule Workbench
-idea4rc-workbench:
+workbench:
   name: capsule-workbench
   namespace: datamesh
   replicas: 1
@@ -362,7 +363,7 @@ idea4rc-workbench:
   service:
     name: workbench-svc
     port: 80
-    target_port: 80
+    targetPort: 80
     type: ClusterIP
 
 ## Apache Reverse Proxy for those WebApps that have issues with 
@@ -375,11 +376,11 @@ revproxy:
     replicas: 1
     image: httpd:2.4.61
     port: 80
-    capsule_public_host: "127.0.0.1"
+    capsulePublicHost: "127.0.0.1"
   service:
     name: revproxy-svc
     port: 80
-    target_port: 80
+    targetPort: 80
     type: ClusterIP
 
 ## RabbitMQ
@@ -389,12 +390,12 @@ rabbitmq:
   replicas: 1
   image: rabbitmq:3-management
   port:
-    rabbit_port: 5672
-    management_port: 15672
+    rabbitPort: 5672
+    managementPort: 15672
   service:
     name: rabbitmq-service
-    rabbit_port: 5672
-    management_port: 15672
+    rabbitPort: 5672
+    managementPort: 15672
 
 ## OHDSI API, used by Vantage6 to retrieve data from the capsule
 ohdsi:
@@ -421,7 +422,7 @@ celery:
     service:
       name: celery-db-svc
       port: 5432
-      target_port: 5432
+      targetPort: 5432
   worker:
     name: celery-worker
     replicas: 1
@@ -429,7 +430,7 @@ celery:
     service:
       name: celery-svc
       port: 5672
-      target_port: 5672
+      targetPort: 5672
 
 ## IdeaDB
 ideadb:
@@ -450,4 +451,4 @@ ideadb:
   service:
     name: ideadb-svc
     port: 3306
-    target_port: mysql
+    targetPort: mysql

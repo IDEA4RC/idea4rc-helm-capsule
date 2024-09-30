@@ -3,6 +3,6 @@ kind: Namespace
 metadata:
   name: {{ .Values.fhir.server.namespace }}
   labels:
-    istio-injection: {{ .Values.istio_injection }}
+    istio-injection: {{ .Values.istioInjection }}
 #annotations:
 #  helm.sh/resource-policy: "keep"

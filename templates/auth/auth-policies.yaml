@@ -1,4 +1,4 @@
-{{- if .Values.auth_enable -}}
+{{- if .Values.authEnable -}}
 {{- range $key, $value := .Values.auth_policies }}
 ---
 apiVersion: security.istio.io/v1

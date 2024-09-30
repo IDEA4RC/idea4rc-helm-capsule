@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.fhirDictionary.service.type }}
   ports:
     - port: {{ .Values.fhirDictionary.service.port }}
-      targetPort: {{ .Values.fhirDictionary.service.target_port }}
+      targetPort: {{ .Values.fhirDictionary.service.targetPort }}
       protocol: TCP
       name: http
     - port: {{ .Values.fhirDictionary.metrics.service.port }}

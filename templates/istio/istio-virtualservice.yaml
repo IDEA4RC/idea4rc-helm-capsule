@@ -19,7 +19,7 @@ spec:
     - destination:
         host: {{ .Values.dataextraction.service.name }}.{{ .Values.dataextraction.namespace }}.svc.cluster.local
         port:
-          number: {{ .Values.dataextraction.service.swagger_port }}
+          number: {{ .Values.dataextraction.service.swaggerPort }}
   - match:
     - uri:
         prefix: /dataext/

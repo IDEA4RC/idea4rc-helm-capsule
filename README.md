@@ -32,7 +32,7 @@ In order to deploy this instance, the following will be required:
 ## Configuration
 The idea here is to have a Capsule deployment that's easy to execute and as flexible as possible. This means that the user will be able to configure the main components freely and/or to turn on/off specific features. 
 
-The main configuration file is the ```values.yaml``` at the root of the chart. This file contains all the variables used within the chart that are used to generate the actual yaml files that will be fed to Kubernetes. Users can override these values at their leisure. For example, keycloack authentication can be disabled simply by setting ```auth_enable: False```, multiple user roles can be defined by altering ```auth_policies```, FHIR docker image changed by replacing the ```fhir.server.image.tag``` with the desired version, etc. Users are invited to take a look at the ```values.yaml``` file to understand which variables can be interacted with.
+The main configuration file is the ```values.yaml``` at the root of the chart. This file contains all the variables used within the chart that are used to generate the actual yaml files that will be fed to Kubernetes. Users can override these values at their leisure. For example, keycloack authentication can be disabled simply by setting ```authEnable: False```, multiple user roles can be defined by altering ```auth_policies```, FHIR docker image changed by replacing the ```fhir.server.image.tag``` with the desired version, etc. Users are invited to take a look at the ```values.yaml``` file to understand which variables can be interacted with.
 
 Another way to alter the chart configuration is by overriding values when executing the install command by leveraging the ```--set``` switch. Multiple values can be overridden by passing multiple instances of the ```--set``` switch.
 
@@ -67,10 +67,10 @@ helm install idea4rc-capsule idea4rc-helm-capsule
 ```
 
 > [!IMPORTANT]
-> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsule_public_host" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration:
+> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsulePublicHost" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration:
 > 
 > ```
-> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
+> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsulePublicHost=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
 > ```
 
 ## How to upgrade

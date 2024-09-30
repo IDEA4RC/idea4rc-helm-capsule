@@ -5,7 +5,7 @@ metadata:
   name: dataextract-pv-claim
   namespace: {{ .Values.dataextraction.namespace }}
 spec:
-  storageClassName: {{ .Values.idea4rc_sc.name }}
+  storageClassName: {{ .Values.idea4rcStorageClass.name }}
   accessModes:
     - ReadWriteMany
   resources:

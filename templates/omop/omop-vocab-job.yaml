@@ -14,7 +14,7 @@ spec:
       containers:
         - name: populate-omop-db
           image: {{ .Values.omop.vocab.image }}
-          imagePullPolicy: {{ .Values.omop.vocab.pullpolicy }}
+          imagePullPolicy: {{ .Values.omop.vocab.pullPolicy }}
           env:
             - name: VOCAB_PG_HOST
               value: {{ .Values.omop.service.name }}.{{ .Values.omop.namespace }}.svc.cluster.local

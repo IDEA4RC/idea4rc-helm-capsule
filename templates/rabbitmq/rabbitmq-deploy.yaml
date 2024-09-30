@@ -18,5 +18,5 @@ spec:
       - name: {{ .Values.rabbitmq.name }}
         image: {{ .Values.rabbitmq.image }}
         ports:
-        - containerPort: {{ .Values.rabbitmq.port.rabbit_port }}
-        - containerPort: {{ .Values.rabbitmq.port.management_port }}
+        - containerPort: {{ .Values.rabbitmq.port.rabbitPort }}
+        - containerPort: {{ .Values.rabbitmq.port.managementPort }}

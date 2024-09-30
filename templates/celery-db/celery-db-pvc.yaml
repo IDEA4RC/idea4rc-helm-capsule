@@ -5,7 +5,7 @@ metadata:
   name: celery-pv-claim
   namespace: {{ .Values.celery.namespace }}
 spec:
-  storageClassName: {{ .Values.idea4rc_sc.name }}
+  storageClassName: {{ .Values.idea4rcStorageClass.name }}
   accessModes:
     - ReadWriteMany
   resources:

@@ -22,7 +22,7 @@ spec:
       containers:
         - name: {{ .Values.omop.app }}
           image: {{ .Values.omop.cdm.image }}
-          imagePullPolicy: {{ .Values.omop.cdm.pullpolicy }}
+          imagePullPolicy: {{ .Values.omop.cdm.pullPolicy }}
           ports:
             - containerPort: {{ .Values.omop.cdm.port }}
           volumeMounts:

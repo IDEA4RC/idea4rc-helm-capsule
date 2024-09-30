@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.fhir.server.namespace }}
 spec:
   mtls:
-    mode: {{ .Values.mtls_mode }}
+    mode: {{ .Values.mtlsMode }}

@@ -1,5 +1,5 @@
-{{- if .Values.idea4rc_sc.enabled -}}
-{{- if not (lookup "storage.k8s.io/v1" "StorageClass" "" .Values.idea4rc_sc.name) -}}
+{{- if .Values.idea4rcStorageClass.enabled -}}
+{{- if not (lookup "storage.k8s.io/v1" "StorageClass" "" .Values.idea4rcStorageClass.name) -}}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -7,11 +7,11 @@ metadata:
     helm.sh/resource-policy: keep
     storageclass.kubernetes.io/is-default-class: "true"
   creationTimestamp: "2024-02-21T11:44:56Z"
-  name: {{ .Values.idea4rc_sc.name}}
+  name: {{ .Values.idea4rcStorageClass.name}}
   resourceVersion: "2439960"
   uid: 053fae2f-d8d7-49b9-8224-a1ca9427f936
-provisioner: {{ .Values.idea4rc_sc.provisioner}}
-reclaimPolicy:  {{ .Values.idea4rc_sc.reclaimpolicy}}
-volumeBindingMode: {{ .Values.idea4rc_sc.volumebindingmode }}
+provisioner: {{ .Values.idea4rcStorageClass.provisioner}}
+reclaimPolicy:  {{ .Values.idea4rcStorageClass.reclaimpolicy}}
+volumeBindingMode: {{ .Values.idea4rcStorageClass.volumebindingmode }}
 {{- end -}}
 {{- end -}}

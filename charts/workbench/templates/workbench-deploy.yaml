@@ -2,23 +2,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.workbench.name }}
-  namespace: {{ .Values.workbench.namespace }}
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: {{ .Values.workbench.replicas }}
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.workbench.name }}
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.workbench.name }}
+        app: {{ .Values.name }}
     spec:
       containers:
-        - name: {{ .Values.workbench.name }}
-          image: {{ .Values.workbench.image }}
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}
           env:
             - name: BACK_END_BASE_PATH
               value: "http://{{ .Values.etl.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local:{{ .Values.etl.service.port }}/"
           ports:
-            - containerPort: {{ .Values.workbench.port }}
+            - containerPort: {{ .Values.port }}

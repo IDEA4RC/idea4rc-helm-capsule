@@ -39,5 +39,5 @@ spec:
                   name: dataextract-secret
                   key: DATAEXTRACT_PGSQL_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.dataextraction.db.db_name }}
+              value: {{ .Values.dataextraction.db.dbName }}
         

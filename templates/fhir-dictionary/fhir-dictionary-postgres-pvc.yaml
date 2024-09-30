@@ -5,7 +5,7 @@ metadata:
   name: fhir-dictionary-pg-pv-claim
   namespace: {{ .Values.fhirDictionary.server.namespace }}
 spec:
-  storageClassName: {{ .Values.idea4rc_sc.name }}
+  storageClassName: {{ .Values.idea4rcStorageClass.name }}
   accessModes:
     - ReadWriteMany
   resources:

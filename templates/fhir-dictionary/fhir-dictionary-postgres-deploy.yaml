@@ -18,7 +18,7 @@ spec:
     spec:
       volumes:
       - persistentVolumeClaim: 
-          claimName: fhir-pv-claim
+          claimName: fhir-dictionary-pv-claim
         name: fhir-pv
       containers:
         - name: {{ .Values.fhirDictionary.db.name }}
@@ -40,5 +40,5 @@ spec:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.fhirDictionary.db.db_name }}
+              value: {{ .Values.fhirDictionary.db.dbName }}
         
