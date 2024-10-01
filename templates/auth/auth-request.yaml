@@ -1,4 +1,4 @@
-{{- if .Values.authEnable -}}
+{{- if .Values.auth.enable -}}
 
 apiVersion: security.istio.io/v1
 kind: RequestAuthentication
@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: fhir-server
   jwtRules:
-  - issuer: {{ .Values.jwt_issuer }}
-    jwksUri: {{ .Values.jwtsUri }}
+  - issuer: {{ .Values.auth.jwtIssuer }}
+    auth.jwksUri: {{ .Values.jwtsUri }}
 
 {{- end }}

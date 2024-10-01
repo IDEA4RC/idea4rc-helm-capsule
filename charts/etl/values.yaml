@@ -2,7 +2,7 @@
 etl:
   namespace: datamesh
   server:
-    name: etl
+    name: etl-fhir
     image: ghcr.io/idea4rc/etl:1.0
     port: 4001
     #proxy: "false"
@@ -10,7 +10,7 @@ etl:
     hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
     springDriver: org.postgresql.Driver
   db:
-    name: etl-db
+    name: etl
     replicas: 1
     image: postgres:16.3-bullseye
     port: 5432
@@ -24,8 +24,10 @@ etl:
     type: ClusterIP
     port: 4001
     targetPort: 4001
-  storageclass:
+  storageClass:
     name: idea4rc-hostpath
+  virtualService:
+    enabled: true
 
 ## Aerospike
 aerospike:

@@ -1,42 +1,41 @@
-ideaGwHosts: "*"
-mtlsMode: STRICT
 
-istioInjection: enabled
-tls:
-  commonName: "127.0.0.1"
+# This is the default namespace for the capsule. Please note that this variable *DOES NOT SET* the namespace of the individual components. You'll have to change/override that for each component that you whish to deploy in the same namespace.
+defaultNamespace: datamesh
+# Capsule's ISTIO configuration is defined here
+istio:
+  ideaGwHosts: "*"
+  mtlsMode: STRICT
+  istioInjection: enabled
+  tls:
+    commonName: "127.0.0.1"
 
-capsule:
-  deafultNamespace: datamesh
 ## Auth
 # enable/disable Auth configuration
-#e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set authEnable=False
-authEnable: False
-#jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
-#jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+# e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth.enable=False
+# multiple roles for authentication can be declared here
+auth:
+  enable: False
+  #jwtIssuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
+  #jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+   #policies:
+  #  medic:
+  #    policy_name: require-jwt-medic
+  #    methods: "POST"
+  #    roles: "Medic"
+  #    namespace: datamesh
+  #  patient:
+  #    policy_name: require-jwt
+  #    methods: "GET"
+  #    roles: "Patient"
+  #    namespace: datamesh
 
-## multiple roles for authentication can be declared here
-#auth_policies:
-#  medic:
-#    policy_name: require-jwt-medic
-#    methods: "POST"
-#    roles: "Medic"
-#    namespace: datamesh
-#  patient:
-#    policy_name: require-jwt
-#    methods: "GET"
-#    roles: "Patient"
-#    namespace: datamesh
-
-# Hostpath-based custom storage class for k8s 
-# enables persistency for the various DB instances of the capsule across capsule upgrades
-# this is useful in certain cases where we want to avoid data loss, for eg.: across 
-# restarts of the guest machine or when restarting services
-# this can lead to data inconsistecy and other issues and it's not the inteded way of 
-# using the capsule, which should be recreated every time the source dataset changes 
-# or when upgrading. Please note that deleting the capsule using "helm delete" will 
-# delete the volumes, too.
+# Hostpath-based custom storage class for k8s:
+# this enables persistency for the various DB instances of the capsule across capsule upgrades.
+# This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services.
+# This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. 
+# Please note that deleting the capsule using "helm delete" will delete the volumes, too.
 idea4rcStorageClass:
-  enabled: True
+  enabled: true
   isDefault: "true"
   name: idea4rc-hostpath
   provisioner: microk8s.io/hostpath
@@ -260,44 +259,14 @@ etl:
   etl:
     namespace: datamesh
     server:
-      name: etl
+      name: etl-fhir
       image: ghcr.io/idea4rc/etl:1.0
-      port: 4001
-      #proxy: "false"
-      serverDns: "https://"
-      hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
-      springDriver: org.postgresql.Driver
+    virtualService:
+      enabled: true
     db:
-      name: etl-db
+      name: etl
       replicas: 1
       image: postgres:16.3-bullseye
-      port: 5432
-      service:
-        name: etl-postgres-db
-        port: 5432
-        targetPort: 5432
-        type: ClusterIP
-    service:
-      name: etl-svc
-      type: ClusterIP
-      port: 4001
-      targetPort: 4001
-    storageClass:
-      name: idea4rc-hostpath
-  ## Aerospike, used by the ETL to FHIR
-  aerospike:
-    name: aerospike
-    namespace: datamesh
-    server:
-      keystoreNamespace: idea4rc
-      image: "aerospike/aerospike-server:7.1"
-      port: 3000
-      mtlsMode: PERMISSIVE
-    service:
-      name: aerospike-svc
-      type: ClusterIP
-      port: 3000
-      targetPort: 3000
 
 ## Data Extraction
 dataextraction:
@@ -357,14 +326,7 @@ omop:
 workbench:
   name: capsule-workbench
   namespace: datamesh
-  replicas: 1
   image: ghcr.io/idea4rc/capsule-workbench@sha256:5de9ca7610fd4497b26ebef08a82e6b42545303ffc81fa4dccc5bbfcfa4a9f86
-  port: 80
-  service:
-    name: workbench-svc
-    port: 80
-    targetPort: 80
-    type: ClusterIP
 
 ## Apache Reverse Proxy for those WebApps that have issues with 
 ## ISTIO's reverse proxy functionality

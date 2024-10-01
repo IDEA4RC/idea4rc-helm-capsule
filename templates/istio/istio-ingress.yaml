@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: istio-ingressgateway
-  namespace: {{ .Values.fhir.server.namespace }}
+  namespace: {{ .Values.defaultNamespace }}
 spec:
   selector:
     istio: ingressgateway
@@ -12,7 +12,7 @@ spec:
       name: https
       protocol: HTTPS
     hosts:
-    - "{{ .Values.ideaGwHosts }}"
+    - "{{ .Values.istio.ideaGwHosts }}"
     tls:
       mode: SIMPLE
       credentialName: "ingress-tls-secret"

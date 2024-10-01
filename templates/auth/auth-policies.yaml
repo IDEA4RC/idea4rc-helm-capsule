@@ -1,5 +1,5 @@
-{{- if .Values.authEnable -}}
-{{- range $key, $value := .Values.auth_policies }}
+{{- if .Values.auth.enable -}}
+{{- range $key, $value := .Values.auth.policies }}
 ---
 apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy

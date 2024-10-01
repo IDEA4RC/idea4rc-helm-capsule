@@ -6,12 +6,12 @@ name: idea4rc-capsule
 description: Helm Chart for IDEA4RC Capsule deployment
 dependencies:
   - name: etl
-    version: 23.09.24-1531
+    version: 01.10.24-1600
     repository: file://./charts/etl
   - name: workbench
     version: "30.09.24-1200"
     repository: file://./charts/workbench
 
 type: application
-version: 30.09.24-1200
-appVersion: "30.09.24-1200"
+version: 01.10.24-1746
+appVersion: "01.10.24-1746"
