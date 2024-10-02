@@ -13,5 +13,5 @@ dependencies:
     repository: file://./charts/workbench
 
 type: application
-version: 01.10.24-1746
-appVersion: "01.10.24-1746"
+version: 02.10.24-1149
+appVersion: "02.10.24-1149"

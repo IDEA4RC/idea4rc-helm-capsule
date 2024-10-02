@@ -35,9 +35,9 @@ auth:
 # This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. 
 # Please note that deleting the capsule using "helm delete" will delete the volumes, too.
 idea4rcStorageClass:
+  name: idea4rc-hostpath
   enabled: true
   isDefault: "true"
-  name: idea4rc-hostpath
   provisioner: microk8s.io/hostpath
   reclaimpolicy: Retain
   volumebindingmode: Immediate
@@ -152,6 +152,7 @@ fhir:
 fhirDictionary:
   service:
     name: fhir-dictionary-svc
+    namespace: datamesh
     type: ClusterIP
     port: 8080
     targetPort: 8080

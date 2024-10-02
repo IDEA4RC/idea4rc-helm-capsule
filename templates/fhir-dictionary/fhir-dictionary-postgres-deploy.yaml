@@ -18,7 +18,7 @@ spec:
     spec:
       volumes:
       - persistentVolumeClaim: 
-          claimName: fhir-dictionary-pv-claim
+          claimName: fhir-dictionary-pg-pv-claim
         name: fhir-pv
       containers:
         - name: {{ .Values.fhirDictionary.db.name }}
