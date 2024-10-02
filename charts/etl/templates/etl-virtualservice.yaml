@@ -1,0 +1,24 @@
+{{- if .Values.etl.virtualService.enabled -}}
+#ETL virtual service
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: etl-vs
+  namespace: {{ .Values.etl.namespace }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-ingressgateway
+  http:
+  - match:
+    - uri:
+        prefix: /etl/
+    rewrite:
+        uri: "/"
+    route:
+    - destination:
+        host: {{ .Values.etl.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.etl.service.port }}
+{{- end }}
