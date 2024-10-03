@@ -17,8 +17,7 @@ spec:
       labels:
         app: {{ .Values.ohdsi.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secret.yaml") . | sha256sum }}
-        checksum/config: {{ include (print $.Template.BasePath "/omop/omop-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/celery/celery-secret.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.ohdsi.name }}

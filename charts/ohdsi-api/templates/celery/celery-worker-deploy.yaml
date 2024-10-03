@@ -15,7 +15,7 @@ spec:
       labels:
         app: {{ .Values.celery.worker.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/celery-db/celery-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/celery/celery-secret.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ .Values.celery.worker.name }}

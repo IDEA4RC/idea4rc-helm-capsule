@@ -1,0 +1,62 @@
+## OHDSI API, used by Vantage6 to retrieve data from the capsule
+ohdsi:
+  name: ohdsi-api
+  namespace: datamesh
+  replicas: "1"
+  image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+  imagePullPolicy: IfNotPresent
+  port: 8000
+  service:
+    name: ohdsi-api
+    port: 8000
+    type: ClusterIP
+  virtualService:
+    enabled: true
+
+## OHDSI needs to point to a valid OMOP instance through its service
+omop:
+  service:
+    name: omop-postgres-service
+  db:
+    name: omopdb
+
+## RabbitMQ
+rabbitmq:
+  name: rabbitmq
+  namespace: datamesh
+  replicas: 1
+  image: rabbitmq:3-management
+  port:
+    rabbitPort: 5672
+    managementPort: 15672
+  service:
+    name: rabbitmq-service
+    rabbitPort: 5672
+    managementPort: 15672
+
+## Celery Worker & relative DB
+celery:
+  namespace: datamesh
+  db:
+    name: celery-db
+    database: ohdsi
+    replicas: 1
+    image: postgres:16.3-bullseye
+    imagePullPolicy: IfNotPresent
+    port: 5432
+    service:
+      name: celery-db-svc
+      port: 5432
+      targetPort: 5432
+  worker:
+    name: celery-worker
+    replicas: 1
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+    imagePullPolicy: IfNotPresent
+    service:
+      name: celery-svc
+      port: 5672
+      targetPort: 5672
+
+idea4rcStorageClass:
+  name: idea4rc-hostpath

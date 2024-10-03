@@ -32,16 +32,6 @@ spec:
           number: {{ .Values.dataextraction.service.port }}
   - match:
     - uri:
-        prefix: /ohdsi-api/
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.ohdsi.service.name }}.{{ .Values.ohdsi.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.ohdsi.service.port }}
-  - match:
-    - uri:
         prefix: /workbench/
     rewrite:
         uri: "/workbench/"

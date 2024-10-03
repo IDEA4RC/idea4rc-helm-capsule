@@ -1,5 +1,4 @@
-# This chart assumes that ISTIO is deployed together with a load balancer 
-# - like MetalLB - that can provide a VIP to the istio ingress gateway
+# This chart assumes that ISTIO is deployed together with a load balancer - like MetalLB - that can provide a VIP to the istio ingress gateway
 
 apiVersion: v2
 name: idea4rc-capsule
@@ -11,7 +10,10 @@ dependencies:
   - name: workbench
     version: "30.09.24-1200"
     repository: file://./charts/workbench
+  - name: ohdsi-api
+    version: "03.10.24-1634"
+    repository: file://./charts/ohdsi-api
 
 type: application
-version: 02.10.24-1149
-appVersion: "02.10.24-1149"
+version: 03.10.24-1634
+appVersion: "03.10.24-1634"

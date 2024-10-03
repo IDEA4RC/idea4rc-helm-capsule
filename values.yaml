@@ -1,6 +1,7 @@
 
 # This is the default namespace for the capsule. Please note that this variable *DOES NOT SET* the namespace of the individual components. You'll have to change/override that for each component that you whish to deploy in the same namespace.
 defaultNamespace: datamesh
+
 # Capsule's ISTIO configuration is defined here
 istio:
   ideaGwHosts: "*"
@@ -10,14 +11,12 @@ istio:
     commonName: "127.0.0.1"
 
 ## Auth
-# enable/disable Auth configuration
-# e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth.enable=False
-# multiple roles for authentication can be declared here
+# enable/disable Auth configuration and configure multiple roles for authentication
 auth:
   enable: False
   #jwtIssuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
   #jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
-   #policies:
+  #policies:
   #  medic:
   #    policy_name: require-jwt-medic
   #    methods: "POST"
@@ -29,11 +28,7 @@ auth:
   #    roles: "Patient"
   #    namespace: datamesh
 
-# Hostpath-based custom storage class for k8s:
-# this enables persistency for the various DB instances of the capsule across capsule upgrades.
-# This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services.
-# This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. 
-# Please note that deleting the capsule using "helm delete" will delete the volumes, too.
+# Hostpath-based custom storage class for k8s. This enables persistency for the various DB instances of the capsule across capsule upgrades. This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services. This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. Please note that deleting the capsule using "helm delete" will delete the volumes, too.
 idea4rcStorageClass:
   name: idea4rc-hostpath
   enabled: true
@@ -346,54 +341,25 @@ revproxy:
     targetPort: 80
     type: ClusterIP
 
-## RabbitMQ
-rabbitmq:
-  name: rabbitmq
-  namespace: datamesh
-  replicas: 1
-  image: rabbitmq:3-management
-  port:
-    rabbitPort: 5672
-    managementPort: 15672
-  service:
-    name: rabbitmq-service
-    rabbitPort: 5672
-    managementPort: 15672
-
 ## OHDSI API, used by Vantage6 to retrieve data from the capsule
-ohdsi:
-  name: ohdsi-api
-  namespace: datamesh
-  replicas: "1"
-  image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
-  imagePullPolicy: IfNotPresent
-  port: 8000
-  service:
+ohdsi-api:
+  ohdsi:
     name: ohdsi-api
-    port: 8000
-    type: ClusterIP
-
-## Celery Worker & relative DB
-celery:
-  namespace: datamesh
-  db:
-    name: celery-db
-    database: ohdsi
-    replicas: 1
-    image: postgres:16.3-bullseye
-    port: 5432
-    service:
-      name: celery-db-svc
-      port: 5432
-      targetPort: 5432
-  worker:
-    name: celery-worker
-    replicas: 1
+    namespace: datamesh
     image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
-    service:
-      name: celery-svc
-      port: 5672
-      targetPort: 5672
+    virtualService:
+      enabled: true
+  
+  ## Celery Worker & relative DB
+  celery:
+    namespace: datamesh
+    db:
+      name: celery-db
+      database: ohdsi
+      image: postgres:16.3-bullseye
+    worker:
+      name: celery-worker
+      image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
 
 ## IdeaDB
 ideadb:
