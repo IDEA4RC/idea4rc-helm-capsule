@@ -3,7 +3,7 @@ ohdsi:
   name: ohdsi-api
   namespace: datamesh
   replicas: "1"
-  image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+  image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
   imagePullPolicy: IfNotPresent
   port: 8000
   service:
@@ -15,10 +15,13 @@ ohdsi:
 
 ## OHDSI needs to point to a valid OMOP instance through its service
 omop:
+  namespace: datamesh
   service:
     name: omop-postgres-service
+    port: 5432
   db:
     name: omopdb
+    schema: omopcdm
 
 ## RabbitMQ
 rabbitmq:
@@ -51,7 +54,7 @@ celery:
   worker:
     name: celery-worker
     replicas: 1
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
     imagePullPolicy: IfNotPresent
     service:
       name: celery-svc

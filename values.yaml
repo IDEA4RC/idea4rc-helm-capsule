@@ -346,7 +346,7 @@ ohdsi-api:
   ohdsi:
     name: ohdsi-api
     namespace: datamesh
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
     virtualService:
       enabled: true
   
@@ -359,7 +359,7 @@ ohdsi-api:
       image: postgres:16.3-bullseye
     worker:
       name: celery-worker
-      image: harbor2.vantage6.ai/infrastructure/ohdsi-api@sha256:aec7c1d7cbaf82cf3af56a33c98610351bd7eb2b490daf61dc4f80ac76fb02ad
+      image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
 
 ## IdeaDB
 ideadb:
