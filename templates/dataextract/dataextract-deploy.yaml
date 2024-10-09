@@ -21,7 +21,7 @@ spec:
           image: {{ .Values.dataextraction.server.image }}
           env:
             - name: CAPSULEFHIR_URL
-              value: "{{ .Values.fhir.service.name }}.{{ .Values.fhir.server.namespace }}.svc.cluster.local:8080/baseR4"
+              value: "{{ .Values.fhirDataServer.service.name }}.{{ .Values.fhirDataServer.server.namespace }}.svc.cluster.local:8080/baseR4"
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:

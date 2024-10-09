@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.fhir.db.name }}
-  namespace: {{ .Values.fhir.server.namespace }}
+  name: {{ .Values.db.name }}
+  namespace: {{ .Values.server.namespace }}
 spec:
-  replicas: {{ .Values.fhir.db.replicas }}
+  replicas: {{ .Values.db.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.fhir.db.name }}
+      app: {{ .Values.db.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.fhir.db.name }}
+        app: {{ .Values.db.name }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-application-configmap.yaml") . | sha256sum }}
-        checksum/config: {{ include (print $.Template.BasePath "/fhir/fhir-postgres-secret.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir-application-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/fhir-postgres-secret.yaml") . | sha256sum }}
     spec:
       volumes:
       - persistentVolumeClaim: 
           claimName: fhir-pg-pv-claim
         name: fhir-pv
       containers:
-        - name: {{ .Values.fhir.db.name }}
-          image: {{ .Values.fhir.db.image }}
+        - name: {{ .Values.db.name }}
+          image: {{ .Values.db.image }}
           volumeMounts:
           - mountPath: /var/lib/postgresql/data
             name: fhir-pv
           ports:
-            - containerPort: {{ .Values.fhir.db.port }}
+            - containerPort: {{ .Values.db.port }}
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -40,5 +40,5 @@ spec:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.fhir.db.dbName }}
+              value: {{ .Values.db.dbName }}
         

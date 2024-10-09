@@ -1,0 +1,7 @@
+apiVersion: v2
+name: idea4rc-fhir-server
+description: Custom FHIR server for Idea4RC 
+
+type: application
+version: 09.10.24-1754
+appVersion: "09.10.24-1754"

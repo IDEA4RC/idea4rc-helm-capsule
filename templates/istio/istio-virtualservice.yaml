@@ -40,13 +40,3 @@ spec:
         host: {{ .Values.revproxy.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local
         port:
           number: {{ .Values.workbench.service.port }}
-  - match:
-    - uri:
-        prefix: /
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.fhir.service.name }}.{{ .Values.fhir.server.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.fhir.service.port }}

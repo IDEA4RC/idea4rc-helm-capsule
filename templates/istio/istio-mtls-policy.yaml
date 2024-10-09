@@ -2,7 +2,7 @@ apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
   name: default
-  namespace: {{ .Values.fhir.server.namespace }}
+  namespace: {{ .Values.defaultNamespace }}
 spec:
   mtls:
     mode: {{ .Values.mtlsMode }}

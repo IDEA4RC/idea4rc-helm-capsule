@@ -6,7 +6,7 @@
 #  labels:
 #    type: local
 #    app: postgres-db
-#    namespace: {{ .Values.fhir.server.namespace }}
+#    namespace: {{ .Values.dataextraction.namespace }}
 ##  annotations:
 ##    helm.sh/resource-policy: "keep"
 #spec:
@@ -24,7 +24,7 @@
 #kind: PersistentVolumeClaim
 #metadata:
 #  name: postgres-pv-claim
-#  namespace: {{ .Values.fhir.server.namespace }}
+#  namespace: {{ .Values.dataextraction.namespace }}
 ##annotations:
 ##  helm.sh/resource-policy: "keep"
 #spec:

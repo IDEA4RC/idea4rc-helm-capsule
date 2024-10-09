@@ -13,7 +13,15 @@ dependencies:
   - name: ohdsi-api
     version: "09.10.24-1613"
     repository: file://./charts/ohdsi-api
+  - name: idea4rc-fhir-server
+    repository: file://./charts/idea4rc-fhir-server
+    version: 09.10.24-1754
+    alias: fhirDataServer
+  - name: idea4rc-fhir-server
+    repository: file://./charts/idea4rc-fhir-server
+    version: 09.10.24-1754
+    alias: fhirDictionary
 
 type: application
-version: 09.10.24-1613
-appVersion: "09.10.24-1613"
+version: 09.10.24-1820
+appVersion: "09.10.24-1820"
