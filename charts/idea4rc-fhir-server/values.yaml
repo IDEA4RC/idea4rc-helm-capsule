@@ -99,6 +99,8 @@ db:
     port: 5432
     targetPort: 5432
     type: ClusterIP
+  pvc:
+    name: fhir-dataserver-pg-pv-claim
 idea4rcStorageClass:
   name: idea4rc-hostpath
 virtualService:

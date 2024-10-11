@@ -55,6 +55,10 @@ fhirDataServer:
     service:
       name: fhir-data-postgres-db
       port: 5432
+    pvc:
+      name: fhir-dataserver-pg-pv-claim
+  virtualService:
+    enabled: false
 
 ## FHIR dictionary server configuration
 fhirDictionary:
@@ -75,6 +79,10 @@ fhirDictionary:
     service:
       name: fhir-dictionary-postgres-db
       port: 5432
+    pvc:
+      name: fhir-dictionary-pg-pv-claim
+  virtualService:
+    enabled: false
 
 ## Data Extraction
 dataextraction:
@@ -158,7 +166,7 @@ ohdsi-api:
   ohdsi:
     name: ohdsi-api
     namespace: datamesh
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
     virtualService:
       enabled: true
   
@@ -171,7 +179,7 @@ ohdsi-api:
       image: postgres:16.3-bullseye
     worker:
       name: celery-worker
-      image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
+      image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
 
 ## IdeaDB
 ideadb:

@@ -3,7 +3,7 @@ ohdsi:
   name: ohdsi-api
   namespace: datamesh
   replicas: "1"
-  image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
+  image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
   imagePullPolicy: IfNotPresent
   port: 8000
   service:
@@ -54,7 +54,7 @@ celery:
   worker:
     name: celery-worker
     replicas: 1
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.7
+    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
     imagePullPolicy: IfNotPresent
     service:
       name: celery-svc

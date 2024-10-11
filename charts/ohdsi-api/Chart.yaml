@@ -3,5 +3,5 @@ name: ohdsi-api
 description: OHDSI API interfaces with IDEA4RC capsule's OMOP instance
 
 type: application
-version: 09.10.24-1613
-appVersion: "09.10.24-1613"
+version: 10.10.24-1156
+appVersion: 10.10.24-1156
