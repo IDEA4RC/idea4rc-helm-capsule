@@ -48,6 +48,7 @@ fhirDataServer:
       repository: idea4rc/fhir-data-server
       tag: "1.0"
       pull_policy: IfNotPresent
+    configmap_name: fhir-data-application-cm
   db:
     name: fhir-data-postgres-db
     image: postgres:13-alpine
@@ -57,6 +58,8 @@ fhirDataServer:
       port: 5432
     pvc:
       name: fhir-dataserver-pg-pv-claim
+    secret:
+      name: fhir-dataserver-pg-secret
   virtualService:
     enabled: false
 
@@ -72,6 +75,7 @@ fhirDictionary:
       repository: idea4rc/fhir-data-server
       tag: "1.0"
       pull_policy: IfNotPresent
+    configmap_name: fhir-dictionary-application-cm
   db:
     name: fhir-dictionary-postgres-db
     image: postgres:13-alpine
@@ -81,6 +85,8 @@ fhirDictionary:
       port: 5432
     pvc:
       name: fhir-dictionary-pg-pv-claim
+    secret:
+      name: fhir-dictionary-pg-secret
   virtualService:
     enabled: false
 
@@ -130,7 +136,8 @@ omop:
     pullPolicy: IfNotPresent
   db:
     name: omopdb
-    schema: omopcdm
+    schema: omopcdm_synthetic
+    result_schema: results_synthetic
   vocabJob: true
   service:
     name: omop-postgres-service

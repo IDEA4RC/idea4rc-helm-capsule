@@ -3,5 +3,5 @@ name: idea4rc-fhir-server
 description: Custom FHIR server for Idea4RC 
 
 type: application
-version: 09.10.24-1754
-appVersion: "09.10.24-1754"
+version: 15.10.24-1830
+appVersion: "15.10.24-1830"

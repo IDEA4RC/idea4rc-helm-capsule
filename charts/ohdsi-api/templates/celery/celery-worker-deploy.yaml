@@ -58,3 +58,5 @@ spec:
             value: {{ .Values.omop.db.name }}
           - name: OMOP_CDM_SCHEMA
             value: {{ .Values.omop.db.schema }}
+          - name: OMOP_RESULT_SCHEMA
+            value: {{ .Values.omop.db.result_schema }}

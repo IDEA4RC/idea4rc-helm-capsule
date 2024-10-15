@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: custom-fhir-application
+  name: {{ .Values.server.configmap_name }}
   namespace: {{ .Values.server.namespace }}
 data:
   application-extra.yaml: |-

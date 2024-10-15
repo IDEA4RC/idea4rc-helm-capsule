@@ -57,12 +57,12 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.db.secret.name }}
                   key: POSTGRES_USER
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.db.secret.name }}
                   key: POSTGRES_PASSWORD
             - name: SPRING_DATASOURCE_DRIVERCLASSNAME
               value: {{ .Values.server.spring.spring_pgsql_driver }}
@@ -88,7 +88,7 @@ spec:
             {{ toYaml .Values.server.extra_env | nindent 12 }}
             {{- end }}
           volumeMounts:
-            - name: custom-fhir-application
+            - name: {{ .Values.server.configmap_name }}
               mountPath: {{ .Values.server.customConfigPath }}/{{ .Values.server.customConfigName }}
               readOnly: true
               subPath: {{ .Values.server.customConfigName }}
@@ -123,9 +123,9 @@ spec:
           emptyDir: {}
         - name: lucenefiles-volume
           emptyDir: {}
-        - name: custom-fhir-application
+        - name: {{ .Values.server.configmap_name }}
           configMap: 
-            name: custom-fhir-application
+            name: {{ .Values.server.configmap_name }}
             #items:
             #  - key: {{ .Values.server.customConfigName }}
             #    path: {{ .Values.server.customConfigName }}

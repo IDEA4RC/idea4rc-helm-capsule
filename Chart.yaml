@@ -11,17 +11,17 @@ dependencies:
     version: "30.09.24-1200"
     repository: file://./charts/workbench
   - name: ohdsi-api
-    version: "10.10.24-1156"
+    version: "14.10.24-1533"
     repository: file://./charts/ohdsi-api
   - name: idea4rc-fhir-server
     repository: file://./charts/idea4rc-fhir-server
-    version: 09.10.24-1754
+    version: 15.10.24-1830
     alias: fhirDataServer
   - name: idea4rc-fhir-server
     repository: file://./charts/idea4rc-fhir-server
-    version: 09.10.24-1754
+    version: 15.10.24-1830
     alias: fhirDictionary
 
 type: application
-version: 10.10.24-1156
-appVersion: "10.10.24-1156"
+version: 15.10.24-1830
+appVersion: "15.10.24-1830"

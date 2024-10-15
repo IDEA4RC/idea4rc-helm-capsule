@@ -21,7 +21,8 @@ omop:
     port: 5432
   db:
     name: omopdb
-    schema: omopcdm
+    schema: omopcdm_synthetic
+    result_schema: results_synthetic
 
 ## RabbitMQ
 rabbitmq:
