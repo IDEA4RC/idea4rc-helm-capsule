@@ -1,8 +1,10 @@
-
-# This is the default namespace for the capsule. Please note that this variable *DOES NOT SET* the namespace of the individual components. You'll have to change/override that for each component that you whish to deploy in the same namespace.
+# This is the default namespace for the capsule. Please note that this variable *DOES NOT SET* the namespace of the individual components. You'll have to change/override that for each component that you whish to deploy those in a specific namespace.
 defaultNamespace: datamesh
 
-# Capsule's ISTIO configuration is defined here
+# This is the IP/Domain Name used to expose the capsule, should be overridden at install/upgrade time with the desired IP using --set capsulePublicHost=(MY CAPSULE IP)
+capsulePublicHost: "127.0.0.1"
+
+# ISTIO configuration is defined here
 istio:
   ideaGwHosts: "*"
   mtlsMode: STRICT
@@ -27,7 +29,7 @@ auth:
       roles: "Patient"
       namespace: datamesh
 
-# Hostpath-based custom storage class for k8s. This enables persistency for the various DB instances of the capsule across capsule upgrades. This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services. This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. Please note that deleting the capsule using "helm delete" will delete the volumes, too.
+# Hostpath-based custom storage class for k8s. This enables persistency for the various DB instances of the capsule across upgrades. This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services. This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. Please note that deleting the capsule using "helm delete" will delete the volumes, too.
 idea4rcStorageClass:
   name: idea4rc-hostpath
   enabled: true
@@ -91,33 +93,21 @@ fhirDictionary:
     enabled: false
 
 ## Data Extraction
-dataextraction:
-  name: dataextraction
+dataextractor:
+  name: dataextractor
   namespace: datamesh
   server:
-    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:1.0
-    replicas: 1
-    port: 5000
-    dropdb: "False"
-    swaggerPort: 8000
-  service:
-    name: dataextract-svc
-    type: ClusterIP
-    port: 5000
-    targetPort: 5000
-    swaggerPort: 8000
-    swaggerTargetPort: 8000
+    image: "ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:1.0"
   db:
     name: dataextract-postgres-db
-    replicas: 1
     image: postgres:16.3-bullseye
-    port: 5432
     dbName: mad
+  fhir:
+    namespace: datamesh
     service:
-      name: dataextract-postgres-db
-      port: 5432
-      targetPort: 5432
-      type: ClusterIP
+      name: fhir-data-svc
+  virtualService:
+    enabled: true
 
 ## OMOP Database
 omop:
@@ -161,7 +151,6 @@ revproxy:
     replicas: 1
     image: httpd:2.4.61
     port: 80
-    capsulePublicHost: "127.0.0.1"
   service:
     name: revproxy-svc
     port: 80

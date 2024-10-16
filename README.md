@@ -67,10 +67,10 @@ helm install idea4rc-capsule idea4rc-helm-capsule
 ```
 
 > [!IMPORTANT]
-> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsulePublicHost" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration:
+> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "capsulePublicHost" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration. This also implies that you could use the domain name pointing at the capsule instance instead of the IP, if you have one:
 > 
 > ```
-> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP
+> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP
 > ```
 
 ## How to upgrade

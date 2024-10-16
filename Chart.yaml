@@ -21,7 +21,11 @@ dependencies:
     repository: file://./charts/idea4rc-fhir-server
     version: 15.10.24-1830
     alias: fhirDictionary
+  - name: dataextractor
+    repository: file://./charts/dataextractor
+    version: 16.10.24-1638
+    alias: dataextractor
 
 type: application
-version: 15.10.24-1830
-appVersion: "15.10.24-1830"
+version: 16.10.24-1638
+appVersion: "16.10.24-1638"

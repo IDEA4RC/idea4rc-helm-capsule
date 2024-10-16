@@ -1,0 +1,38 @@
+name: dataextractor
+namespace: datamesh
+server:
+  image: "ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:1.0"
+  replicas: 1
+  port: 5000
+  dropdb: "False"
+  swaggerPort: 8000
+service:
+  name: dataextract-svc
+  type: ClusterIP
+  port: 5000
+  targetPort: 5000
+  swaggerPort: 8000
+  swaggerTargetPort: 8000
+db:
+  name: dataextract-postgres-db
+  replicas: 1
+  image: postgres:16.3-bullseye
+  port: 5432
+  dbName: mad
+  service:
+    name: dataextract-postgres-db
+    port: 5432
+    targetPort: 5432
+    type: ClusterIP
+# needed to connect to the FHIR instance
+fhir:
+  namespace: datamesh
+  service:
+    name: fhir-data-svc
+
+# Additional configuration that's related to the capsule environment
+capsulePublicHost: "127.0.0.1"
+idea4rcStorageClass:
+  name: idea4rc-hostpath
+virtualService:
+    enabled: true

@@ -10,26 +10,7 @@ spec:
   gateways:
   - istio-ingressgateway
   http:
-  - match:
-    - uri:
-        prefix: /dataextdocs/
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.dataextraction.service.name }}.{{ .Values.dataextraction.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.dataextraction.service.swaggerPort }}
-  - match:
-    - uri:
-        prefix: /dataext/
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.dataextraction.service.name }}.{{ .Values.dataextraction.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.dataextraction.service.port }}
+  # This is the place to specify URL prefixes for those services that are exposed via the capsule's reverse proxy 
   - match:
     - uri:
         prefix: /workbench/
