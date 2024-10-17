@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: omopdb-pv-claim
-  namespace: {{ .Values.omop.namespace }}
+  namespace: {{ .Values.namespace }}
 spec:
   storageClassName: {{ .Values.idea4rcStorageClass.name }}
   accessModes:

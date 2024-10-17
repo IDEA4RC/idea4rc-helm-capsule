@@ -115,25 +115,16 @@ omop:
   app: omop-postgres
   cdm:
     name: omop-cdm-deployment
-    replicas: "1"
     image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
-    pullPolicy: IfNotPresent
-    port: 5432
   vocab:
     name: populate-db-job
     ttl: 120
     image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:9c38c4a3e95c08933c63f1e3afe9cd41f300352a223c7fed04db87fd0d078900
-    pullPolicy: IfNotPresent
   db:
     name: omopdb
     schema: omopcdm_synthetic
     result_schema: results_synthetic
   vocabJob: true
-  service:
-    name: omop-postgres-service
-    port: 5432
-    targetPort: 5432
-    type: ClusterIP
 
 ## Capsule Workbench
 workbench:

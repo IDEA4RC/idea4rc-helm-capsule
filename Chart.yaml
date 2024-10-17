@@ -24,8 +24,10 @@ dependencies:
   - name: dataextractor
     repository: file://./charts/dataextractor
     version: 16.10.24-1638
-    alias: dataextractor
+  - name: omop
+    repository: file://./charts/omop
+    version: 17.10.24-1200
 
 type: application
-version: 16.10.24-1638
-appVersion: "16.10.24-1638"
+version: 17.10.24-1658
+appVersion: "17.10.24-1658"
