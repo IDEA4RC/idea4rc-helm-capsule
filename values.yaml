@@ -147,6 +147,8 @@ revproxy:
     port: 80
     targetPort: 80
     type: ClusterIP
+  virtualService:
+    enabled: true
 
 ## OHDSI API, used by Vantage6 to retrieve data from the capsule
 ohdsi-api:
@@ -174,17 +176,5 @@ ideadb:
   server:
     name: ideadb
     image: bitnami/mariadb:11.4.2
-    imagePullPolicy: IfNotPresent
-    config: ""
-    persistence:
-      enabled: false
-      storageClass: generic
-      accessMode: ReadWriteOnce
-      size: 8Gi
   db:
     name: ideadb
-    port: 3306
-  service:
-    name: ideadb-svc
-    port: 3306
-    targetPort: mysql

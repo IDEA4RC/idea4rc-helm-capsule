@@ -4,5 +4,3 @@ metadata:
   name: {{ .Values.defaultNamespace }}
   labels:
     istio-injection: {{ .Values.istioInjection }}
-#annotations:
-#  helm.sh/resource-policy: "keep"
