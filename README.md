@@ -15,10 +15,12 @@ This helm chart contains the following IDEA4RC capsule core components:
 - FHIR server
 - OMOP Instance
 - OHDSI API & dependencies
-- ETL instance
+- FHIR ETL instance
 - Data Extraction instance
 - Capsule Workbench
-- Internal Reverse Proxy for Web Applications
+- A MariaDB instance called IdeaDB
+- Internal Reverse Proxy for internal Web Applications that don't play nice with the ISTIO Virtual Services
+- Additional environment config such as ISTIO's, a storageclass, etc.
 
 ## Requirements
 In order to deploy this instance, the following will be required:
@@ -35,15 +37,6 @@ The idea here is to have a Capsule deployment that's easy to execute and as flex
 The main configuration file is the ```values.yaml``` at the root of the chart. This file contains all the variables used within the chart that are used to generate the actual yaml files that will be fed to Kubernetes. Users can override these values at their leisure. For example, keycloack authentication can be disabled simply by setting ```auth_enable: False```, multiple user roles can be defined by altering ```auth_policies```, FHIR docker image changed by replacing the ```fhir.server.image.tag``` with the desired version, etc. Users are invited to take a look at the ```values.yaml``` file to understand which variables can be interacted with.
 
 Another way to alter the chart configuration is by overriding values when executing the install command by leveraging the ```--set``` switch. Multiple values can be overridden by passing multiple instances of the ```--set``` switch.
-
-> [!WARNING]
-> Remember to change/override the default user/passwords in the following "secret" files before installing:
->   - dataextract-postgres-secret.yaml 
->   - etl-postgres-secret.yaml 
->   - fhir-postgres-secret.yaml 
->   - omop-secrets.yaml
->   - celery-secrets.yaml
->   - ideadb-secrets.yaml
 
 ## Endpoints
 Once the capsule has been deployed, the internal services will be available at the endpoints sepcified in the chart's [virtual services template](templates/capsule-vs.yaml). Looking at the virtual services, we can see that access to services is mapped via virtualhosts, for eg. the OHDSI API service will be reached calling the PUBLIC_IP/ohdsi-api/ URL. Currently, all the endpoints will be published by default, but this is not the definitive approach. Once capsule development moves forward, only specific endpoints will be required - if any. 
@@ -67,14 +60,18 @@ helm install idea4rc-capsule idea4rc-helm-capsule
 ```
 
 > [!IMPORTANT]
-> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsule_public_host" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration:
+> If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsule_public_host" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration. If you want to expose the capsule only on a private network, please specify the desired private IP instead:
 > 
 > ```
 > export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
 > ```
 
 ## How to upgrade
-In order to upgrade an existing capsule, downloading the lastest release and upgading it with an ```helm upgrade``` is enough. This Helm chart leverages annotations to trigger the redeployment of the dependencies of the components that have been updated, hence no manual intervention is theoretically required. Also, the "--set" option can be used to override chart values when upgrading too.
+In order to upgrade an existing capsule, downloading the lastest release and upgading it with an ```helm upgrade``` is enough. This Helm chart leverages annotations to trigger the redeployment of the dependencies of the components that have been updated, hence no manual intervention is theoretically required. Also, the "--set" option can be used to override chart values when upgrading too. For example:
+
+```
+export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
+```
 
 Update sources from this repo:
 ```
