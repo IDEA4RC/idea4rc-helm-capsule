@@ -1,0 +1,25 @@
+{{- if .Values.revproxy.virtualService.enabled -}}
+# Dataextractor virtual service
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: revproxy-vs
+  namespace: {{ .Values.revproxy.namespace }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-ingressgateway
+  http:
+  # This is the place to specify URL prefixes for those services that are exposed via the capsule's reverse proxy 
+  - match:
+    - uri:
+        prefix: /workbench/
+    rewrite:
+        uri: "/workbench/"
+    route:
+    - destination:
+        host: {{ .Values.revproxy.service.name }}.{{ .Values.workbench.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.workbench.service.port }}
+{{- end }}
