@@ -300,7 +300,7 @@ dataextraction:
   name: dataextraction
   namespace: datamesh
   server:
-    image: ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:1.0
+    image: ghcr.io/idea4rc/dataextractionjob:1.0
     replicas: 1
     port: 5000
     dropdb: "False"
