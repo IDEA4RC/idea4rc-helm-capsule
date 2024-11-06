@@ -3,5 +3,5 @@ name: dataextractor
 description: Service that enables the extraction of data from the FHIR instance within the IDEA4RC capsule
 
 type: application
-version:  16.10.24-1638
-appVersion: 16.10.24-1638
+version:  06.11.24-1157
+appVersion: 06.11.24-1157
