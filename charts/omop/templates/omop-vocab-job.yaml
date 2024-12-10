@@ -1,0 +1,36 @@
+{{- if .Values.vocabJob -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.vocab.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  ttlSecondsAfterFinished: {{ .Values.vocab.ttl }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/omop-secret.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - name: populate-omop-db
+          image: {{ .Values.vocab.image }}
+          imagePullPolicy: {{ .Values.vocab.pullPolicy }}
+          env:
+            - name: VOCAB_PG_HOST
+              value: {{ .Values.service.name }}.{{ .Values.namespace }}.svc.cluster.local
+            - name: VOCAB_PG_DATABASE
+              value: {{ .Values.db.name }}
+            - name: VOCAB_PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_USER
+            - name: VOCAB_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_PASSWORD
+            - name: VOCAB_PG_SCHEMA
+              value: {{ .Values.db.schema }}
+      restartPolicy: OnFailure
+{{- end }}

@@ -1,303 +1,100 @@
-idea_gw_hosts: "*"
-mtls_mode: STRICT
+# This is the default namespace for the capsule. Please note that this variable *DOES NOT SET* the namespace of the individual components. You'll have to change/override that for each component that you whish to deploy those in a specific namespace.
+defaultNamespace: datamesh
 
-istio_injection: enabled
-tls:
-  commonName: "127.0.0.1"
+# This is the IP/Domain Name used to expose the capsule, should be overridden at install/upgrade time with the desired IP using --set capsulePublicHost=(MY CAPSULE IP)
+capsulePublicHost: "127.0.0.1"
 
-## Auth
-# enable/disable Auth configuration
-#e.g.: helm install idea4rc-capsule idea4rc-capsule/ --set auth_enable=False
-auth_enable: False
-#jwt_issuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
-#jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+# ISTIO configuration is defined here
+istio:
+  ideaGwHosts: "*"
+  mtlsMode: STRICT
+  istioInjection: enabled
+  tls:
+    commonName: "127.0.0.1"
 
-## multiple roles for authentication can be declared here
-#auth_policies:
-#  medic:
-#    policy_name: require-jwt-medic
-#    methods: "POST"
-#    roles: "Medic"
-#    namespace: datamesh
-#  patient:
-#    policy_name: require-jwt
-#    methods: "GET"
-#    roles: "Patient"
-#    namespace: datamesh
+# Enable/disable Auth configuration and configure multiple roles for authentication.
+auth:
+  enable: False
+  jwtIssuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
+  jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
+  policies:
+    medic:
+      policy_name: require-jwt-medic
+      methods: "POST"
+      roles: "Medic"
+      namespace: datamesh
+    patient:
+      policy_name: require-jwt
+      methods: "GET"
+      roles: "Patient"
+      namespace: datamesh
 
-# Hostpath-based custom storage class for k8s 
-# enables persistency for the various DB instances of the capsule across capsule upgrades
-# this is useful in certain cases where we want to avoid data loss, for eg.: across 
-# restarts of the guest machine or when restarting services
-# this can lead to data inconsistecy and other issues and it's not the inteded way of 
-# using the capsule, which should be recreated every time the source dataset changes 
-# or when upgrading. Please note that deleting the capsule using "helm delete" will 
-# delete the volumes, too.
-idea4rc_sc:
-  enabled: True
-  is_default: "true"
+# Hostpath-based custom storage class for k8s. This enables persistency for the various DB instances of the capsule across upgrades. This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services. This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. Please note that deleting the capsule using "helm delete" will delete the volumes, too.
+idea4rcStorageClass:
   name: idea4rc-hostpath
+  enabled: true
+  isDefault: "true"
   provisioner: microk8s.io/hostpath
   reclaimpolicy: Retain
   volumebindingmode: Immediate
 
 ## FHIR data server configuration
-fhir:
+fhirDataServer:
   service:
     name: fhir-data-svc
-    type: ClusterIP
-    port: 8080
-    target_port: 8080
-  metrics:
-    serviceMonitor:
-      enabled: false
-    additionalLabels: {}
-    service:
-      port: 8081
-  pod_disruption_budget:
-    enabled: false
-    minAvailable: 1
-    maxUnavailable: ""
   server:
     name: fhir-data-server
     namespace: datamesh
-    replicas: 1
-    image_pull_secrets: []
-    pod_security_context: {}
-    security_context:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 65532
-      runAsGroup: 65532
-      privileged: false
-      seccompProfile:
-        type: RuntimeDefault
-    container_name: fhir-data-server
     image:
-      #registry: docker.io
-      #repository: hapiproject/hapi
-      #tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
       registry: ghcr.io
       repository: idea4rc/fhir-data-server
       tag: "1.0"
       pull_policy: IfNotPresent
-    startup_probe:
-      httpGet:
-        path: /readyz
-        port: http
-      failureThreshold: 10
-      initialDelaySeconds: 30
-      periodSeconds: 30
-      successThreshold: 1
-      timeoutSeconds: 30
-    liveness_probe:
-      httpGet:
-        path: /livez
-        port: http
-      failureThreshold: 5
-      initialDelaySeconds: 30
-      periodSeconds: 20
-      successThreshold: 1
-      timeoutSeconds: 30
-    readiness_probe:
-      httpGet:
-        path: /readyz
-        port: http
-      failureThreshold: 5
-      initialDelaySeconds: 30
-      periodSeconds: 20
-      successThreshold: 1
-      timeoutSeconds: 20
-    customConfigPath: /app/config
-    customConfigName: application-extra.yaml
-    resources:
-      {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-    spring:
-      spring_pgsql_driver: org.postgresql.Driver
-      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
-      #the following params are manually set in the corresponding template due to parsing issues with helm
-      #use_apache_addr_strategy: "true"
-      #probe_add_paths: "true"
-      #mgmt_srv_port: "8081"
-      extra_config: ""
-      extra_env: ""
-    node_selector: {}
-    affinity: {}
-    tolerations: []
-    topology_spread_constraints: []
+    configmap_name: fhir-data-application-cm
   db:
     name: fhir-data-postgres-db
-    replicas: 1
     image: postgres:13-alpine
-    port: 5432
-    db_name: idea4rc
+    dbName: idea4rc
     service:
       name: fhir-data-postgres-db
       port: 5432
-      target_port: 5432
-      type: ClusterIP
+    pvc:
+      name: fhir-dataserver-pg-pv-claim
+    secret:
+      name: fhir-dataserver-pg-secret
+  virtualService:
+    enabled: false
 
 ## FHIR dictionary server configuration
 fhirDictionary:
   service:
     name: fhir-dictionary-svc
-    type: ClusterIP
-    port: 8080
-    target_port: 8080
-  metrics:
-    serviceMonitor:
-      enabled: false
-    additionalLabels: {}
-    service:
-      port: 8081
-  pod_disruption_budget:
-    enabled: false
-    minAvailable: 1
-    maxUnavailable: ""
   server:
     name: fhir-dictionary-server
     namespace: datamesh
-    replicas: 1
-    image_pull_secrets: []
-    pod_security_context: {}
-    security_context:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 65532
-      runAsGroup: 65532
-      privileged: false
-      seccompProfile:
-        type: RuntimeDefault
-    container_name: fhir-dictionary-server
     image:
-      #registry: docker.io
-      #repository: hapiproject/hapi
-      #tag: "v6.10.1@sha256:4eac1b3481180b028616d1fab7e657e368538063d75f7ed3be2032e34c657dd4"
       registry: ghcr.io
       repository: idea4rc/fhir-data-server
       tag: "1.0"
       pull_policy: IfNotPresent
-    startup_probe:
-      httpGet:
-        path: /readyz
-        port: http
-      failureThreshold: 10
-      initialDelaySeconds: 30
-      periodSeconds: 30
-      successThreshold: 1
-      timeoutSeconds: 30
-    liveness_probe:
-      httpGet:
-        path: /livez
-        port: http
-      failureThreshold: 5
-      initialDelaySeconds: 30
-      periodSeconds: 20
-      successThreshold: 1
-      timeoutSeconds: 30
-    readiness_probe:
-      httpGet:
-        path: /readyz
-        port: http
-      failureThreshold: 5
-      initialDelaySeconds: 30
-      periodSeconds: 20
-      successThreshold: 1
-      timeoutSeconds: 20
-    customConfigPath: /app/config
-    customConfigName: application-extra.yaml
-    resources:
-      {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-    spring:
-      spring_pgsql_driver: org.postgresql.Driver
-      fhir_hibernate_dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgres94Dialect
-      #the following params are manually set in the corresponding template due to parsing issues with helm
-      #use_apache_addr_strategy: "true"
-      #probe_add_paths: "true"
-      #mgmt_srv_port: "8081"
-      extra_config: ""
-      extra_env: ""
-    node_selector: {}
-    affinity: {}
-    tolerations: []
-    topology_spread_constraints: []
+    configmap_name: fhir-dictionary-application-cm
   db:
     name: fhir-dictionary-postgres-db
-    replicas: 1
     image: postgres:13-alpine
-    port: 5432
-    db_name: idea4rc
+    dbName: idea4rc
     service:
       name: fhir-dictionary-postgres-db
       port: 5432
-      target_port: 5432
-      type: ClusterIP
-
-## ETL to FHIR
-etl:
-  namespace: datamesh
-  server:
-    name: eng-etl
-    image: ghcr.io/idea4rc/etl:1.0
-    port: 4001
-    #proxy: "false"
-    server_dns: "https://"
-    hibernate_dialect: org.hibernate.dialect.PostgreSQLDialect
-    spring_driver: org.postgresql.Driver
-  db:
-    name: etl
-    replicas: 1
-    image: postgres:16.3-bullseye
-    port: 5432
-    service:
-      name: etl-postgres-db
-      port: 5432
-      target_port: 5432
-      type: ClusterIP
-  service:
-    name: etl-svc
-    type: ClusterIP
-    port: 4001
-    target_port: 4001
-
-## Aerospike, used by the ETL to FHIR
-aerospike:
-  name: aerospike
-  namespace: datamesh
-  server:
-    keystore_namespace: idea4rc
-    image: "aerospike/aerospike-server:7.1"
-    port: 3000
-    mtls_mode: PERMISSIVE
-  service:
-    name: aerospike-svc
-    type: ClusterIP
-    port: 3000
-    target_port: 3000
+    pvc:
+      name: fhir-dictionary-pg-pv-claim
+    secret:
+      name: fhir-dictionary-pg-secret
+  virtualService:
+    enabled: false
 
 ## Data Extraction
-dataextraction:
-  name: dataextraction
+dataextractor:
+  name: dataextractor
   namespace: datamesh
   server:
     image: ghcr.io/idea4rc/dataextractionjob:1.0
@@ -314,15 +111,14 @@ dataextraction:
     swagger_target_port: 8000
   db:
     name: dataextract-postgres-db
-    replicas: 1
     image: postgres:16.3-bullseye
-    port: 5432
-    db_name: mad
+    dbName: mad
+  fhir:
+    namespace: datamesh
     service:
-      name: dataextract-postgres-db
-      port: 5432
-      target_port: 5432
-      type: ClusterIP
+      name: fhir-data-svc
+  virtualService:
+    enabled: true
 
 ## OMOP Database
 omop:
@@ -330,38 +126,22 @@ omop:
   app: omop-postgres
   cdm:
     name: omop-cdm-deployment
-    replicas: "1"
     image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
-    pullpolicy: IfNotPresent
-    port: 5432
   vocab:
     name: populate-db-job
     ttl: 120
-    image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:9c38c4a3e95c08933c63f1e3afe9cd41f300352a223c7fed04db87fd0d078900
-    pullpolicy: IfNotPresent
+    image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:dc81445a11146ed9bd2c12ceab940c6a4e6b4b9388c1fcb165d49fa9f0d976f8
   db:
     name: omopdb
     schema: omopcdm_synthetic
     result_schema: results_synthetic
   vocabJob: true
-  service:
-    name: omop-postgres-service
-    port: 5432
-    target_port: 5432
-    type: ClusterIP
 
 ## Capsule Workbench
 workbench:
   name: capsule-workbench
   namespace: datamesh
-  replicas: 1
   image: ghcr.io/idea4rc/capsule-workbench@sha256:5de9ca7610fd4497b26ebef08a82e6b42545303ffc81fa4dccc5bbfcfa4a9f86
-  port: 80
-  service:
-    name: workbench-svc
-    port: 80
-    target_port: 80
-    type: ClusterIP
 
 ## Apache Reverse Proxy for those WebApps that have issues with 
 ## ISTIO's reverse proxy functionality
@@ -373,26 +153,13 @@ revproxy:
     replicas: 1
     image: httpd:2.4.61
     port: 80
-    capsule_public_host: "127.0.0.1"
   service:
     name: revproxy-svc
     port: 80
-    target_port: 80
+    targetPort: 80
     type: ClusterIP
-
-## RabbitMQ
-rabbitmq:
-  name: rabbitmq
-  namespace: datamesh
-  replicas: 1
-  image: rabbitmq:3-management
-  port:
-    rabbit_port: 5672
-    management_port: 15672
-  service:
-    name: rabbitmq-service
-    rabbit_port: 5672
-    management_port: 15672
+  virtualService:
+    enabled: true
 
 ## OHDSI API, used by Vantage6 to retrieve data from the capsule
 ohdsi:
@@ -435,13 +202,6 @@ ideadb:
   server:
     name: ideadb
     image: bitnami/mariadb:11.4.2
-    imagePullPolicy: IfNotPresent
-    config: ""
-    persistence:
-      enabled: false
-      storageClass: generic
-      accessMode: ReadWriteOnce
-      size: 8Gi
   db:
     name: ideadb
     port: 3306

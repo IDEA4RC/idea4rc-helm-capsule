@@ -1,0 +1,7 @@
+apiVersion: v2
+name: dataextractor
+description: Service that enables the extraction of data from the FHIR instance within the IDEA4RC capsule
+
+type: application
+version:  06.11.24-1157
+appVersion: 06.11.24-1157

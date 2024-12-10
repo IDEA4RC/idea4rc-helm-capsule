@@ -1,0 +1,58 @@
+## ETL to FHIR
+etl:
+  namespace: datamesh
+  server:
+    name: etl-fhir
+    image: ghcr.io/idea4rc/etl:1.0
+    port: 4001
+    #proxy: "false"
+    serverDns: "https://"
+    hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
+    springDriver: org.postgresql.Driver
+  db:
+    name: etl
+    replicas: 1
+    image: postgres:16.3-bullseye
+    port: 5432
+    service:
+      name: etl-postgres-db
+      port: 5432
+      targetPort: 5432
+      type: ClusterIP
+  service:
+    name: etl-svc
+    type: ClusterIP
+    port: 4001
+    targetPort: 4001
+  storageClass:
+    name: idea4rc-hostpath
+  virtualService:
+    enabled: true
+
+## Aerospike
+aerospike:
+  name: aerospike
+  namespace: datamesh
+  server:
+    keystoreNamespace: idea4rc
+    image: "aerospike/aerospike-server:7.1"
+    port: 3000
+    mtlsMode: PERMISSIVE
+  service:
+    name: aerospike-svc
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000
+aerospike:
+  name: aerospike
+  namespace: datamesh
+  server:
+    keystoreNamespace: idea4rc
+    image: "aerospike/aerospike-server:7.1"
+    port: 3000
+    mtlsMode: PERMISSIVE
+  service:
+    name: aerospike-svc
+    type: ClusterIP
+    port: 3000
+    targetPort: 3000

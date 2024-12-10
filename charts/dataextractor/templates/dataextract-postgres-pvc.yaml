@@ -1,0 +1,13 @@
+#Dataextraction DB persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dataextract-pv-claim
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.idea4rcStorageClass.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500M

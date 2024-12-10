@@ -1,0 +1,19 @@
+#Rabbitmq Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.rabbitmq.service.name }}
+  namespace: {{ .Values.rabbitmq.namespace }}
+spec:
+  selector:
+    app: {{ .Values.rabbitmq.name }}
+  ports:
+    - name : rabbitmq-port
+      protocol: TCP
+      port:  {{ .Values.rabbitmq.service.rabbitPort }}
+      targetPort:  {{ .Values.rabbitmq.port.rabbitPort }}
+    - name : management-port
+      protocol: TCP
+      port: {{ .Values.rabbitmq.service.managementPort }}
+      targetPort: {{ .Values.rabbitmq.port.managementPort }}

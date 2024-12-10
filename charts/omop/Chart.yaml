@@ -1,0 +1,7 @@
+apiVersion: v2
+name: omop
+description: OMOP DB CDM instance for IDEA4RC
+
+type: application
+version:  07.11.24-1542
+appVersion: 07.11.24-1542

@@ -8,7 +8,7 @@ metadata:
 data:
   workbench.conf: |-
     <VirtualHost *:80>
-      ServerName {{ .Values.revproxy.server.capsule_public_host }}
+      ServerName {{ .Values.capsulePublicHost }}
       ProxyRequests Off
       ProxyHTMLEnable On
 

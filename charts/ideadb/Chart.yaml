@@ -1,0 +1,7 @@
+apiVersion: v2
+name: ideadb
+description: A custom Helm Chart for a MariaDB instance used by the IDEA4RC capsule
+
+type: application
+version:  22.10.24-1533
+appVersion: 22.10.24-1533

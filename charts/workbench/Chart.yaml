@@ -1,0 +1,7 @@
+apiVersion: v2
+name: workbench
+description: The IDEA4RC Workbench allows running experiments against the idea4rc capsule's FHIR data. Requires pointing to an existing ENG ETL (FHIR) deployment
+
+type: application
+version: 30.09.24-1200
+appVersion: "30.09.24-1200"

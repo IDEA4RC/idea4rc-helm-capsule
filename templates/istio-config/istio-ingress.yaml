@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-ingressgateway
+  namespace: {{ .Values.defaultNamespace }}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "{{ .Values.istio.ideaGwHosts }}"
+    tls:
+      mode: SIMPLE
+      credentialName: "ingress-tls-secret"

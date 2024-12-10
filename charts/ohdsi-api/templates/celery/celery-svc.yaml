@@ -1,0 +1,13 @@
+#Celery Worker Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.celery.worker.service.name }}
+  namespace: {{ .Values.celery.namespace }}
+spec:
+  selector:
+    app: {{ .Values.celery.worker.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.celery.worker.service.port }}
+      targetPort: {{ .Values.celery.worker.service.targetPort }}

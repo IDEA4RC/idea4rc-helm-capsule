@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.db.service.name }}
+  namespace: {{ .Values.server.namespace }}
+spec:
+  selector:
+    app:  {{ .Values.db.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.db.service.port }}
+      targetPort: {{ .Values.db.service.targetPort }} 
+  type: {{ .Values.db.service.type }}
+  # type: ExternalName
+  # externalName: my.database.example.com

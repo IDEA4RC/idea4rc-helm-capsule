@@ -9,5 +9,5 @@ spec:
   ports:
     - protocol: TCP
       port: {{ .Values.revproxy.service.port }}
-      targetPort: {{ .Values.revproxy.service.target_port }}
+      targetPort: {{ .Values.revproxy.service.targetPort }}
   type: {{ .Values.revproxy.service.type }}

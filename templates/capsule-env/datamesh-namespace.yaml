@@ -1,8 +1,6 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .Values.fhir.server.namespace }}
+  name: {{ .Values.defaultNamespace }}
   labels:
-    istio-injection: {{ .Values.istio_injection }}
-#annotations:
-#  helm.sh/resource-policy: "keep"
+    istio-injection: {{ .Values.istioInjection }}

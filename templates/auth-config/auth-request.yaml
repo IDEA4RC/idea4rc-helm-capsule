@@ -1,0 +1,16 @@
+{{- if .Values.auth.enable -}}
+
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: "jwt-fhir"
+  namespace: {{ .Values.fhir.server.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: fhir-server
+  jwtRules:
+  - issuer: {{ .Values.auth.jwtIssuer }}
+    auth.jwksUri: {{ .Values.jwtsUri }}
+
+{{- end }}

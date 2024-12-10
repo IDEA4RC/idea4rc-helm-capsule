@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.db.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.db.replicas }}
+  selector:
+    matchLabels:
+      app:  {{ .Values.db.name }}
+  template:
+    metadata:
+      labels:
+        app:  {{ .Values.db.name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/dataextract-postgres-secret.yaml") . | sha256sum }}
+    spec:
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: dataextract-pv-claim
+        name: dataextract-pv
+      containers:
+        - name: postgres-db
+          image: {{ .Values.db.image }}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: dataextract-pv
+          ports:
+            - containerPort: {{ .Values.db.port }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dataextract-secret
+                  key: DATAEXTRACT_PGSQL_PASSWORD
+            - name: POSTGRES_DB
+              value: {{ .Values.db.dbName }}
+        

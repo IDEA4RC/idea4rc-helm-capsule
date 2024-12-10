@@ -1,0 +1,12 @@
+{{- if .Values.server.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.server.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.server.name }}
+data:
+  my.cnf: |-
+  {{ .Values.server.config | indent 4 }}
+{{- end -}}

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.cdm.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.cdm.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/omop-secret.yaml") . | sha256sum }}
+    spec:
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: omopdb-pv-claim
+        name: omop-pv
+      containers:
+        - name: {{ .Values.app }}
+          image: {{ .Values.cdm.image }}
+          imagePullPolicy: {{ .Values.cdm.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.cdm.port }}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: omop-pv
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: {{ .Values.db.name }}

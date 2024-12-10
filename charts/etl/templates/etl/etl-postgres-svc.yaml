@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.etl.db.service.name }}
+  namespace: {{ .Values.etl.namespace }}
+spec:
+  selector:
+    app:  {{ .Values.etl.db.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.etl.db.service.port }}
+      targetPort: {{ .Values.etl.db.service.targetPort }} 
+  type: {{ .Values.etl.db.service.type }}

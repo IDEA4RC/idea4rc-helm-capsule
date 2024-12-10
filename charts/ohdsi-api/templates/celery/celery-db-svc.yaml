@@ -1,0 +1,13 @@
+#Celery DB Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.celery.db.service.name }}
+  namespace: {{ .Values.celery.namespace }}
+spec:
+  selector:
+    app: {{ .Values.celery.db.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.celery.db.service.port }}
+      targetPort: {{ .Values.celery.db.service.targetPort }}
