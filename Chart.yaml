@@ -26,11 +26,11 @@ dependencies:
     version: 06.11.24-1157
   - name: omop
     repository: file://./charts/omop
-    version: 17.10.24-1200
+    version: 07.11.24-1542
   - name: ideadb
     repository: file://./charts/ideadb
     version: 22.10.24-1533
 
 type: application
-version: 22.10.24-1533
-appVersion: "22.10.24-1533"
+version: 07.11.24-1542
+appVersion: "07.11.24-1542"

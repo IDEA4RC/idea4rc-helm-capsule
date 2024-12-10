@@ -97,7 +97,7 @@ dataextractor:
   name: dataextractor
   namespace: datamesh
   server:
-    image: "ghcr.io/idea4rc/idea4rc_ai_dataextractionjobs:1.0"
+    image: "ghcr.io/idea4rc/dataextractionjob:1.0"
   db:
     name: dataextract-postgres-db
     image: postgres:16.3-bullseye
@@ -119,7 +119,7 @@ omop:
   vocab:
     name: populate-db-job
     ttl: 120
-    image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:9c38c4a3e95c08933c63f1e3afe9cd41f300352a223c7fed04db87fd0d078900
+    image: ghcr.io/idea4rc/omop-vocab-uploader@sha256:dc81445a11146ed9bd2c12ceab940c6a4e6b4b9388c1fcb165d49fa9f0d976f8
   db:
     name: omopdb
     schema: omopcdm_synthetic
