@@ -132,7 +132,7 @@ revproxy:
     targetPort: 80
     type: ClusterIP
   virtualService:
-    enabled: true
+    enabled: "false"
 
 ## OHDSI API, used by Vantage6 to retrieve data from the capsule
 ohdsi:

@@ -1,4 +1,4 @@
-{{- if .Values.revproxy.virtualService.enabled -}}
+{{- if eq .Values.revproxy.virtualService.enabled "true" -}}
 # Dataextractor virtual service
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
