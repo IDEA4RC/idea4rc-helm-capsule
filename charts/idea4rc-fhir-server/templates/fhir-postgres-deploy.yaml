@@ -40,5 +40,5 @@ spec:
                   name: {{ .Values.db.secret.name }}
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: {{ .Values.fhirDictionary.db.db_name }}
+              value: {{ .Values.db.db_name }}
         
