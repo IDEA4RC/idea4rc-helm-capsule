@@ -17,9 +17,6 @@ dependencies:
     repository: file://./charts/idea4rc-fhir-server
     version: 15.10.24-1830
     alias: fhirDataServer
-  - name: dataextractor
-    repository: file://./charts/dataextractor
-    version: 06.11.24-1157
   - name: omop
     repository: file://./charts/omop
     version: 07.11.24-1542
@@ -28,5 +25,5 @@ dependencies:
     version: 22.10.24-1533
 
 type: application
-version: 14.10.24-1125
-appVersion: "14.10.24-1125"
+version: 09.04.25-1045
+appVersion: "09.04.25-1045"
