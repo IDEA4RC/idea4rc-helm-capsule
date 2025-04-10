@@ -23,7 +23,10 @@ dependencies:
   - name: ideadb
     repository: file://./charts/ideadb
     version: 22.10.24-1533
+  - name: node
+    repository: "@vantage6"
+    version: "5.0.0-a.9"
 
 type: application
-version: 09.04.25-1045
-appVersion: "09.04.25-1045"
+version: 10.04.25-1142
+appVersion: "10.04.25-1142"
