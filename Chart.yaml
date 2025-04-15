@@ -10,9 +10,6 @@ dependencies:
   - name: workbench
     version: "30.09.24-1200"
     repository: file://./charts/workbench
-  - name: ohdsi-api
-    version: "14.10.24-1533"
-    repository: file://./charts/ohdsi-api
   - name: idea4rc-fhir-server
     repository: file://./charts/idea4rc-fhir-server
     version: 15.10.24-1830
@@ -26,7 +23,8 @@ dependencies:
   - name: node
     repository: "@vantage6"
     version: "5.0.0-a.9"
+    alias: v6node
 
 type: application
-version: 10.04.25-1142
-appVersion: "10.04.25-1142"
+version: 10.04.25-1931
+appVersion: "10.04.25-1931"
