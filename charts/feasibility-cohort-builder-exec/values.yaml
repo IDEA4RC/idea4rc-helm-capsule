@@ -1,0 +1,41 @@
+## Capsule Workbench
+name: feasibility-cohort-builder-exec
+namespace: datamesh
+replicas: 1
+image: "ghcr.io/idea4rc/cohortbuilder-exec:1.0"
+port: 3000
+serviceURL: http://fcb-api:4002
+fhirServerURL: http://fhir-server:8080
+production: true
+auditURL: "/query/audit"
+service:
+  name: fcbexec-svc
+  port: 3000
+  targetPort: 3000
+  type: ClusterIP
+kafka:
+  consumerId: capsule_1_consumer
+  fhirTopic: fhir_queries
+  queryResultTopic: fhir_queries_results
+  sqlTopic: sql_queries
+  sqlResultTopic: sql_queries_results
+  host: kafka.example.com
+  port: 9092
+  clientId: capsule_1
+postgres:
+  URL: fcb-postgres-db
+  port: 5437
+# Postegress needs a deployment, secrect and the rest of the stuff
+#- POSTGRESS_USER=idea4rc_user
+#  - POSTGRESS_DB=idea4rc_dm
+#  - POSTGRESS_PWD=root
+keyCloak:
+  URL: /auth/realms/master/protocol/openid-connect/token/introspect
+  port: 8443
+  host: https://keycloak.example.com
+#  - KEYCLOAK_PORT=8443
+#  - KEYCLOAK_HOST=localhost
+# Keycloack authentication needs a secrect
+#  - CLIENT_ID=query-executor
+#  - CLIENT_SECRET=W0Uqss46JmvBAMyqvRuyIhFbqS00Rgzd
+

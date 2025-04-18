@@ -1,0 +1,7 @@
+apiVersion: v2
+name: feasibility-cohort-builder-exec
+description: Cohort Builder Execution Service
+
+type: application
+version: 18.04.2025-1804
+appVersion: "1.0"
