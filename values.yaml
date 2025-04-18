@@ -185,13 +185,14 @@ ideadb:
 
 ## Vantage6 Node configuration
 v6node:
+  namespace: datamesh
   node:
     apiKey: put-your-api-key-here
     server:
       url: http://vantage6-server-vantage6-server-service
       port: 80
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0-a.9
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a14
     taskDirHost: /tmp/vantage6/tasks
     proxyPort: 7654
     databases:
@@ -200,5 +201,4 @@ v6node:
       - name: postgres
         uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
         type: other
-    kubeConfig: /var/snap/microk8s/current/credentials/client.config
     taskNamespace: vantage6-tasks

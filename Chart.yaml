@@ -22,9 +22,9 @@ dependencies:
     version: 22.10.24-1533
   - name: node
     repository: "@vantage6"
-    version: "5.0.0-a.9"
+    version: "5.0.0-a.15"
     alias: v6node
 
 type: application
-version: 10.04.25-1931
-appVersion: "10.04.25-1931"
+version: 16.04.250955
+appVersion: "16.04.250955"
