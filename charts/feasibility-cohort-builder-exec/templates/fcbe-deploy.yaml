@@ -31,7 +31,7 @@ spec:
             - name: KAFKA_HOST
               value: {{ .Values.kafka.host }}
             - name: KAFKA_PORT
-              value: {{ .Values.kafka.port }}
+              value: "{{ .Values.kafka.port }}"
             - name: KAFKA_CLIENT_ID
               value: {{ .Values.kafka.clientId }}
             - name: SERVICE_URL
@@ -39,28 +39,40 @@ spec:
             - name: FHIR_SERVER_URL
               value: {{ .Values.fhirServerURL }}
             - name: PRODUCTION
-              value: {{ .Values.production }}
+              value: "{{ .Values.production }}"
             - name: AUDIT_URL
               value: {{ .Values.auditURL }}
             - name: POSTGRESS_URL
               value: {{ .Values.postgres.URL }}
             - name: POSTGRESS_PORT
-              value: {{ .Values.postgres.port }}
+              value: "{{ .Values.postgres.port }}"
             - name: POSTGRESS_USER
-              value: #which PGSQL DB instance is this?
+              valueFrom:
+                secretKeyRef:
+                  name: etl-secret
+                  key: ETL_PGSQL_USER
             - name: POSTGRESS_DB
-              value: #which PGSQL DB instance is this?
+              value: {{ .Values.postgres.dbName }}
             - name: POSTGRESS_PWD
-              value: #which PGSQL DB instance is this?
+              valueFrom:
+                secretKeyRef:
+                  name: etl-secret
+                  key: ETL_PGSQL_PASSWORD
             - name: KEYCLOAK_URL
               value: {{ .Values.keyCloak.URL }}
             - name: KEYCLOAK_PORT
-              value: {{ .Values.keyCloak.port }}
+              value: "{{ .Values.keyCloak.port }}"
             - name: KEYCLOAK_HOST
               value: {{ .Values.keyCloak.host }}
             - name: CLIENT_ID
-              value: #implement secret for keycloak credentials
+              valueFrom:
+                secretKeyRef:
+                  name: fcbe-keycloak-secret
+                  key: CLIENT_ID
             - name: CLIENT_SECRET
-              value: #implement secret for keycloak credentials
+              valueFrom:
+                secretKeyRef:
+                  name: fcbe-keycloak-secret
+                  key: CLIENT_SECRET
           ports:
             - containerPort: {{ .Values.port }}

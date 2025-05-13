@@ -134,41 +134,6 @@ revproxy:
   virtualService:
     enabled: "false"
 
-## OHDSI API, used by Vantage6 to retrieve data from the capsule
-ohdsi:
-  name: ohdsi-api
-  namespace: datamesh
-  replicas: "1"
-  image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
-  imagePullPolicy: IfNotPresent
-  port: 8000
-  service:
-    name: ohdsi-api
-    port: 8000
-    type: ClusterIP
-
-## Celery Worker & relative DB
-celery:
-  namespace: datamesh
-  db:
-    name: celery-db
-    database: ohdsi
-    replicas: 1
-    image: postgres:16.3-bullseye
-    port: 5432
-    service:
-      name: celery-db-svc
-      port: 5432
-      target_port: 5432
-  worker:
-    name: celery-worker
-    replicas: 1
-    image: harbor2.vantage6.ai/infrastructure/ohdsi-api:0.0.8
-    service:
-      name: celery-svc
-      port: 5672
-      target_port: 5672
-
 ## IdeaDB
 ideadb:
   namespace: datamesh
@@ -182,32 +147,36 @@ ideadb:
     name: ideadb-svc
     port: 3306
     target_port: mysql
-## Cohort Buier Query Executor
+
+## Cohort Builder Query Executor
 fcbexec:
   name: feasibility-cohort-builder-exec
   namespace: datamesh
-  image: "ghcr.io/idea4rc/cohortbuilder-exec:1.0"
+  image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:2102bfc7ab849cfaf71875c3183289be3d824818e661d4afb00603224634029e"
   port: 3000
-  serviceURL: # needs correct value
-  fhirServerURL: # needs correct value
+  serviceURL: # needs correct value: feasibility cohort builder API URL (orchestrator)
+  fhirServerURL: # needs correct value: Internal FHIR server URL
+  postgress:
+    dbName: etl
   service:
     name: fcbexec-svc
     port: 3000
     targetPort: 3000
   # all these values are placeholders
   kafka:
+    #consumerId and clientId should be unique for each capsule
     consumerId: capsule_1_consumer
     fhirTopic: fhir_queries
     queryResultTopic: fhir_queries_results
     sqlTopic: sql_queries
     sqlResultTopic: sql_queries_results
-    host: kafka.example.com
-    port: 9092
-    clientId: capsule_1
+    host: host02.idea.lst.tfo.upm.es
+    port: "9092"
+    clientId: capsule_test
   keyCloak:
-    URL: /auth/realms/master/protocol/openid-connect/token/introspect
-    port: 8443
-    host: https://keycloak.example.com
+    URL:  /realms/idea4rc/protocol/openid-connect/token/introspect
+    port: "443"
+    host: https://idea4rc-keykloak.development-iti.com/auth
 
 ## Vantage6 Node configuration
 v6node:

@@ -20,14 +20,15 @@ dependencies:
   - name: ideadb
     repository: file://./charts/ideadb
     version: 22.10.24-1533
-  - name: fcbexec
+  - name: feasibility-cohort-builder-exec
     repository: file://./charts/feasibility-cohort-builder-exec
-    version: 18.04.2025-1804
+    version: 13.05.2025-1520
+    alias: fcbexec
   - name: node
     repository: "@vantage6"
     version: "5.0.0-a.15"
     alias: v6node
 
 type: application
-version: 16.04.250955
-appVersion: "16.04.250955"
+version: 13.05.2025-1520
+appVersion: "13.05.20251520"

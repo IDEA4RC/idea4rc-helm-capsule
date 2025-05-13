@@ -1,12 +1,12 @@
-## Capsule Workbench
+## Feasibility Cohort Builder Query Executor
 name: feasibility-cohort-builder-exec
 namespace: datamesh
 replicas: 1
-image: "ghcr.io/idea4rc/cohortbuilder-exec:1.0"
+image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:2102bfc7ab849cfaf71875c3183289be3d824818e661d4afb00603224634029e"
 port: 3000
 serviceURL: http://fcb-api:4002
 fhirServerURL: http://fhir-server:8080
-production: true
+production: "true"
 auditURL: "/query/audit"
 service:
   name: fcbexec-svc
@@ -19,23 +19,19 @@ kafka:
   queryResultTopic: fhir_queries_results
   sqlTopic: sql_queries
   sqlResultTopic: sql_queries_results
-  host: kafka.example.com
+  host: host02.idea.lst.tfo.upm.es
   port: 9092
   clientId: capsule_1
+# needs to point to the ETL Postegress instance
 postgres:
   URL: fcb-postgres-db
+  dbName: etl-db
   port: 5437
-# Postegress needs a deployment, secrect and the rest of the stuff
-#- POSTGRESS_USER=idea4rc_user
-#  - POSTGRESS_DB=idea4rc_dm
-#  - POSTGRESS_PWD=root
+# Keycloack authentication requires the user to manually change the values inside the
+# secret file. The secret file fcbe-keycloak-secret is created by this helm chart but 
+# can be overwritten by the user before deployment. The secret file must contain 
+# CLIENT_ID and CLIENT_SECRET
 keyCloak:
-  URL: /auth/realms/master/protocol/openid-connect/token/introspect
-  port: 8443
-  host: https://keycloak.example.com
-#  - KEYCLOAK_PORT=8443
-#  - KEYCLOAK_HOST=localhost
-# Keycloack authentication needs a secrect
-#  - CLIENT_ID=query-executor
-#  - CLIENT_SECRET=W0Uqss46JmvBAMyqvRuyIhFbqS00Rgzd
-
+  URL: /realms/idea4rc/protocol/openid-connect/token/introspect
+  port: 443
+  host: https://idea4rc-keykloak.development-iti.com/auth
