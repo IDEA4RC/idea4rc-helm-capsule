@@ -2,7 +2,7 @@
 name: feasibility-cohort-builder-exec
 namespace: datamesh
 replicas: 1
-image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:2102bfc7ab849cfaf71875c3183289be3d824818e661d4afb00603224634029e"
+image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:8984c5f690e65da21d21f5e0168d6c6b5238ed1ead960c58cb7ac79d8c6e01a7"
 port: 3000
 serviceURL: http://fcb-api:4002
 fhirServerURL: http://fhir-server:8080
