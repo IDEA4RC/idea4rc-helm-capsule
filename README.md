@@ -6,7 +6,7 @@ This helm chart is intended as a way to package and deploy an IDEA4RC capsule on
 For a quick start, download this repo and run the following commands on your Kubernetes cluster:
 
 ```
-helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-helm-capsule
+helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-helm-capsule --set host="your public IP"
 
 export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP
 ```
@@ -78,6 +78,29 @@ This is a list of components that are published via Virtual Service, together wi
 | OHDSI API | ohdsi-vs | https://CAPSULE_IP/workbench/ |
 
 By default, the HAPI FHIR instance isn't exposed since no direct interaction is expected to happen by the user. However, this can be enabled by setting the ```fhirDataServer.virtualService.enabled``` to true. On the same note, users that want to disable specific endpoints can do so either manipulating the corresponding variables in the ```values.yaml``` file or by leveraging the ```--set``` option as explained in previus sections.
+
+### ETL endpoints:
+These are the endpoints currently exposed by the ETL:
+
+upload:
+```
+curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/etl/upload' --form 'dataFile=@<<your_normalised_table>>.csv'
+```
+
+get data:
+```
+curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/etl/data'
+```
+
+audit errors:
+```
+curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/audit/etl-errors'
+```
+
+audit records:
+```
+curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/audit/records'
+```
 
 ## How to Deploy
 > [!IMPORTANT]

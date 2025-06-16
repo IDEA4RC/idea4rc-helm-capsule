@@ -13,9 +13,13 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /etl/
+        prefix: "/datagate/"
     rewrite:
         uri: "/"
+    #headers:
+    #  request:
+    #    add:
+    #      x-forwarded-prefix: /etl
     route:
     - destination:
         host: {{ .Values.etl.service.name }}.{{ .Values.etl.namespace }}.svc.cluster.local

@@ -30,5 +30,5 @@ dependencies:
     alias: v6node
 
 type: application
-version: 13.05.2025-1711
-appVersion: "13.05.20251711"
+version: 16.06.25-1256
+appVersion: "16.06.25-1256"

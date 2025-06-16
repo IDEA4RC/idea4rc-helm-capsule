@@ -3,7 +3,7 @@ etl:
   namespace: datamesh
   server:
     name: etl-fhir
-    image: ghcr.io/idea4rc/etl:1.0
+    image: ghcr.io/idea4rc/etl:2.0
     port: 4001
     #proxy: "false"
     serverDns: "https://"
@@ -30,19 +30,6 @@ etl:
     enabled: true
 
 ## Aerospike
-aerospike:
-  name: aerospike
-  namespace: datamesh
-  server:
-    keystoreNamespace: idea4rc
-    image: "aerospike/aerospike-server:7.1"
-    port: 3000
-    mtlsMode: PERMISSIVE
-  service:
-    name: aerospike-svc
-    type: ClusterIP
-    port: 3000
-    targetPort: 3000
 aerospike:
   name: aerospike
   namespace: datamesh

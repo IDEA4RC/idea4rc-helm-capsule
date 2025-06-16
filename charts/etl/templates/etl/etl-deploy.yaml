@@ -51,3 +51,5 @@ spec:
                 \"spring.data.aerospike.namespace\":\"{{ .Values.aerospike.server.keystoreNamespace }}\"
                 }"
                 #\"management.endpoints.web.exposure.include\":\"restart\"
+            - name: SERVER_FORWARD_HEADERS_STRATEGY
+              value: "framework"

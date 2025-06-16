@@ -3,5 +3,5 @@ name: etl
 description: Idea4RC ETL for FHIR and its dependencies, requires two FHIR instances to be deployed 1) one acts as vocabulary 2) stores data in FHIR spec
 
 type: application
-version: 01.10.24-1600
-appVersion: "01.10.24-1600"
+version: 16.06.25-1256
+appVersion: "2.0"
