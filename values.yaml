@@ -184,14 +184,21 @@ v6node:
   node:
     apiKey: put-your-api-key-here
     server:
-      url: http://vantage6-server-vantage6-server-service
-      port: 80
+      url: https://orchestrator.idea.lst.tfo.upm.es
+      port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a14
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a18
     taskDirHost: /tmp/vantage6/tasks
     proxyPort: 7654
     databases:
-      fileBased: []
+      #fileBased: []
+      # this file absed DB conf is a placeholder, wating for a path to the v6 node to remove it in not actually required 
+      fileBased:
+      - name: default
+        uri: /mnt/test.csv
+        type: csv
+        volumePath: /mnt/
+        originalName: test.csv
       serviceBased:
       - name: postgres
         uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
