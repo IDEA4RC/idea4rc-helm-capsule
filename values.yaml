@@ -38,6 +38,26 @@ idea4rcStorageClass:
   reclaimpolicy: Retain
   volumebindingmode: Immediate
 
+# ETL to FHIR configuration
+etl:
+  etl:
+    name: etl-fhir
+    namespace: datamesh
+    server:
+      name: etl-fhir
+      image: ghcr.io/idea4rc/etl:2.0
+    db:
+      image: postgres:16.3-bullseye
+    virtualService:
+      enabled: true
+  aerospike:
+    name: aerospike
+    namespace: datamesh
+    server:
+      keystoreNamespace: idea4rc
+      image: "aerospike/aerospike-server:7.1"
+      mtlsMode: PERMISSIVE
+
 ## FHIR data server configuration
 fhirDataServer:
   service:
@@ -182,14 +202,22 @@ fcbexec:
 v6node:
   namespace: datamesh
   node:
-    apiKey: put-your-api-key-here
+    #apiKey: put-your-api-key-here
     server:
       url: https://orchestrator.idea.lst.tfo.upm.es
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a18
-    taskDirHost: /tmp/vantage6/tasks
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a19
     proxyPort: 7654
+    persistence:
+      tasks:
+        storageClass: local-storage
+        size: 2Gi
+        # the following path needs to be created beforehand and needs the correct permissions
+        hostPath: /mnt/vantage6/tasks
+      database:
+        storageClass: local-storage
+        size: 1Gi
     databases:
       #fileBased: []
       # this file absed DB conf is a placeholder, wating for a path to the v6 node to remove it in not actually required 
@@ -201,6 +229,8 @@ v6node:
         originalName: test.csv
       serviceBased:
       - name: postgres
-        uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
+        # this URI points to OMOP 
+        #uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
+        uri: postgres://omop-postgres-service.datamesh.svc.cluster.local:5432/vantage6
         type: other
-    taskNamespace: vantage6-tasks
+    taskNamespace: datamesh
