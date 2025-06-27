@@ -85,34 +85,6 @@ fhirDataServer:
   virtualService:
     enabled: false
 
-## Data Extraction
-dataextractor:
-  name: dataextractor
-  namespace: datamesh
-  server:
-    image: ghcr.io/idea4rc/dataextractionjob:1.0
-    replicas: 1
-    port: 5000
-    dropdb: "False"
-    swagger_port: 8000
-  service:
-    name: dataextract-svc
-    type: ClusterIP
-    port: 5000
-    target_port: 5000
-    swagger_port: 8000
-    swagger_target_port: 8000
-  db:
-    name: dataextract-postgres-db
-    image: postgres:16.3-bullseye
-    dbName: mad
-  fhir:
-    namespace: datamesh
-    service:
-      name: fhir-data-svc
-  virtualService:
-    enabled: true
-
 ## OMOP Database
 omop:
   namespace: datamesh
