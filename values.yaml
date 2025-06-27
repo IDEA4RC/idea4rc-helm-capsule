@@ -199,6 +199,8 @@ fcbexec:
     URL:  /realms/idea4rc/protocol/openid-connect/token/introspect
     port: "443"
     host: https://idea4rc-keykloak.development-iti.com/auth
+    clientId: placeholder
+    clientSecret: placeholder
 
 ## Vantage6 Node configuration
 v6node:

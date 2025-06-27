@@ -27,11 +27,11 @@ postgres:
   URL: fcb-postgres-db
   dbName: etl-db
   port: 5437
-# Keycloack authentication requires the user to manually change the values inside the
-# secret file. The secret file fcbe-keycloak-secret is created by this helm chart but 
-# can be overwritten by the user before deployment. The secret file must contain 
-# CLIENT_ID and CLIENT_SECRET
+# Keycloack authentication requires the user to manually set the CLIENT_ID and CLIENT_SECRET from 
+# commandline when deploying the capsule.
 keyCloak:
   URL: /realms/idea4rc/protocol/openid-connect/token/introspect
   port: 443
   host: https://idea4rc-keykloak.development-iti.com/auth
+  clientId: placeholder
+  clientSecret: placeholder

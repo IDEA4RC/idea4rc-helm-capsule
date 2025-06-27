@@ -65,14 +65,8 @@ spec:
             - name: KEYCLOAK_HOST
               value: {{ .Values.keyCloak.host }}
             - name: CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: fcbe-keycloak-secret
-                  key: CLIENT_ID
+              value: {{ .Values.keyCloak.clientId }}
             - name: CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: fcbe-keycloak-secret
-                  key: CLIENT_SECRET
+              value: {{ .Values.keyCloak.clientSecret }}
           ports:
             - containerPort: {{ .Values.port }}
