@@ -178,14 +178,18 @@ fcbexec:
 v6node:
   namespace: datamesh
   node:
+    name: default-capsule-node # this name needs to be unique across all capsules
+    createSecrets: false # we want to use our secret instead because this chart handles the omop auth data
     apiKey: put-your-api-key-here
     server:
       url: https://orchestrator.idea.lst.tfo.upm.es
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a20
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a22
     proxyPort: 7654
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
+    keycloakUrl: https://auth.vantage6.ai:8443
+    keycloakRealm: vantage7
     keycloak:
       client: vantage6
       clientSecret: put-your-client-secret-here
@@ -210,7 +214,7 @@ v6node:
       serviceBased:
       - name: postgres
         # this URI points to OMOP 
-        #uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
+        # uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
         uri: postgres://omop-postgres-service.datamesh.svc.cluster.local:5432/vantage6
         type: other
     taskNamespace: v6-tasks
