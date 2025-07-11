@@ -8,7 +8,7 @@ For a quick start, download this repo and run the following commands on your Kub
 ```
 helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-helm-capsule --set host="your public IP"
 
-export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP
+export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP --set v6node.node.apiKey=<<your v6 api key>> --set v6node.node.apiKey=<<your v6 api key>> --set v6node.node.keycloak.client=<<your keycloak client id>> --set v6node.node.keycloak.clientSecret=<<your keycloak client secret>>
 ```
 
 ## Capsule components
@@ -118,6 +118,12 @@ Either clone or download the sources from this repo:
 git clone https://github.com/IDEA4RC/idea4rc-helm-capsule
 ```
 
+Add the Vantage6 Helm repository
+```
+microk8s.helm repo add vantage6 https://harbor2.vantage6.ai/chartrepo infrastructure
+microk8s.helm repo update
+```
+
 Update & build the dependencies of the chart:
 ```
 helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-helm-capsule
@@ -127,14 +133,14 @@ helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-hel
 > If you're deploying the capsule after the execution of the microk8s-playbook, run the following command for a quick start. Note that we're using the checkip.amazonaws.com service to retrieve the VM's public IP for "revproxy.capsule_public_host" and we're specifying the common name (CN) that's going to be leveraged for the tls configuration. If you want to expose the capsule only on a private network, please specify the desired private IP instead:
 > 
 > ```
-> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
+> export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP --set v6node.node.apiKey=<<your v6 api key>> --set v6node.node.keycloak.client=<<your keycloak client id>> --set v6node.node.keycloak.clientSecret=<<your keycloak client secret>>
 > ```
 
 ## How to upgrade
 In order to upgrade an existing capsule, downloading the lastest release and upgading it with an ```helm upgrade``` is enough. This Helm chart leverages annotations to trigger the redeployment of the dependencies of the components that have been updated, hence no manual intervention is theoretically required. Also, the "--set" option can be used to override chart values when upgrading too. For example:
 
 ```
-export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP
+export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm install idea4rc-capsule idea4rc-helm-capsule/ --set revproxy.capsule_public_host=$CAPSULE_PUB_IP --set tls.commonName=$CAPSULE_PUB_IP --set v6node.node.apiKey=<<your v6 api key>> --set v6node.node.keycloak.client=<<your keycloak client id>> --set v6node.node.keycloak.clientSecret=<<your keycloak client secret>>
 ```
 
 Update sources from this repo:
@@ -149,7 +155,7 @@ helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-hel
 
 Then run the upgrade command with the proper options.
 ```
-export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm upgrade idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP
+export CAPSULE_PUB_IP=$(curl -s checkip.amazonaws.com); microk8s.helm upgrade idea4rc-capsule idea4rc-helm-capsule/ --set capsulePublicHost=$CAPSULE_PUB_IP --set istio.tls.commonName=$CAPSULE_PUB_IP --set v6node.node.apiKey=<<your v6 api key>> --set v6node.node.keycloak.client=<<your keycloak client id>> --set v6node.node.keycloak.clientSecret=<<your keycloak client secret>>
 ```
 
 > [!IMPORTANT]

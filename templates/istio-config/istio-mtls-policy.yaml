@@ -5,4 +5,4 @@ metadata:
   namespace: {{ .Values.defaultNamespace }}
 spec:
   mtls:
-    mode: {{ .Values.mtlsMode }}
+    mode: {{ .Values.istio.mtlsMode }}

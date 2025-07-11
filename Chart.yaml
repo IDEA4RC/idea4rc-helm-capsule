@@ -22,13 +22,17 @@ dependencies:
     version: 22.10.24-1533
   - name: feasibility-cohort-builder-exec
     repository: file://./charts/feasibility-cohort-builder-exec
-    version: 13.05.2025-1711
+    version: 27.06.2025-1740
     alias: fcbexec
+  - name: nlp-ingestion
+    repository: file://./charts/nlp-ingestion
+    version: 02.07.25-1000
+    alias: nlp
   - name: node
     repository: "@vantage6"
-    version: "5.0.0-a.19"
+    version: "5.0.0-a.22"
     alias: v6node
 
 type: application
-version: 17.06.25-1412
-appVersion: "17.06.25-1412"
+version: 27.06.25-1605
+appVersion: "27.06.25-1605"

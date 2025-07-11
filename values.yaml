@@ -128,6 +128,8 @@ omop:
     name: omopdb
     schema: omopcdm_synthetic
     result_schema: results_synthetic
+  service:
+    name: omop-postgres-service
   vocabJob: true
 
 ## Capsule Workbench
@@ -202,21 +204,25 @@ fcbexec:
 v6node:
   namespace: datamesh
   node:
-    #apiKey: put-your-api-key-here
+    apiKey: put-your-api-key-here
     server:
       url: https://orchestrator.idea.lst.tfo.upm.es
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a19
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a20
     proxyPort: 7654
+    k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
+    keycloak:
+      client: vantage6
+      clientSecret: put-your-client-secret-here
     persistence:
       tasks:
-        storageClass: local-storage
+        storageClass: idea4rc-hostpath
         size: 2Gi
         # the following path needs to be created beforehand and needs the correct permissions
         hostPath: /mnt/vantage6/tasks
       database:
-        storageClass: local-storage
+        storageClass: idea4rc-hostpath
         size: 1Gi
     databases:
       #fileBased: []
@@ -233,4 +239,4 @@ v6node:
         #uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
         uri: postgres://omop-postgres-service.datamesh.svc.cluster.local:5432/vantage6
         type: other
-    taskNamespace: datamesh
+    taskNamespace: v6-tasks
