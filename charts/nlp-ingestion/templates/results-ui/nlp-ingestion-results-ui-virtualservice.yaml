@@ -1,0 +1,22 @@
+#ETL virtual service
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.nlpingestion.resultsui.name }}
+  namespace: {{ .Values.nlpingestion.resultsui.namespace }}
+spec: 
+  hosts:
+  - "*"
+  gateways:
+  - istio-ingressgateway
+  http:
+  - match:
+    - uri:
+        prefix: /nlp-ingestion/results-ui/
+    rewrite:
+        uri: "/"
+    route:
+    - destination:
+        host: {{ .Values.nlpingestion.resultsui.service.name }}.{{ .Values.nlpingestion.resultsui.namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.nlpingestion.resultsui.service.port }}

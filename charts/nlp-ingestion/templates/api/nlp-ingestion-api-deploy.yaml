@@ -1,0 +1,29 @@
+# Capsule Workbench Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nlpingestion.api.name }}
+  namespace: {{ .Values.nlpingestion.namespace | default .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.nlpingestion.api.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.nlpingestion.api.name }}
+    spec:
+      containers:
+        - name:  {{ .Values.nlpingestion.api.name }}
+          image: {{ .Values.nlpingestion.api.image }}
+          env:
+            - name: APP_PATH
+              value: /data/results/data
+          volumeMounts:
+            - mountPath: /data/results
+              name: resultsui-pv
+      volumes:
+        - name: resultsui-pv
+          persistentVolumeClaim:
+            claimName: resultsui-pv-claim

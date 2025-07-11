@@ -1,0 +1,13 @@
+#ETL persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: resultsui-pv-claim
+  namespace: {{ .Values.nlpingestion.resultsui.namespace }}
+spec:
+  storageClassName: {{ .Values.nlpingestion.resultsui.storageClass.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500M

@@ -1,0 +1,45 @@
+resultsStorage:
+  enabled: true          # turn off to use emptyDir instead
+  size: 5Gi
+  storageClass: ""       # leave blank = default SC
+
+nlpingestion:
+  namespace: datamesh
+  statusweb:
+    name: nlp-ingestion-statusweb
+    namespace: datamesh
+    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.1
+    port: 8501
+    service:
+      name: status-web
+      port: 8501
+      type: ClusterIP
+
+  api:
+    name: nlp-ingestion-api
+    namespace: datamesh
+    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.1
+    port: 8000
+    service:
+      name: api
+      port: 8000
+      type: ClusterIP
+    storageClass:
+      name: idea4rc-hostpath
+  
+  resultsui:
+    name: nlp-ingestion-resultsui
+    namespace: datamesh
+    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.1
+    port: 5173
+    service:
+      name: resultsui
+      port: 5173
+      type: ClusterIP
+    storageClass:
+      name: idea4rc-hostpath
+  
+  virtualService:
+    enabled: true
+
+  

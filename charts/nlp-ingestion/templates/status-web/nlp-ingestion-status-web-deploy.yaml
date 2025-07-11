@@ -1,0 +1,19 @@
+#Capsule Workbench Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nlpingestion.statusweb.name }}
+  namespace: {{ .Values.nlpingestion.statusweb.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.nlpingestion.statusweb.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.nlpingestion.statusweb.name }}
+    spec:
+      containers:
+        - name: {{ .Values.nlpingestion.statusweb.name }}
+          image: {{ .Values.nlpingestion.statusweb.image }}
