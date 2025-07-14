@@ -89,6 +89,7 @@ fhirDataServer:
 nlp:
   nlpingestion:
     namespace: datamesh
+    etlHost: "etl-svc.datamesh.svc.cluster.local:4001"
     statusweb:
       name: nlp-ingestion-statusweb
       namespace: datamesh

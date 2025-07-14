@@ -12,11 +12,11 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /nlp-ingestion/results-ui/
+        prefix: /nlp/results-ui/
     rewrite:
         uri: "/"
     route:
     - destination:
-        host: {{ .Values.nlpingestion.resultsui.service.name }}.{{ .Values.nlpingestion.resultsui.namespace }}.svc.cluster.local
+        host: {{ .Values.nlpingestion.resultsui.service.name }}.{{ .Values.nlpingestion.namespace }}.svc.cluster.local
         port:
           number: {{ .Values.nlpingestion.resultsui.service.port }}

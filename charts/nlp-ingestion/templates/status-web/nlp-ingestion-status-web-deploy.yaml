@@ -17,3 +17,7 @@ spec:
       containers:
         - name: {{ .Values.nlpingestion.statusweb.name }}
           image: {{ .Values.nlpingestion.statusweb.image }}
+          env:
+          - name: ETL_HOST
+            value: {{ .Values.nlpingestion.statusweb.etlHost }}
+

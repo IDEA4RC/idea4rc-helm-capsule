@@ -8,10 +8,11 @@ nlpingestion:
   statusweb:
     name: nlp-ingestion-statusweb
     namespace: datamesh
-    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.1
+    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.2
     port: 8501
+    etlHost: "127.0.0.1:4001"
     service:
-      name: status-web
+      name: statusweb
       port: 8501
       type: ClusterIP
 
