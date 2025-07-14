@@ -154,20 +154,6 @@ revproxy:
   virtualService:
     enabled: "false"
 
-## IdeaDB
-ideadb:
-  namespace: datamesh
-  server:
-    name: ideadb
-    image: bitnami/mariadb:11.4.2
-  db:
-    name: ideadb
-    port: 3306
-  service:
-    name: ideadb-svc
-    port: 3306
-    target_port: mysql
-
 ## Cohort Builder Query Executor
 fcbexec:
   name: feasibility-cohort-builder-exec

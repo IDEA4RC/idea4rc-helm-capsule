@@ -1,4 +1,4 @@
-#ETL virtual service
+# NLP Status virtual service
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:

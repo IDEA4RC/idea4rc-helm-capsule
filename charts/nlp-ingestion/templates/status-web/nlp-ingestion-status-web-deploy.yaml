@@ -1,4 +1,4 @@
-#Capsule Workbench Deployment
+# NLP Status Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
