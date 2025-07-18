@@ -32,10 +32,10 @@ nlpingestion:
     name: nlp-ingestion-resultsui
     namespace: datamesh
     image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.1
-    port: 5173
+    port: 80
     service:
       name: resultsui
-      port: 5173
+      port: 80
       type: ClusterIP
     storageClass:
       name: idea4rc-hostpath

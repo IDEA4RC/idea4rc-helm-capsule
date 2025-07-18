@@ -12,7 +12,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /nlp/results-ui/
+        prefix: /nlp/results/
     rewrite:
         uri: "/"
     route:

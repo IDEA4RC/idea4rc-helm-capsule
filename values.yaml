@@ -95,21 +95,21 @@ nlp:
       namespace: datamesh
       image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.1
       service:
-        name: status-web
-  api:
-    namespace: datamesh
-    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.1
-    service:
-      name: api
-    storageClass:
-      name: idea4rc-hostpath
-  resultsui:
-    namespace: datamesh
-    image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.1
-    service:
-      name: resultsui
-    storageClass:
-      name: idea4rc-hostpath
+        name: nlpstatus
+    api:
+      namespace: datamesh
+      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.1
+      service:
+        name: nlpapi
+      storageClass:
+        name: idea4rc-hostpath
+    resultsui:
+      namespace: datamesh
+      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.1
+      service:
+        name: nlpresultsui
+      storageClass:
+        name: idea4rc-hostpath
     
 ## OMOP Database
 omop:

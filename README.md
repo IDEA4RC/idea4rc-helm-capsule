@@ -10,6 +10,7 @@ This helm chart contains the following IDEA4RC core capsule components:
 - OMOP Instance
 - ETL instance (FHIR)
 - Capsule Workbench
+- MariaDB instance called IdeaDB
 - Internal Reverse Proxy for internal Web Applications that don't play nice with the ISTIO Virtual Services
 - Custom configuration for the Vantage6 Node
 - Additional environment config such as ISTIO's, a storageclass, etc.
@@ -46,6 +47,7 @@ An interesting feature of the current release is that each sub-chart can be depl
 Components might or might not expect other instances to be available, so bear that in mind when deploying. The following capsule components are currently served as sub-charts:
 - ETL (FHIR)
 - custom HAPI FHIR server
+- IdeaDB
 - OMOP CDM
 - Capsule Workbench
 

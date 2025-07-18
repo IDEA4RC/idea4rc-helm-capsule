@@ -17,16 +17,13 @@ dependencies:
   - name: omop
     repository: file://./charts/omop
     version: 07.11.24-1542
-  - name: ideadb
-    repository: file://./charts/ideadb
-    version: 22.10.24-1533
   - name: feasibility-cohort-builder-exec
     repository: file://./charts/feasibility-cohort-builder-exec
     version: 27.06.2025-1740
     alias: fcbexec
   - name: nlp-ingestion
     repository: file://./charts/nlp-ingestion
-    version: 14.07.25-1000
+    version: 18.07.25-1000
     alias: nlp
   - name: node
     repository: "@vantage6"
@@ -34,5 +31,5 @@ dependencies:
     alias: v6node
 
 type: application
-version: 27.06.25-1605
-appVersion: "27.06.25-1605"
+version: 18.07.25-1605
+appVersion: "18.07.25-1605"
