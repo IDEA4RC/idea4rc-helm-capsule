@@ -1,22 +1,22 @@
 # NLP API virtual service
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: {{ .Values.nlpingestion.api.name }}
-  namespace: {{ .Values.nlpingestion.api.namespace }}
-spec: 
-  hosts:
-  - "*"
-  gateways:
-  - istio-ingressgateway
-  http:
-  - match:
-    - uri:
-        prefix: /nlp/api/
-    rewrite:
-        uri: "/"
-    route:
-    - destination:
-        host: {{ .Values.nlpingestion.api.service.name }}.{{ .Values.nlpingestion.namespace }}.svc.cluster.local
-        port:
-          number: {{ .Values.nlpingestion.api.service.port }}
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: {{ .Values.nlpingestion.api.name }}
+#  namespace: {{ .Values.nlpingestion.api.namespace }}
+#spec: 
+#  hosts:
+#  - "*"
+#  gateways:
+#  - istio-ingressgateway
+#  http:
+#  - match:
+#    - uri:
+#        prefix: /nlp/api/
+#    rewrite:
+#        uri: "/"
+#    route:
+#    - destination:
+#        host: {{ .Values.nlpingestion.api.service.name }}.{{ .Values.nlpingestion.namespace }}.svc.cluster.local
+#        port:
+#          number: {{ .Values.nlpingestion.api.service.port }}
