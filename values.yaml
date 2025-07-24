@@ -92,20 +92,22 @@ nlp:
     statusweb:
       name: nlp-ingestion-statusweb
       namespace: datamesh
-      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.1
+      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.2.3
       etlHost: "etl-svc.datamesh.svc.cluster.local:4001"
+      resultsUIHost: "nlpresultsui.datamesh.svc.cluster.local"
       service:
         name: nlpstatus
     api:
       namespace: datamesh
-      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.1
+      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.2
       service:
         name: nlpapi
       storageClass:
         name: idea4rc-hostpath
     resultsui:
       namespace: datamesh
-      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.1
+      image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.2.2
+      baseURL: "/nlp/results"
       service:
         name: nlpresultsui
       storageClass:

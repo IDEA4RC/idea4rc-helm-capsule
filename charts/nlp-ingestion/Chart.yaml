@@ -3,5 +3,5 @@ name: nlp-ingestion
 description: The IDEA4RC NLP Ingestion Service processes and stores the data from the NLP pipeline.
 
 type: application
-version: 18.07.25-1000
-appVersion: 18.07.25-1000
+version: 23.07.25-1000
+appVersion: 23.07.25-1000

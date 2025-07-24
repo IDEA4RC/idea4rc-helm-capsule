@@ -20,4 +20,8 @@ spec:
           env:
           - name: ETL_HOST
             value: {{ .Values.nlpingestion.statusweb.etlHost }}
+          - name: RESULTS_UI_HOST 
+            value: {{ .Values.nlpingestion.statusweb.resultsUIHost }}
+          - name: API_HOST
+            value: {{ .Values.nlpingestion.statusweb.apiHost }}
 

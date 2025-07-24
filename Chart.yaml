@@ -23,7 +23,7 @@ dependencies:
     alias: fcbexec
   - name: nlp-ingestion
     repository: file://./charts/nlp-ingestion
-    version: 18.07.25-1000
+    version: 23.07.25-1000
     alias: nlp
   - name: node
     repository: "@vantage6"
@@ -31,5 +31,5 @@ dependencies:
     alias: v6node
 
 type: application
-version: 18.07.25-1605
-appVersion: "18.07.25-1605"
+version: 23.07.25-1605
+appVersion: "23.07.25-1605"

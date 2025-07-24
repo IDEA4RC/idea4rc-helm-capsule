@@ -17,6 +17,9 @@ spec:
       containers:
         - name: {{ .Values.nlpingestion.resultsui.name }}
           image: {{ .Values.nlpingestion.resultsui.image }}
+          env:
+            - name: BASE_URL_PATH 
+              value: {{ .Values.nlpingestion.resultsui.baseURL | quote }}
           volumeMounts:
             - mountPath: /data/results
               name: resultsui-pv
