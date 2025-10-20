@@ -162,8 +162,8 @@ fcbexec:
   namespace: datamesh
   image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:8984c5f690e65da21d21f5e0168d6c6b5238ed1ead960c58cb7ac79d8c6e01a7"
   port: 3000
-  serviceURL: # needs correct value: feasibility cohort builder API URL (orchestrator)
-  fhirServerURL: # needs correct value: Internal FHIR server URL
+  serviceURL: "https://api.fcb.orchestrator.idea.lst.tfo.upm.es"
+  fhirServerURL: "https://fhir.fcb.orchestrator.idea.lst.tfo.upm.es" # needs correct value: Internal FHIR server URL
   postgress:
     dbName: etl
   service:
