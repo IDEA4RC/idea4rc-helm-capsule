@@ -34,6 +34,12 @@ spec:
               value: "{{ .Values.kafka.port }}"
             - name: KAFKA_CLIENT_ID
               value: {{ .Values.kafka.clientId }}
+            - name: KAFKA_CA_PEM
+              value: "./conf/certs/ca.pem"
+            - name: KAFKA_CLIENT_KEY_PEM
+              value: "./conf/certs/client.key.pem"
+            - name: KAFKA_CLIENT_CERT_PEM
+              value: "./conf/certs/client.cert.pem"
             - name: SERVICE_URL
               value: {{ .Values.serviceURL }}
             - name: FHIR_SERVER_URL
@@ -70,3 +76,10 @@ spec:
               value: {{ .Values.keyCloak.clientSecret }}
           ports:
             - containerPort: {{ .Values.port }}
+          volumeMounts:
+            - name: query-executor-kafka-tls-auth-secrets
+              mountPath: /app/dist/conf/certs/
+      volumes:
+        - name: query-executor-kafka-tls-auth-secrets
+          secret:
+            secretName: query-executor-kafka-tls-auth

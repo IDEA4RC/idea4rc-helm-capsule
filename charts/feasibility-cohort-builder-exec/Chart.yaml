@@ -3,5 +3,5 @@ name: feasibility-cohort-builder-exec
 description: Cohort Builder Execution Service
 
 type: application
-version: 27.06.2025-1740
-appVersion: "2.0"
+version: 17.10.2025-1740
+appVersion: "2.1"

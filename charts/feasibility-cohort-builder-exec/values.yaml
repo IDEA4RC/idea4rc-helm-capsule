@@ -2,7 +2,7 @@
 name: feasibility-cohort-builder-exec
 namespace: datamesh
 replicas: 1
-image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:8984c5f690e65da21d21f5e0168d6c6b5238ed1ead960c58cb7ac79d8c6e01a7"
+image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1"
 port: 3000
 serviceURL: http://fcb-api:4002
 fhirServerURL: http://fhir-server:8080
@@ -19,7 +19,7 @@ kafka:
   queryResultTopic: fhir_queries_results
   sqlTopic: sql_queries
   sqlResultTopic: sql_queries_results
-  host: host02.idea.lst.tfo.upm.es
+  host: orchestrator.idea.lst.tfo.upm.es
   port: 9092
   clientId: capsule_1
 # needs to point to the ETL Postegress instance
