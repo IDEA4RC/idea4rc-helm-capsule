@@ -5,6 +5,8 @@ echo " - client.key.pem"
 
 echo "Creating sercret query-executor-kafka-tls-auth"
 
+#kubectl create namespace datamesh
+
 kubectl create secret -n datamesh generic query-executor-kafka-tls-auth \
   --from-file=ca.pem=./ca.pem \
   --from-file=client.cert.pem=./client.cert.pem \

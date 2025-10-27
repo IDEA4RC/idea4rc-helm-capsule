@@ -196,17 +196,14 @@ v6node:
     createSecrets: false # we want to use our secret instead because this chart handles the omop auth data
     apiKey: put-your-api-key-here
     server:
-      url: https://orchestrator.idea.lst.tfo.upm.es
+      url: "https://vantage6-core.orchestrator.idea.lst.tfo.upm.es"
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a22
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a40
     proxyPort: 7654
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
-    keycloakUrl: https://auth.vantage6.ai:8443
-    keycloakRealm: vantage7
-    keycloak:
-      client: vantage6
-      clientSecret: put-your-client-secret-here
+    keycloakUrl: "https://vantage6-auth.orchestrator.idea.lst.tfo.upm.es/"
+    keycloakRealm: vantage6
     persistence:
       tasks:
         storageClass: idea4rc-hostpath
