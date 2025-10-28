@@ -199,7 +199,7 @@ v6node:
       url: "https://vantage6-core.orchestrator.idea.lst.tfo.upm.es"
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a40
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a41
     proxyPort: 7654
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
     keycloakUrl: "https://vantage6-auth.orchestrator.idea.lst.tfo.upm.es/"
@@ -226,6 +226,6 @@ v6node:
       - name: postgres
         # this URI points to OMOP 
         # uri: postgres://vantage6:vantage6@vantage6-vantage6-postgres:5432/vantage6
-        uri: postgres://omop-postgres-service.datamesh.svc.cluster.local:5432/vantage6
+        uri: jdbc:postgresql://omop-postgres-service.datamesh.svc.cluster.local:5432/vantage6
         type: other
     taskNamespace: v6-tasks
