@@ -204,6 +204,20 @@ v6node:
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
     keycloakUrl: "https://vantage6-auth.orchestrator.idea.lst.tfo.upm.es/"
     keycloakRealm: vantage6
+    logging:
+      loggers:
+      - level: warning
+        name: urllib3
+      - level: warning
+        name: socketIO-client
+      - level: warning
+        name: socketio.server
+      - level: warning
+        name: engineio.server
+      - level: warning
+        name: sqlalchemy.engine
+      - level: warning
+        name: kubernetes.client.rest
     persistence:
       tasks:
         storageClass: idea4rc-hostpath
