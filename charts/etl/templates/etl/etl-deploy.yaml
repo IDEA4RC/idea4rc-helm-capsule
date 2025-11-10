@@ -48,7 +48,8 @@ spec:
                 \"spring.datasource.driver-class-name\":\"{{ .Values.etl.server.springDriver }}\",
                 \"server.port\":\"{{ .Values.etl.server.port }}\",
                 \"spring.aerospike.hosts\":\"${AEROSPIKE_HOST}\",
-                \"spring.data.aerospike.namespace\":\"{{ .Values.aerospike.server.keystoreNamespace }}\"
+                \"spring.data.aerospike.namespace\":\"{{ .Values.aerospike.server.keystoreNamespace }}\",
+                \"etl.csv.parser.separator\":\"{{ .Values.etl.server.parserSeparator }}\"
                 }"
                 #\"management.endpoints.web.exposure.include\":\"restart\"
             - name: SERVER_FORWARD_HEADERS_STRATEGY

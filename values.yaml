@@ -46,6 +46,7 @@ etl:
     server:
       name: etl-fhir
       image: ghcr.io/idea4rc/etl:2.0
+      parserSeparator: ","
     db:
       image: postgres:16.3-bullseye
     virtualService:
@@ -163,7 +164,7 @@ fcbexec:
   image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:8984c5f690e65da21d21f5e0168d6c6b5238ed1ead960c58cb7ac79d8c6e01a7"
   port: 3000
   serviceURL: "https://api.fcb.orchestrator.idea.lst.tfo.upm.es"
-  fhirServerURL: "https://fhir.fcb.orchestrator.idea.lst.tfo.upm.es" # needs correct value: Internal FHIR server URL
+  fhirServerURL: "http://fhir-data-svc.datamesh.svc.cluster.local" # changed to Internal FHIR server URL, needs testing
   postgress:
     dbName: etl
   service:
@@ -199,22 +200,23 @@ v6node:
       url: "https://vantage6-core.orchestrator.idea.lst.tfo.upm.es"
       port: 443
       path: /server
-    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a41
+    image: harbor2.vantage6.ai/infrastructure/node:5.0.0a43
     proxyPort: 7654
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
     keycloakUrl: "https://vantage6-auth.orchestrator.idea.lst.tfo.upm.es/"
     keycloakRealm: vantage6
     logging:
+      level: DEBUG
       loggers:
       - level: warning
         name: urllib3
       - level: warning
         name: socketIO-client
-      - level: warning
+      - level: debug
         name: socketio.server
-      - level: warning
+      - level: debug
         name: engineio.server
-      - level: warning
+      - level: debug
         name: sqlalchemy.engine
       - level: warning
         name: kubernetes.client.rest
