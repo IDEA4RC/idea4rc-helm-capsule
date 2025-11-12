@@ -1,2 +1,4 @@
 Chart.lock
 charts/*.tgz
+utils/*.pem
+utils/*.csr

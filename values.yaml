@@ -180,7 +180,7 @@ fcbexec:
     sqlTopic: sql_queries
     sqlResultTopic: sql_queries_results
     host: orchestrator.idea.lst.tfo.upm.es
-    port: "9092"
+    port: "9093"
     clientId: capsule_test
   keyCloak:
     URL:  /realms/idea4rc/protocol/openid-connect/token/introspect
