@@ -19,7 +19,7 @@ dependencies:
     version: 07.11.24-1542
   - name: feasibility-cohort-builder-exec
     repository: file://./charts/feasibility-cohort-builder-exec
-    version: 17.10.2025-1740
+    version: 13.11.2025-1740
     alias: fcbexec
   - name: nlp-ingestion
     repository: file://./charts/nlp-ingestion
@@ -31,5 +31,5 @@ dependencies:
     alias: v6node
 
 type: application
-version: 27.10.2025-1123
-appVersion: "27.10.2025-1123"
+version: 13.11.2025-1836
+appVersion: "13.11.2025-1836"

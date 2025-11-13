@@ -12,23 +12,6 @@ istio:
   tls:
     commonName: "127.0.0.1"
 
-# Enable/disable Auth configuration and configure multiple roles for authentication.
-auth:
-  enable: False
-  jwtIssuer: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC"
-  jwksUri: "https://keycloak.idea.lst.tfo.upm.es/realms/IDEA4RC/protocol/openid-connect/certs"
-  policies:
-    medic:
-      policy_name: require-jwt-medic
-      methods: "POST"
-      roles: "Medic"
-      namespace: datamesh
-    patient:
-      policy_name: require-jwt
-      methods: "GET"
-      roles: "Patient"
-      namespace: datamesh
-
 # Hostpath-based custom storage class for k8s. This enables persistency for the various DB instances of the capsule across upgrades. This is useful in certain cases where we want to avoid data loss, for eg.: across restarts of the guest machine or when restarting services. This can lead to data inconsistecy and other issues and it's not the inteded way of using the capsule, which should be recreated every time the source dataset changes or when upgrading. Please note that deleting the capsule using "helm delete" will delete the volumes, too.
 idea4rcStorageClass:
   name: idea4rc-hostpath
@@ -161,7 +144,7 @@ revproxy:
 fcbexec:
   name: feasibility-cohort-builder-exec
   namespace: datamesh
-  image: "ghcr.io/idea4rc/cohortbuilder-exec@sha256:8984c5f690e65da21d21f5e0168d6c6b5238ed1ead960c58cb7ac79d8c6e01a7"
+  image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1"
   port: 3000
   serviceURL: "https://api.fcb.orchestrator.idea.lst.tfo.upm.es"
   fhirServerURL: "http://fhir-data-svc.datamesh.svc.cluster.local" # changed to Internal FHIR server URL, needs testing
