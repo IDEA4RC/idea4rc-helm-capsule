@@ -9,7 +9,7 @@ etl:
     serverDns: "https://"
     hibernateDialect: org.hibernate.dialect.PostgreSQLDialect
     springDriver: org.postgresql.Driver
-    parserSeparator: ","
+    parserSeparator: ";"
   db:
     name: etl
     replicas: 1
