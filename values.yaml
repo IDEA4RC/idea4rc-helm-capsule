@@ -29,7 +29,7 @@ etl:
     server:
       name: etl-fhir
       image: ghcr.io/idea4rc/etl:2.1.1
-      parserSeparator: ","
+      parserSeparator: ";"
     db:
       image: postgres:16.3-bullseye
     virtualService:
