@@ -103,7 +103,8 @@ omop:
   app: omop-postgres
   cdm:
     name: omop-cdm-deployment
-    image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
+      #image: ghcr.io/idea4rc/omop-deploy@sha256:2b873c3c450193349d91957c66d5ced35d13cd271ebc660facca9af7134449b4
+    image: postgres:17.2-bullseye
   vocab:
     name: populate-db-job
     ttl: 120
