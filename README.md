@@ -1,10 +1,10 @@
 # idea4rc-helm-capsule
 
 ## Getting started
-This helm chart is intended as a way to package and deploy an IDEA4RC capsule on a Kuberentes instance using Helm (https://helm.sh/). 
+This helm chart is intended as a way to package and deploy an IDEA4RC Capsule on a Kuberentes instance using Helm (https://helm.sh/). 
 
 ## Capsule components
-This helm chart contains the following IDEA4RC core capsule components:
+This helm chart contains the following IDEA4RC core Capsule components:
 - Istio configurations for Ingress Gateway, Virtual Services and mTLS enforcing
 - custom HAPI FHIR instance
 - OMOP CDM Instance
@@ -43,7 +43,7 @@ In order to deploy this instance on a Kubernetes cluster, the following software
 ### Configuration requirements
 To perform the deployment, the following data must be gathered beforehand:
 
- - CAPSULE_PUB_IP: the IP/FQDN of your capsule
+ - CAPSULE_PUB_IP: the IP/FQDN of your Capsule
  - v6node.node.apiKey: the Vantage 6 API Key, provided by the Vantage 6 server operator
  - v6node.node.name: the Vantage 6 node name, provided by the Vantage 6 server operator
  - v6node.node.k8sNodeName: the name of the k8s node where the Vantage 6 client will be executed, for eg. what you get with the following command once k8s has been deployed: ```kubectl get node```
@@ -58,13 +58,13 @@ To perform the deployment, the following data must be gathered beforehand:
 The current chart reflects the following structure:
   - Chart.yaml - Helm file that specifies the chart version and its dependiencies
   - values.yaml - the main config file for tha chart, where most of the configuration variables that are of interest to the users are found
-  - templates - contains a number of Helm templates that are leveraged to create the capsule environment, for eg.: the Istio gateway, SSL certificate generation, etc.
-  - charts - contains all the different components that compose the capsule as indicated in the "Capsule components" section above, delivered as sub-charts
+  - templates - contains a number of Helm templates that are leveraged to create the Capsule environment, for eg.: the Istio gateway, SSL certificate generation, etc.
+  - charts - contains all the different components that compose the Capsule as indicated in the "Capsule components" section above, delivered as sub-charts
 
 ## Sub-Charts
 In the current release of this chart, each sub-chart can be deployed indipendently from the main one. In fact, each of the charts have their own ```Chart.yaml``` and ```values.yaml``` files. Should the user whish to deploy a single component among those that are packaged as sub-charts, it would be enough to change directory to the correct path, customize the relative ```values.yaml``` file - if necessary - and run the helm install command. 
 
-Components might or might not expect other instances to be available, so bear that in mind when deploying. The following capsule components are currently served as sub-charts:
+Components might or might not expect other instances to be available, so bear that in mind when deploying. The following Capsule components are currently served as sub-charts:
 - ETL (FHIR)
 - Feasibility Cohort Builder Query Executor
 - custom HAPI FHIR server
@@ -75,14 +75,14 @@ Components might or might not expect other instances to be available, so bear th
 Moreover, this chart deploys the Vantage6 node, too, bundling it as a dependency.
 
 ## Configuration
-The main concept behind this Helm chart is to have a capsule deployment that's as easy and flexible as possible. This means that the user will be able to configure the main components freely and/or to turn on/off specific features. 
+The main concept behind this Helm chart is to have a Capsule deployment that's as easy and flexible as possible. This means that the user will be able to configure the main components freely and/or to turn on/off specific features. 
 
 The main configuration file is the ```values.yaml``` file that's present at the root path of the chart. This file contains all the variables leveraged by Helm, in conjunction with the chart templates, to generate the actual yaml files that will be fed to Kubernetes. Users can override these values at their leisure. For example, ISTIO can be put in PERMISSIVE mode for the datamesh namespace by changing the deafutl value to```istio.mtlsMode: STRICT``` or the HAPI FHIR docker image tag for the FHIR Data server can be changed by replacing the ```fhirDataServer.server.image.tag``` with the desired version and so on and so forth. Users are invited to take a look at the included ```values.yaml``` files to understand which variables can be interacted with.
 
 Another way to alter the chart configuration is by overriding values when executing the install command by leveraging the ```--set``` switch. Multiple values can be overridden by passing multiple instances of this switch. Since this chart is leveraging sub-charts, values can be changed both at sub-chart level or at the main chart level, but do remember that the main ```values.yaml``` file overrides the variables defined in the sub-charts. Some of the required information that is specific to each deployment, for eg. Keycloak authentication info, is also passed to the chart with this method. 
 
 ## Endpoints
-Once the capsule has been deployed, the internal services will be available at the endpoints specified in the various virtual services of each component. Looking at the virtual services, we can see that access to internal services is mapped via virtualhosts, for eg. the ETL service will be available at the ```https://$CAPSULE_PUB_IP/datagate/``` URL. In the current release, only the ETL endpoint is published by default. Access to other components can be enabled or disabled by interacting with the relative virtualService variable parameter that can be found in the main ```values.yaml``` file. These changes can be applied either at deployment time or by upgading the chart while passing the proper options.
+Once the Capsule has been deployed, the internal services will be available at the endpoints specified in the various virtual services of each component. Looking at the virtual services, we can see that access to internal services is mapped via virtualhosts, for eg. the ETL service will be available at the ```https://$CAPSULE_PUB_IP/datagate/``` URL. In the current release, only the ETL endpoint is published by default. Access to other components can be enabled or disabled by interacting with the relative virtualService variable parameter that can be found in the main ```values.yaml``` file. These changes can be applied either at deployment time or by upgading the chart while passing the proper options.
 
 This is a list of components that are published via Virtual Service, together with their relative prefix path:
 
@@ -119,7 +119,7 @@ curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/audit/records'
 > If you wish to ease the deployment, there's an [Ansible playbook](https://github.com/IDEA4RC/microk8s-playbook) that can prepare the environment for you.
 
 > [!TIP]
-> A barebones Github Gist that contains all the steps to deply a capsule from start to finish is available [here](https://gist.github.com/DanielePaviaENG/130f627fe0cb67245055d5c57a5c8d7d).
+> A barebones Github Gist that contains all the steps to deply a Capsule from start to finish is available [here](https://gist.github.com/DanielePaviaENG/130f627fe0cb67245055d5c57a5c8d7d).
 
 Either clone or download the sources from this repo:
 ```
@@ -137,8 +137,8 @@ Update & build the dependencies of the chart:
 helm dependency update idea4rc-helm-capsule && helm dependency build idea4rc-helm-capsule
 ```
 
-Deploy the capsule. You will need to provide the following parameters:
- - CAPSULE_PUB_IP: the IP/FQDN of your capsule
+Deploy the Capsule. You will need to provide the following parameters:
+ - CAPSULE_PUB_IP: the IP/FQDN of your Capsule
  - v6node.node.apiKey: the Vantage 6 API Key, provided by the Vantage 6 server operator
  - v6node.node.name: the Vantage 6 node name, provided by the Vantage 6 server operator
  - v6node.node.k8sNodeName: the name of the k8s node where the Vantage 6 client will be executed, for eg. what you get with the following command once k8s has been deployed: ```kubectl get node```
@@ -162,7 +162,7 @@ cd idea4rc-helm-capsule/utils/
 Now the OMOP Vocabulary can be created by downloading the file stored in the following GitHub repo:
 https://github.com/IDEA4RC/idea4rc-capsule-omop-dictionary/blob/main/idea4rc-capsule-omop-dictionary.dump
 
-And applying it the capsule OMOP instance:
+And applying it to the Capsule's OMOP instance:
 ```
 omop_pod_name=$(microk8s.kubectl get pods -n datamesh|grep omop|awk '{print $1}')
 
@@ -172,13 +172,13 @@ kubectl exec -i $omop_pod_name --namespace=datamesh -- /bin/bash -c 'pg_restore 
 The Capsule is now ready for data injection.
 
 > [!IMPORTANT]
-> If you're deploying the capsule after the execution of the microk8s-playbook, please remember to replace every ```helm``` command with the equivalent ```microk8s.helm```
+> If you're deploying the Capsule after the execution of the microk8s-playbook, please remember to replace every ```helm``` command with the equivalent ```microk8s.helm```
 
 > [!IMPORTANT]
 > Capsule upgrading is unsupported, by design a Capsule should be recreated every time the dataset changes. That means that it should be completely erased with an ```helm delete idea4rc-capsule``` command and redeployed from scratch. 
 
 > [!IMPORTANT]
-> When deleting the capsule to create a fresh deployment from scratch, deletion of all the Persistent Volumes used by the capsule must occur beforehand. 
+> When deleting the Capsule to create a fresh deployment from scratch, deletion of all the Persistent Volumes used by the Capsule must occur beforehand. 
 
 ## License
 This software is currently licensed under GPLv2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
