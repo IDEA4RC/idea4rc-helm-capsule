@@ -88,7 +88,7 @@ This is a list of components that are published via Virtual Service, together wi
 
 | Component | Virtual Service | Endpoint |
 |-----------|-----------------|----------|
-| ETL (FHIR) | etl-vs | | https://CAPSULE_IP/etl/ |
+| ETL (FHIR) | etl-vs | https://CAPSULE_IP/datagate/ |
 | Capsule Workbench | revproxy-vs | https://CAPSULE_IP/workbench/ |
 
 ### ETL endpoints:
