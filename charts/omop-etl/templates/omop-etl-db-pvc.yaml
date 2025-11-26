@@ -1,0 +1,13 @@
+#OMOP ETL metadata DB persistent Volume Claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: omop-etl-db-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: {{ .Values.idea4rcStorageClass.name }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5G

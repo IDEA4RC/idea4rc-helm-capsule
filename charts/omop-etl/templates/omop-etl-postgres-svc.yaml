@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.datasource.metadata.service.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app:  {{ .Values.datasource.metadata.service.name }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.datasource.metadata.service.port }}
+      targetPort: {{ .Values.datasource.metadata.service.targetPort }} 
+  type: {{ .Values.datasource.metadata.service.type }}

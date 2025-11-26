@@ -1,0 +1,76 @@
+# OMOP ETL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: {{ .Values.image }}
+          env:
+            - name: OMOP_ETL_PGSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: omop-etl-db-secret
+                  key: OMOP_ETL_PGSQL_USER
+            - name: OMOP_ETL_PGSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-etl-db-secret
+                  key: OMOP_ETL_PGSQL_PASSWORD
+            - name: ETL_PGSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: etl-secret
+                  key: ETL_PGSQL_USER
+            - name: ETL_PGSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: etl-secret
+                  key: ETL_PGSQL_PASSWORD
+            - name: OMOP_PGSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_USER
+            - name: OMOP_PGSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-secret
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_DATASOURCE_METADATA_URL
+              value: jdbc:postgresql://{{ .Values.datasource.metadata.service.name }}:{{ .Values.datasource.metadata.service.port }}/{{ .Values.datasource.metadata.dbName }}
+            - name: SPRING_DATASOURCE_METADATA_USERNAME
+              value: ${OMOP_ETL_PGSQL_USER}
+            - name: SPRING_DATASOURCE_METADATA_PASSWORD
+              value: ${OMOP_ETL_PGSQL_PASSWORD}
+            - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
+              value: {{ .Values.datasource.metadata.driverClassName }}
+            - name: SPRING_DATASOURCE_SOURCE_URL
+              value: jdbc:postgresql://{{ .Values.datasource.source.dbSvc }}:{{ .Values.datasource.source.dbPort }}/{{ .Values.datasource.source.dbName }}
+            - name: SPRING_DATASOURCE_METADATA_USERNAME
+              value: ${ETL_PGSQL_USER}
+            - name: SPRING_DATASOURCE_METADATA_PASSWORD
+              value: ${ETL_PGSQL_PASSWORD}
+            - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
+              value: {{ .Values.datasource.source.driverClassName }}
+            - name: SPRING_DATASOURCE_OMOP_URL
+              value: jdbc:postgresql://{{ .Values.datasource.omop.dbSvc }}:{{ .Values.datasource.omop.dbPort }}/{{ .Values.datasource.omop.dbName }}
+            - name: SPRING_DATASOURCE_METADATA_USERNAME
+              value: ${OMOP_PGSQL_USER}
+            - name: SPRING_DATASOURCE_METADATA_PASSWORD
+              value: ${OMOP_PGSQL_PASSWORD}
+            - name: SPRING_DATASOURCE_OMOP_SCHEMA_CDM
+              value: {{ .Values.datasource.omop.schemaCDM }}
+            - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
+              value: {{ .Values.datasource.omop.driverClassName }}

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.datasource.metadata.dbName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.datasource.metadata.replicas }}
+  selector:
+    matchLabels:
+      app:  {{ .Values.datasource.metadata.dbName }}
+  template:
+    metadata:
+      labels:
+        app:  {{ .Values.datasource.metadata.dbName }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/omop-etl-postgres-secret.yaml") . | sha256sum }}
+    spec:
+      volumes:
+      - persistentVolumeClaim: 
+          claimName: omop-etl-db-pvc
+        name: omop-etl-pv
+      containers:
+        - name: {{ .Values.datasource.metadata.dbName }}
+          image: {{ .Values.datasource.metadata.image }}
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: omop-etl-pv
+          ports:
+            - containerPort: {{ .Values.datasource.metadata.dbPort }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: omop-etl-db-secret
+                  key: OMOP_ETL_PGSQL_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omop-etl-db-secret
+                  key: OMOP_ETL_PGSQL_PASSWORD
+            - name: POSTGRES_DB
+              value: {{ .Values.datasource.metadata.dbName }}
+        
