@@ -17,6 +17,7 @@ spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:
             - name: OMOP_ETL_PGSQL_USER
               valueFrom:
@@ -48,29 +49,32 @@ spec:
                 secretKeyRef:
                   name: omop-secret
                   key: POSTGRES_PASSWORD
+            # METADATA DB
             - name: SPRING_DATASOURCE_METADATA_URL
-              value: jdbc:postgresql://{{ .Values.datasource.metadata.service.name }}:{{ .Values.datasource.metadata.service.port }}/{{ .Values.datasource.metadata.dbName }}
+              value: jdbc:postgresql://{{ .Values.datasource.metadata.service.name }}.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.datasource.metadata.service.port }}/{{ .Values.datasource.metadata.dbName }}
             - name: SPRING_DATASOURCE_METADATA_USERNAME
               value: ${OMOP_ETL_PGSQL_USER}
             - name: SPRING_DATASOURCE_METADATA_PASSWORD
               value: ${OMOP_ETL_PGSQL_PASSWORD}
             - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
               value: {{ .Values.datasource.metadata.driverClassName }}
+            # SOURCE DB
             - name: SPRING_DATASOURCE_SOURCE_URL
               value: jdbc:postgresql://{{ .Values.datasource.source.dbSvc }}:{{ .Values.datasource.source.dbPort }}/{{ .Values.datasource.source.dbName }}
-            - name: SPRING_DATASOURCE_METADATA_USERNAME
+            - name: SPRING_DATASOURCE_SOURCE_USERNAME
               value: ${ETL_PGSQL_USER}
-            - name: SPRING_DATASOURCE_METADATA_PASSWORD
+            - name: SPRING_DATASOURCE_SOURCE_PASSWORD
               value: ${ETL_PGSQL_PASSWORD}
-            - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
+            - name: SPRING_DATASOURCE_SOURCE_DRIVER_CLASS_NAME
               value: {{ .Values.datasource.source.driverClassName }}
+            # OMOP DB
             - name: SPRING_DATASOURCE_OMOP_URL
               value: jdbc:postgresql://{{ .Values.datasource.omop.dbSvc }}:{{ .Values.datasource.omop.dbPort }}/{{ .Values.datasource.omop.dbName }}
-            - name: SPRING_DATASOURCE_METADATA_USERNAME
+            - name: SPRING_DATASOURCE_OMOP_USERNAME
               value: ${OMOP_PGSQL_USER}
-            - name: SPRING_DATASOURCE_METADATA_PASSWORD
+            - name: SPRING_DATASOURCE_OMOP_PASSWORD
               value: ${OMOP_PGSQL_PASSWORD}
             - name: SPRING_DATASOURCE_OMOP_SCHEMA_CDM
               value: {{ .Values.datasource.omop.schemaCDM }}
-            - name: SPRING_DATASOURCE_METADATA_DRIVER_CLASS_NAME
+            - name: SPRING_DATASOURCE_OMOP_DRIVER_CLASS_NAME
               value: {{ .Values.datasource.omop.driverClassName }}

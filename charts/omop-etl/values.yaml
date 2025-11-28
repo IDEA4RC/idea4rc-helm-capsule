@@ -3,6 +3,7 @@ name: omop-etl
 namespace: datamesh
 replicas: 1
 image: "idea2omop:latest"
+imagePullPolicy: IfNotPresent
 #port: 3000 # does it need to be exposed? is it the correct port?
 #service:
 #  name: omop-etl-svc
