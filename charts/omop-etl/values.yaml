@@ -33,7 +33,7 @@ datasource:
     dbPort: 5432
     dbName: omopdb
     driverClassName: org.postgresql.Driver
-    schemaCDM: results
+    schemaCDM: cdm_idea
 
 # Additional configuration that's related to the capsule environment
 idea4rcStorageClass:
