@@ -24,10 +24,10 @@ idea4rcStorageClass:
 # ETL to FHIR configuration
 etl:
   etl:
-    name: etl-fhir
+    name: etl-idea
     namespace: datamesh
     server:
-      name: etl-fhir
+      name: etl-idea
       image: ghcr.io/idea4rc/etl:2.1.1
       parserSeparator: ";"
     db:
@@ -39,7 +39,8 @@ etl:
     namespace: datamesh
     server:
       keystoreNamespace: idea4rc
-      image: "aerospike/aerospike-server:7.1"
+      image: "ghcr.io/idea4rc/aerospike:1.0.0"
+      #image: "aerospike/aerospike-server:7.1"
       mtlsMode: PERMISSIVE
 
 ## FHIR data server configuration
