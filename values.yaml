@@ -24,10 +24,10 @@ idea4rcStorageClass:
 # ETL to FHIR configuration
 etl:
   etl:
-    name: etl-fhir
+    name: etl-idea
     namespace: datamesh
     server:
-      name: etl-fhir
+      name: etl-idea
       image: ghcr.io/idea4rc/etl:2.1.1
       parserSeparator: ";"
     db:

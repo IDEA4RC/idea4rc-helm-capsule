@@ -2,7 +2,7 @@
 etl:
   namespace: datamesh
   server:
-    name: etl-fhir
+    name: etl-idea
     image: ghcr.io/idea4rc/etl:2.1.1
     port: 4001
     #proxy: "false"
@@ -36,7 +36,6 @@ aerospike:
   namespace: datamesh
   server:
     keystoreNamespace: idea4rc
-    #image: "aerospike/aerospike-server:7.1"
     image: "aerospike-rootless:latest"
     port: 3000
     mtlsMode: PERMISSIVE
