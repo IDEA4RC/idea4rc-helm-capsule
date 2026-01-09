@@ -36,7 +36,8 @@ aerospike:
   namespace: datamesh
   server:
     keystoreNamespace: idea4rc
-    image: "aerospike/aerospike-server:7.1"
+    #image: "aerospike/aerospike-server:7.1"
+    image: "aerospike-rootless:latest"
     port: 3000
     mtlsMode: PERMISSIVE
   service:

@@ -39,7 +39,8 @@ etl:
     namespace: datamesh
     server:
       keystoreNamespace: idea4rc
-      image: "aerospike/aerospike-server:7.1"
+      image: "aerospike-rootless:latest"
+      #image: "aerospike/aerospike-server:7.1"
       mtlsMode: PERMISSIVE
 
 ## FHIR data server configuration
