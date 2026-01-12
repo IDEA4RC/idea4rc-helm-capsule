@@ -30,9 +30,9 @@ dependencies:
     alias: nlp
   - name: node
     repository: "@vantage6"
-    version: "5.0.0-a40"
+    version: "5.0.0-b1"
     alias: v6node
 
 type: application
-version: 19.12.25-1655
-appVersion: "19.12.25-1655"
+version: 09.01.26-1738
+appVersion: "09.01.26-1738"
