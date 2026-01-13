@@ -113,11 +113,22 @@ omop:
     name: omop-postgres-service
   vocabJob: false
 
+## OMOP ETL
+omop-etl:
+  name: omop-etl
+  namespace: datamesh
+  image: "ghcr.io/idea4rc/etl-idea2omop:3.0-AMD"
+  imagePullPolicy: IfNotPresent
+  # Once the ETL to IDEADB is completed, the IDEADB to OMOP ETL can be triggered with the following command:
+  # kubectl scale -n datamesh deploy omop-etl --replicas=1 
+  replicas: 0
+
 ## Capsule Workbench
 workbench:
   name: capsule-workbench
   namespace: datamesh
   image: ghcr.io/idea4rc/capsule-workbench@sha256:5de9ca7610fd4497b26ebef08a82e6b42545303ffc81fa4dccc5bbfcfa4a9f86
+  replicas: 0
 
 ## Apache Reverse Proxy for those WebApps that have issues with 
 ## ISTIO's reverse proxy functionality
@@ -126,7 +137,7 @@ revproxy:
   app: revproxy
   server:
     name: revproxy
-    replicas: 1
+    replicas: 0
     image: httpd:2.4.61
     port: 80
   service:
