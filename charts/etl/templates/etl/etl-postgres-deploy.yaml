@@ -23,7 +23,7 @@ spec:
         - name: {{ .Values.etl.db.name }}
           image: {{ .Values.etl.db.image }}
           volumeMounts:
-          - mountPath: /var/lib/postgresql/data
+          - mountPath: /var/lib/postgresql/
             name: etl-pv
           ports:
             - containerPort: {{ .Values.etl.db.port }}

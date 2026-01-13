@@ -31,7 +31,7 @@ etl:
       image: ghcr.io/idea4rc/etl:2.1.1
       parserSeparator: ";"
     db:
-      image: postgres:16.3-bullseye
+      image: postgres:18.1-bookworm
     virtualService:
       enabled: true
   aerospike:
@@ -39,7 +39,7 @@ etl:
     namespace: datamesh
     server:
       keystoreNamespace: idea4rc
-      image: "aerospike-rootless:latest"
+      image: ghcr.io/idea4rc/aerospike:1.0.0
       #image: "aerospike/aerospike-server:7.1"
       mtlsMode: PERMISSIVE
 
@@ -58,7 +58,7 @@ fhirDataServer:
     configmap_name: fhir-data-application-cm
   db:
     name: fhir-data-postgres-db
-    image: postgres:13-alpine
+    image: postgres:18.1-bookworm
     dbName: idea4rc
     service:
       name: fhir-data-postgres-db
@@ -104,7 +104,7 @@ omop:
   app: omop-postgres
   cdm:
     name: omop-cdm-deployment
-    image: postgres:17.2-bullseye
+    image: postgres:18.1-bookworm
   db:
     name: omopdb
     schema: cdm_idea

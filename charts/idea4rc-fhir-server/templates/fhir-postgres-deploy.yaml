@@ -24,7 +24,7 @@ spec:
         - name: {{ .Values.db.name }}
           image: {{ .Values.db.image }}
           volumeMounts:
-          - mountPath: /var/lib/postgresql/data
+          - mountPath: /var/lib/postgresql/
             name: fhir-pv
           ports:
             - containerPort: {{ .Values.db.port }}
