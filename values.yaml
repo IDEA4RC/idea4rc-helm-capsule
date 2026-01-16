@@ -200,6 +200,9 @@ v6node:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: datamesh
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
       central_compute:
         egress: []
       preprocessing:
