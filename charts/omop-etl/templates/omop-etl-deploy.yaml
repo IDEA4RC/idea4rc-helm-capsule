@@ -78,3 +78,5 @@ spec:
               value: {{ .Values.datasource.omop.schemaCDM }}
             - name: SPRING_DATASOURCE_OMOP_DRIVER_CLASS_NAME
               value: {{ .Values.datasource.omop.driverClassName }}
+            - name: SPRING_DATASOURCE_OMOP_CLEAN
+              value: "true"

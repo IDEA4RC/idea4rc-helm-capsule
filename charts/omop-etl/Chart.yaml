@@ -3,5 +3,5 @@ name: omop-etl
 description: OMOP ETL process
 
 type: application
-version: 26.11.2025-1805
-appVersion: "0.2"
+version: 06.02.2025-1705
+appVersion: "4.0"
