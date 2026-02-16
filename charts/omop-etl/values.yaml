@@ -3,7 +3,7 @@ name: omop-etl
 namespace: datamesh
 replicas: 1
 #image: "idea2omop:latest"
-image: "ghcr.io/idea4rc/etl-idea2omop:4.0-AMD"
+image: "ghcr.io/idea4rc/etl-idea2omop:4.1-AMD"
 imagePullPolicy: IfNotPresent
 #port: 3000 # does it need to be exposed? is it the correct port?
 #service:
@@ -16,7 +16,7 @@ datasource:
     dbPort: 5432
     dbName: metadata
     driverClassName: org.postgresql.Driver
-    image: postgres:16.3-bullseye
+    image: postgres:18.2-bookworm
     replicas: 1
     service:
       name: omop-etl-postgres-db

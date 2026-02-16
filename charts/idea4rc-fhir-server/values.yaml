@@ -92,7 +92,7 @@ server:
 db:
   name: fhir-data-postgres-db
   replicas: 1
-  image: postgres:13-alpine
+  image: postgres:18.2-bookworm
   port: 5432
   dbName: idea4rc
   service:

@@ -31,7 +31,7 @@ etl:
       image: ghcr.io/idea4rc/etl:2.1.1
       parserSeparator: ";"
     db:
-      image: postgres:18.1-bookworm
+      image: postgres:18.2-bookworm
     virtualService:
       enabled: true
   aerospike:
@@ -58,7 +58,7 @@ fhirDataServer:
     configmap_name: fhir-data-application-cm
   db:
     name: fhir-data-postgres-db
-    image: postgres:18.1-bookworm
+    image: postgres:18.2-bookworm
     dbName: idea4rc
     service:
       name: fhir-data-postgres-db
@@ -104,7 +104,7 @@ omop:
   app: omop-postgres
   cdm:
     name: omop-cdm-deployment
-    image: postgres:18.1-bookworm
+    image: postgres:18.2-bookworm
   db:
     name: omopdb
     schema: cdm_idea
@@ -117,7 +117,7 @@ omop:
 omop-etl:
   name: omop-etl
   namespace: datamesh
-  image: "ghcr.io/idea4rc/etl-idea2omop:4.0-AMD"
+  image: "ghcr.io/idea4rc/etl-idea2omop:4.1-AMD"
   imagePullPolicy: IfNotPresent
   # Once the ETL to IDEADB is completed, the IDEADB to OMOP ETL can be triggered with the following command:
   # kubectl scale -n datamesh deploy omop-etl --replicas=1 

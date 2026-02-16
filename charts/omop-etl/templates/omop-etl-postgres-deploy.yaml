@@ -23,7 +23,7 @@ spec:
         - name: {{ .Values.datasource.metadata.dbName }}
           image: {{ .Values.datasource.metadata.image }}
           volumeMounts:
-          - mountPath: /var/lib/postgresql/data
+          - mountPath: /var/lib/postgresql/
             name: omop-etl-pv
           ports:
             - containerPort: {{ .Values.datasource.metadata.dbPort }}
