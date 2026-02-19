@@ -152,7 +152,7 @@ revproxy:
 fcbexec:
   name: feasibility-cohort-builder-exec
   namespace: datamesh
-  image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1"
+  image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1.1"
   port: 3000
   serviceURL: "https://api.fcb.orchestrator.idea.lst.tfo.upm.es"
   fhirServerURL: "http://fhir-data-svc.datamesh.svc.cluster.local" # changed to Internal FHIR server URL, needs testing

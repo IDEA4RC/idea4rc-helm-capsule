@@ -2,7 +2,7 @@
 name: feasibility-cohort-builder-exec
 namespace: datamesh
 replicas: 1
-image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1"
+image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1.1"
 port: 3000
 serviceURL: http://fcb-api:4002
 fhirServerURL: http://fhir-server:8080
@@ -24,9 +24,9 @@ kafka:
   clientId: capsule_1
 # needs to point to the ETL Postegress instance
 postgres:
-  URL: fcb-postgres-db
-  dbName: etl-db
-  port: 5437
+  URL: etl-postgres-db.datamesh.svc.cluster.local
+  dbName: etl
+  port: 5432
 # Keycloack authentication requires the user to manually set the CLIENT_ID and CLIENT_SECRET from 
 # commandline when deploying the capsule.
 keyCloak:
