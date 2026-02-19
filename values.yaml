@@ -117,7 +117,7 @@ omop:
 omop-etl:
   name: omop-etl
   namespace: datamesh
-  image: "ghcr.io/idea4rc/etl-idea2omop:4.1-AMD"
+  image: "ghcr.io/idea4rc/etl-idea2omop:5.0-AMD"
   imagePullPolicy: IfNotPresent
   # Once the ETL to IDEADB is completed, the IDEADB to OMOP ETL can be triggered with the following command:
   # kubectl scale -n datamesh deploy omop-etl --replicas=1 

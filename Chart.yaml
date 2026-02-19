@@ -19,7 +19,7 @@ dependencies:
     version: 07.11.24-1542
   - name: omop-etl
     repository: file://./charts/omop-etl
-    version: 06.02.2025-1705
+    version: 18.02.2025-1200
   - name: feasibility-cohort-builder-exec
     repository: file://./charts/feasibility-cohort-builder-exec
     version: 13.11.2025-1740
@@ -34,5 +34,5 @@ dependencies:
     alias: v6node
 
 type: application
-version: 06.02.2025-1705
-appVersion: "06.02.2025-1705"
+version: 18.02.2025-1200
+appVersion: "18.02.2025-1200"
