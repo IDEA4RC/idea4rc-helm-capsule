@@ -25,6 +25,6 @@ microk8s.helm install --debug idea4rc-capsule idea4rc-helm-capsule/ \
 	--set v6node.node.k8sNodeName="YOUR_NODE_NAME" \
 	--set fcbexec.keyCloak.clientId="YOUR_QUERY_EXECUTOR_KEYCLOAK_CLIENT" \
 	--set fcbexec.keyCloak.clientSecret="YOUR_QUERY_EXECUTOR_KEYCLOAK_SECRET" \
-        --set fcbexec.keyCloak.host="https://idea4rc-keykloak.development-iti.com/auth" \
+        --set fcbexec.keyCloak.host="idea4rc-keykloak.development-iti.com" \
         --set fcbexec.kafka.clientId="YOUR_KAFKA_CLIENTID" \
         --set fcbexec.kafka.consumerId="YOUR_KAFKA_CONSUMERID"
