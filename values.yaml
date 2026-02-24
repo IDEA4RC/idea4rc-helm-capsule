@@ -18,7 +18,7 @@ idea4rcStorageClass:
   enabled: true
   isDefault: "true"
   provisioner: microk8s.io/hostpath
-  reclaimpolicy: Retain
+  reclaimpolicy: Delete
   volumebindingmode: Immediate
 
 # ETL to FHIR configuration
