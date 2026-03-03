@@ -18,6 +18,14 @@ spec:
     spec:
       containers:
         - name: {{ .Values.etl.server.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
           image: {{ .Values.etl.server.image }}
           env:
             - name: ETL_PGSQL_USER

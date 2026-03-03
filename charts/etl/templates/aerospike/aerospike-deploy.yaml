@@ -16,6 +16,14 @@ spec:
     spec:
       containers:
         - name: {{ .Values.aerospike.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
           image: {{ .Values.aerospike.server.image }}
           env:
             - name: NAMESPACE

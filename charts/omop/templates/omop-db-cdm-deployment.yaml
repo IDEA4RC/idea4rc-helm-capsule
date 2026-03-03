@@ -21,6 +21,14 @@ spec:
         name: omop-pv
       containers:
         - name: {{ .Values.app }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.cdm.image }}
           imagePullPolicy: {{ .Values.cdm.pullPolicy }}
           ports:

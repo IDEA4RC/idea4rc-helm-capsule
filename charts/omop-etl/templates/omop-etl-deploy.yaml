@@ -16,6 +16,14 @@ spec:
     spec:
       containers:
         - name: {{ .Values.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           env:

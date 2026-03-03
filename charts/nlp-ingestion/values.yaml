@@ -10,6 +10,7 @@ nlpingestion:
     namespace: datamesh
     image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.2.3
     port: 8501
+    replicas: 1
     etlHost: "127.0.0.1:4001"
     resultsUIHost: "nlpresultsui.datamesh.svc.cluster.local"
     apiHost: "nlpapi.datamesh.svc.cluster.local:8000"
@@ -23,6 +24,7 @@ nlpingestion:
     namespace: datamesh
     image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.2
     port: 8000
+    replicas: 1
     service:
       name: api
       port: 8000
@@ -35,6 +37,7 @@ nlpingestion:
     namespace: datamesh
     image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.2.2
     port: 80
+    replicas: 1
     baseURL: "/nlp/results"
     service:
       name: resultsui

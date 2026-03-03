@@ -1,3 +1,4 @@
+---
 # NLP Results UI Deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -5,7 +6,7 @@ metadata:
   name: {{ .Values.nlpingestion.resultsui.name }}
   namespace: {{ .Values.nlpingestion.resultsui.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.nlpingestion.resultsui.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.nlpingestion.resultsui.name }}
@@ -17,13 +18,25 @@ spec:
       containers:
         - name: {{ .Values.nlpingestion.resultsui.name }}
           image: {{ .Values.nlpingestion.resultsui.image }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: BASE_URL_PATH 
               value: {{ .Values.nlpingestion.resultsui.baseURL | quote }}
           volumeMounts:
             - mountPath: /data/results
               name: resultsui-pv
+            - mountPath: /var/cache/nginx
+              name: nginx-cache
       volumes:
         - name: resultsui-pv
           persistentVolumeClaim:
             claimName: resultsui-pv-claim
+        - name: nginx-cache
+          emptyDir: {}

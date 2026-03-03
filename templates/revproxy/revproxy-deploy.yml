@@ -21,6 +21,14 @@ spec:
           image: {{ .Values.revproxy.server.image }}
           ports:
             - containerPort: {{ .Values.revproxy.server.port }}
+          #securityContext:
+          #  runAsNonRoot: true
+          #  runAsUser: 65532
+          #  runAsGroup: 65532
+          #  allowPrivilegeEscalation: false
+          #  capabilities:
+          #    drop:
+          #      - ALL
           volumeMounts:
             - name: workbench-virtualhost
               mountPath: /usr/local/apache2/conf/extra/workbench.conf

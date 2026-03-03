@@ -21,6 +21,14 @@ spec:
         name: omop-etl-pv
       containers:
         - name: {{ .Values.datasource.metadata.dbName }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.datasource.metadata.image }}
           volumeMounts:
           - mountPath: /var/lib/postgresql/

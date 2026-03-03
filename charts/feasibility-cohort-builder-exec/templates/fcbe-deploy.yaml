@@ -1,4 +1,4 @@
-#Capsule Workbench Deployment
+# Feasibility Cohort Builder Query Executor Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,6 +16,14 @@ spec:
     spec:
       containers:
         - name: {{ .Values.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.image }}
           env:
             - name: KAFKA_CONSUMER_ID

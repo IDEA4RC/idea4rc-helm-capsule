@@ -21,6 +21,14 @@ spec:
         name: etl-pv
       containers:
         - name: {{ .Values.etl.db.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.etl.db.image }}
           volumeMounts:
           - mountPath: /var/lib/postgresql/

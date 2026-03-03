@@ -78,6 +78,7 @@ nlp:
       name: nlp-ingestion-statusweb
       namespace: datamesh
       image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-status-web:0.2.3
+      replicas: 0
       etlHost: "etl-svc.datamesh.svc.cluster.local:4001"
       resultsUIHost: "nlpresultsui.datamesh.svc.cluster.local"
       service:
@@ -85,6 +86,7 @@ nlp:
     api:
       namespace: datamesh
       image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-api:0.2
+      replicas: 0
       service:
         name: nlpapi
       storageClass:
@@ -92,6 +94,7 @@ nlp:
     resultsui:
       namespace: datamesh
       image: ghcr.io/unai-zulaika/idea4rc-nlp-ingestion-results-ui:0.2.2
+      replicas: 0
       baseURL: "/nlp/results"
       service:
         name: nlpresultsui
@@ -117,7 +120,7 @@ omop:
 omop-etl:
   name: omop-etl
   namespace: datamesh
-  image: "ghcr.io/idea4rc/etl-idea2omop:5.0-AMD"
+  image: "ghcr.io/idea4rc/etl-idea2omop:5.0.1-AMD"
   imagePullPolicy: IfNotPresent
   # Once the ETL to IDEADB is completed, the IDEADB to OMOP ETL can be triggered with the following command:
   # kubectl scale -n datamesh deploy omop-etl --replicas=1 

@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.nlpingestion.api.name }}
   namespace: {{ .Values.nlpingestion.namespace | default .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.nlpingestion.api.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.nlpingestion.api.name }}
@@ -16,6 +16,14 @@ spec:
     spec:
       containers:
         - name:  {{ .Values.nlpingestion.api.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.nlpingestion.api.image }}
           env:
             - name: APP_PATH

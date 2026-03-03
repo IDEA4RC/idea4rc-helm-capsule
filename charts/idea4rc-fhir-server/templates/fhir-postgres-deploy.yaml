@@ -22,6 +22,14 @@ spec:
         name: fhir-pv
       containers:
         - name: {{ .Values.db.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.db.image }}
           volumeMounts:
           - mountPath: /var/lib/postgresql/

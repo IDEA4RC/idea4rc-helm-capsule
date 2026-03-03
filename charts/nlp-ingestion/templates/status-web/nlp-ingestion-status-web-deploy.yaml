@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.nlpingestion.statusweb.name }}
   namespace: {{ .Values.nlpingestion.statusweb.namespace }}
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: {{ .Values.nlpingestion.statusweb.name }}
@@ -16,6 +16,14 @@ spec:
     spec:
       containers:
         - name: {{ .Values.nlpingestion.statusweb.name }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           image: {{ .Values.nlpingestion.statusweb.image }}
           env:
           - name: ETL_HOST
