@@ -3,7 +3,7 @@ name: omop-etl
 namespace: datamesh
 replicas: 1
 #image: "idea2omop:latest"
-image: "ghcr.io/idea4rc/etl-idea2omop:5.0.1-AMD"
+image: "ghcr.io/idea4rc/etl-idea2omop:5.0.2-AMD"
 imagePullPolicy: IfNotPresent
 #port: 3000 # does it need to be exposed? is it the correct port?
 #service:

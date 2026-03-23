@@ -1,7 +1,7 @@
 ## Feasibility Cohort Builder Query Executor
 name: feasibility-cohort-builder-exec
 namespace: datamesh
-replicas: 1
+replicas: 0
 image: "ghcr.io/idea4rc/cohortbuilder-exec:2.1.1"
 port: 3000
 serviceURL: http://fcb-api:4002
