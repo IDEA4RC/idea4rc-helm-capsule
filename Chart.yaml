@@ -29,7 +29,7 @@ dependencies:
     version: 23.07.25-1000
     alias: nlp
   - name: node
-    repository: "@vantage6"
+    repository: "oci://ghcr.io/iknl"
     version: "5.0.0-b1"
     alias: v6node
 
