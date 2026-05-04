@@ -28,7 +28,7 @@ etl:
     namespace: datamesh
     server:
       name: etl-idea
-      image: ghcr.io/idea4rc/etl:2.1.1
+      image: ghcr.io/idea4rc/etl:2.1.3
       parserSeparator: ";"
     db:
       image: postgres:18.2-bookworm
