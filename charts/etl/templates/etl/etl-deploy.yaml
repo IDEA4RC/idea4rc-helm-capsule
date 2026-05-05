@@ -28,6 +28,10 @@ spec:
               - ALL
           image: {{ .Values.etl.server.image }}
           env:
+            - name: SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE
+              value: "200MB"
+            - name: SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE
+              value: "200MB"
             - name: ETL_PGSQL_USER
               valueFrom:
                 secretKeyRef:
