@@ -61,7 +61,8 @@ spec:
                 \"server.port\":\"{{ .Values.etl.server.port }}\",
                 \"spring.aerospike.hosts\":\"${AEROSPIKE_HOST}\",
                 \"spring.data.aerospike.namespace\":\"{{ .Values.aerospike.server.keystoreNamespace }}\",
-                \"etl.csv.parser.separator\":\"{{ .Values.etl.server.parserSeparator }}\"
+                \"etl.csv.parser.separator\":\"{{ .Values.etl.server.parserSeparator }}\",
+                \"etl.allowed-addresses\":\"127.0.0.1\"
                 }"
                 #\"management.endpoints.web.exposure.include\":\"restart\"
             - name: SERVER_FORWARD_HEADERS_STRATEGY

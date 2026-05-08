@@ -3,7 +3,7 @@ etl:
   namespace: datamesh
   server:
     name: etl-idea
-    image: ghcr.io/idea4rc/etl:2.1.1
+    image: ghcr.io/idea4rc/etl:2.1.4
     port: 4001
     #proxy: "false"
     serverDns: "https://"
