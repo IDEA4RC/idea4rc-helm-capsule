@@ -1,0 +1,7 @@
+apiVersion: v2
+name: omop2idea-etl
+description: OMOP to IEDA ETL Process
+
+type: application
+version: 11.05.2026-1800
+appVersion: "latest"

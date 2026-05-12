@@ -8,16 +8,20 @@ This helm chart contains the following IDEA4RC core Capsule components:
 - Istio configurations for Ingress Gateway, Virtual Services and mTLS enforcing
 - custom HAPI FHIR instance
 - OMOP CDM Instance
-- ETL instance (FHIR)
-- Capsule Workbench with Internal Reverse Proxy
+- IDEA ETL instance (for csv ingestion))
+- IDEA to OMOP ETL instance
+- OMOP to IDEA ETL instance
+- Capsule Workbench with internal Apache Reverse Proxy
 - Vantage6 Node with custom configuration
+- NLP components
 - Additional environment config such as ISTIO's, a storageclass, etc.
 
 Vantage6 node is defined as a dependency and will be downloaded during the build process of the chart.
+
 ## Requirements
 
 ### Hardware Requirements
-The capsule requires a server with the following minimal specs (or equivalent resources when deploying on Kubernetes):
+The capsule requires a server with the following minimal specs (or equivalent resources when deploying on Kubernetes). Storage requirements may vary according to the quantity of the data ingested:
 - Ubuntu 22.04 VM
 - 16 cores
 - 16GB of RAM 
@@ -65,11 +69,13 @@ The current chart reflects the following structure:
 In the current release of this chart, each sub-chart can be deployed indipendently from the main one. In fact, each of the charts have their own ```Chart.yaml``` and ```values.yaml``` files. Should the user whish to deploy a single component among those that are packaged as sub-charts, it would be enough to change directory to the correct path, customize the relative ```values.yaml``` file - if necessary - and run the helm install command. 
 
 Components might or might not expect other instances to be available, so bear that in mind when deploying. The following Capsule components are currently served as sub-charts:
-- ETL (FHIR)
+- IDEA ETL
+- IDEA to OMOP ETL
+- OMOP to IDEA ETL
+- OMOP CDM
 - Feasibility Cohort Builder Query Executor
 - custom HAPI FHIR server
 - NLP process
-- OMOP CDM
 - Workbench
 
 Moreover, this chart deploys the Vantage6 node, too, bundling it as a dependency.
@@ -88,10 +94,10 @@ This is a list of components that are published via Virtual Service, together wi
 
 | Component | Virtual Service | Endpoint |
 |-----------|-----------------|----------|
-| ETL (FHIR) | etl-vs | https://CAPSULE_IP/datagate/ |
-| Capsule Workbench | revproxy-vs | https://CAPSULE_IP/workbench/ |
+| ETL (FHIR) | etl-vs | https://$CAPSULE_IP/datagate/ |
+| Capsule Workbench | revproxy-vs | https://$CAPSULE_IP/workbench/ |
 
-### ETL endpoints:
+### IDEA ETL endpoints:
 For reference, included here are the endpoints currently exposed by the ETL, presented with a curl example:
 
 Upload data in csv format:
@@ -104,22 +110,12 @@ Retrieve uploaded data:
 curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/etl/data'
 ```
 
-Gather audit errors:
-```
-curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/audit/etl-errors'
-```
-
-Audit existing records:
-```
-curl -vk --location 'https://$CAPSULE_PUB_IP/datagate/audit/records'
-```
-
 ## How to Deploy
 > [!IMPORTANT]
 > If you wish to ease the deployment, there's an [Ansible playbook](https://github.com/IDEA4RC/microk8s-playbook) that can prepare the environment for you.
 
 > [!TIP]
-> A barebones Github Gist that contains all the steps to deply a Capsule from start to finish is available [here](https://gist.github.com/DanielePaviaENG/130f627fe0cb67245055d5c57a5c8d7d).
+> There is an up-to-date step by step guide on capsule deployment and data ingestion [here](https://gist.github.com/DanielePaviaENG/130f627fe0cb67245055d5c57a5c8d7d). Please refer to that for more info.
 
 Either clone or download the sources from this repo:
 ```

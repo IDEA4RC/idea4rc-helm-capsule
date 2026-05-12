@@ -126,6 +126,16 @@ omop-etl:
   # kubectl scale -n datamesh deploy omop-etl --replicas=1 
   replicas: 0
 
+## OMOP2IDEA ETL
+omop2idea-etl:
+  name: omop2idea-etl
+  namespace: datamesh
+  image: "ghcr.io/idea4rc/etl-omop2idea:latest"
+  imagePullPolicy: IfNotPresent
+  # Once the OMOP CDM has been populated with the data, the OMOP to IDEA ETL can be triggered with the following command:
+  # kubectl scale -n datamesh deploy omop2idea-etl --replicas=1 
+  replicas: 0
+
 ## Capsule Workbench
 workbench:
   name: capsule-workbench
