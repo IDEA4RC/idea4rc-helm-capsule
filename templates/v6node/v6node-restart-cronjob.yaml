@@ -1,0 +1,73 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: restart-idea4rc-capsule
+  namespace: datamesh
+spec:
+  suspend: {{ .Values.v6node.restartCronJob.suspend }}
+  schedule: {{ .Values.v6node.restartCronJob.schedule }}
+  timeZone: {{ .Values.v6node.restartCronJob.timeZone }}
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 60
+      template:
+        spec:
+          serviceAccountName: deployment-restarter
+          restartPolicy: Never
+          containers:
+            - name: kubectl
+              image: bitnamilegacy/kubectl
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+
+                  NAMESPACE="datamesh"
+                  DEPLOYMENT="idea4rc-capsule"
+
+                  echo "Restarting deployment ${DEPLOYMENT} in namespace ${NAMESPACE}"
+                  kubectl -n "${NAMESPACE}" rollout restart deployment "${DEPLOYMENT}"
+
+                  echo "Waiting for rollout to complete"
+                  kubectl -n "${NAMESPACE}" rollout status deployment "${DEPLOYMENT}" --timeout=10m
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: deployment-restarter
+  namespace: datamesh
+subjects:
+  - kind: ServiceAccount
+    name: deployment-restarter
+    namespace: datamesh
+roleRef:
+  kind: Role
+  name: deployment-restarter
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-restarter
+  namespace: datamesh
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "patch"]
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deployment-restarter
+  namespace: datamesh

@@ -196,6 +196,10 @@ fcbexec:
 ## Vantage6 Node configuration
 v6node:
   namespace: datamesh
+  restartCronJob:
+    suspend: false
+    schedule: "0 */4 * * *"
+    timeZone: "Europe/Rome"
   node:
     name: default-capsule-node # this name needs to be unique across all capsules
     createSecrets: false # we want to use our secret instead because this chart handles the omop auth data
