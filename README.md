@@ -42,7 +42,7 @@ Once the Capsule has been deployed, the internal services will be available at t
 
 ## How to Deploy & Ingest Data
 
-**Document scope:** This guide explains how to deploy and operate the IDEA4RC Capsule using the procedures contained in the supplied IDEA4RC Capsule How-To file. The documentation is intentionally verbose and assumes the reader is new to this specific deployment.
+**Scope:** This guide explains how to deploy and operate the IDEA4RC Capsule using the procedures contained in the supplied IDEA4RC Capsule How-To file. The documentation is intentionally verbose and assumes the reader is new to this specific deployment.
 
 **Safety and data-handling warning:** Some audit commands expose sensitive patient-level data. In particular, internal ETL audit logs that are not exposed externally by the Capsule may contain sensitive patient data. Treat all logs, database outputs, dumps, CSV input files, certificates, secrets, and command history as sensitive operational material.
 
