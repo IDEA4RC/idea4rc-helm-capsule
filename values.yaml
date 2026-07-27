@@ -211,6 +211,13 @@ v6node:
     image: ghcr.io/iknl/infrastructure/node:5.0.0b1@sha256:510d977a9ec5f21fc2ecc970058bb6b13c6d9e096ebe831bee51ef6bc60b0142
     proxyPort: 7654
     k8sNodeName: idea4rc  # used for affinity with the k8s node that has access to the file based storage
+    policies:
+      # Control which algorithm images are allowed to run on this node. This is
+      # expected to be a valid regular expression. It's important to set this policy when
+      # using sensitive data to control which algorithms are allowed to run on the node.
+      allowed_algorithms:
+      - ^ghcr\.io/iknl/[a-zA-Z0-9._/-]+(:[a-zA-Z0-9._-]+)?(@sha256:[a-f0-9]{64})?$
+      - ^ghcr\.io/idea4rc/[a-zA-Z0-9._/-]+(:[a-zA-Z0-9._-]+)?(@sha256:[a-f0-9]{64})?$
     whitelist:
       data_extraction:
         egress:
